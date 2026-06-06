@@ -40,15 +40,24 @@ Log per benodigde skill een regel: `installed:<naam>` | `acquired:<owner/repo vi
 | `written:<naam>` | `none:<reden>`. Een spoor zonder oplosbare skill val je terug op een
 generalist, en je noteert dat.
 
-## Stap 3: dispatch de specialisten
+## Stap 3: dispatch de specialisten (kies de lichtste manier die past)
 
-Met een Task- of Workflow-tool: spawn een specialist per spoor, parallel. Geef elk mee:
-zijn spoor en deliverable, de skill(s) die hij gebruikt, het deel van de acceptatiecriteria
-dat hij dekt, en de opdracht om werk plus ruw bewijs terug te geven (commando-output,
-gewijzigde bestanden, observaties), zonder eigen pass/fail-oordeel.
+Er zijn drie manieren, van licht naar zwaar. Kies op wat beschikbaar is en wat je account
+aankan. Niet iedereen heeft een groot credit-budget, dus de standaard is licht.
 
-Zonder Task/Workflow (bijv. Codex): draai de sporen na elkaar als een enkele bouwer, met
-dezelfde skill-resolutie. Minder parallel, zelfde resultaat.
+1. **Sequentieel in de `/goal` run (standaard, geen extra credits).** De generator doet de
+   sporen zelf, een voor een, binnen dezelfde run. Geen extra agents, geen extra credits.
+   Voor de meeste fasen is dit genoeg.
+2. **Subagents (Task), matige kosten.** Een specialist per spoor, parallel, als de fase echt
+   losse sporen heeft en de snelheid het waard is.
+3. **Workflow-tool (zwaar, opt-in).** Grote swarms parallel. Alleen als je account de credits
+   heeft en de taak het rechtvaardigt. Verbrandt veel tokens, dus nooit de standaard.
+
+Geef elke specialist mee: zijn spoor en deliverable, de skill(s) die hij gebruikt, het deel
+van de acceptatiecriteria dat hij dekt, en de opdracht om werk plus ruw bewijs terug te geven
+(commando-output, gewijzigde bestanden, observaties), zonder eigen pass/fail-oordeel.
+
+Op Codex of zonder dispatch-tool: altijd manier 1, sequentieel. Zelfde resultaat, langzamer.
 
 ## Stap 4: voeg samen
 
@@ -66,7 +75,7 @@ Tracks:
 - <spoor 1>: <deliverable> | skill: <installed|acquired|written|none + naam/bron> | criteria: <welke>
 - <spoor 2>: ...
 Teams parallel: <1 of meer>
-Fallback: <subagents | sequentieel (geen Task-tool)>
+Dispatch: <sequentieel in /goal | subagents (Task) | workflow-tool>
 ```
 
 ## Grens

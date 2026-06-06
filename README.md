@@ -21,7 +21,7 @@ De grootste faalmodus van autonome agents is dat ze zichzelf "klaar" verklaren t
 - **Bewijs is empirisch.** De evaluator draait de echte app en kijkt of het gedrag klopt, niet alleen of de tests groen zijn.
 - **Gebouwd voor lange runs.** Plan en voortgang staan op schijf en overleven context-verlies. Een regressie rolt terug naar de baseline van de vorige fase. Aan het eind draait een audit tegen het oorspronkelijke plan.
 - **Plannen is een gesprek.** In de planfase interviewt de skill je als een architect: een scherpe vraag per keer, met een aanbeveling, plus artikelen en scenario's zodat je op inhoud beslist.
-- **Per fase een team.** De generator kan per fase een zwerm specialisten opzetten, elk met een eigen skillset, en ontbrekende skills bijhalen via de skills.sh registry of zelf schrijven. De onafhankelijke evaluator blijft er overheen, dus de bouwkracht groeit zonder dat het vertrouwen daalt.
+- **Per fase een team.** De generator kan per fase een zwerm specialisten opzetten, elk met een eigen skillset, en ontbrekende skills bijhalen via de skills.sh registry of zelf schrijven. De onafhankelijke evaluator blijft er overheen, dus de bouwkracht groeit zonder dat het vertrouwen daalt. Het schaalt mee met je budget: standaard sequentieel binnen de run, en pas grote parallelle swarms als je account de credits heeft.
 
 ## Hoe het werkt
 

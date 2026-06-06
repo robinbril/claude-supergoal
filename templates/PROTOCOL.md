@@ -22,7 +22,9 @@ Herhaal tot `SUPERGOAL_RUN_COMPLETE` is geprint:
    die je niet paraat hebt, tuig dan een team op volgens `.supergoal/phase-team.md`: knip de
    fase in sporen, los per spoor de skill op (match installed; anders `npx skills add
    <owner/repo>` van skills.sh; anders schrijf een skill), en dispatch de specialisten
-   parallel. Print eerst `SUPERGOAL_PHASE_TEAM` (sporen, opgeloste skills, fallback). Doe dan
+   via de lichtste manier die past (sequentieel in de run als standaard; subagents of de
+   Workflow-tool alleen met genoeg credits). Print eerst `SUPERGOAL_PHASE_TEAM` (sporen,
+   opgeloste skills, dispatch-modus). Doe dan
    het werk uit de spec, draai de mandatory commands, en stuur voor elk `[empirical]`
    criterium het draaiende artefact aan en leg de observatie vast (screenshot-pad,
    HTTP-respons, CLI-output). Print `SUPERGOAL_PHASE_EVIDENCE`: ruwe command-output

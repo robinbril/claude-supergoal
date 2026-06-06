@@ -124,7 +124,7 @@ Schrijf het resultaat naar `$SUPERGOAL_ROOT/tools.md`. Detecteer specifiek:
 - **Empirisch gereedschap**: preview MCP, chrome-devtools MCP, een `/e2e` of `/run` skill, of gewoon curl/de shell. Dit bepaalt hoe `empirical` criteria bewezen worden. Noteer per surface-type wat beschikbaar is.
 - **Docs**: Context7, WebSearch, WebFetch. Zo niet aanwezig, val terug op training-cutoff kennis en log dat als aanname.
 - **Project skills**: domein-relevante skills in `$SUPERGOAL_ROOT/applied-skills.md`.
-- **Team-dispatch**: is er een Task/Agent of Workflow tool? Dan kan een fase een team van specialisten parallel draaien (zie de uitvoering). Zo niet, sporen sequentieel.
+- **Team-dispatch**: standaard draait een fase-team sequentieel binnen de `/goal` run (geen extra credits). Is er een Task/Agent tool, dan kunnen sporen parallel; de Workflow-tool alleen als je account de credits heeft (zwaar, opt-in).
 - **Skill-bronnen**: is `npx` aanwezig plus de skill-finder skill? Dan los je per spoor ontbrekende skills op: eerst matchen, anders `npx skills add <owner/repo>` van de skills.sh registry, anders zelf een skill schrijven.
 - **Eerdere state**: bestaat `$SUPERGOAL_ROOT/STATE.md` van een vorige run, hervat in plaats van opnieuw te beginnen.
 
@@ -407,14 +407,14 @@ Dit is de loop die binnen de `/goal` sessie draait, herhaald tot `SUPERGOAL_RUN_
 
 1. Lees `STATE.md` -> huidige fase N. Lees `phase-N.md`. Snapshot de pre-fase baseline naar `STATE.md` `Phase baselines:`.
 2. Print `SUPERGOAL_PHASE_START`.
-3. **Generator (solo of als team)**: heeft de fase losse sporen of vraagt ze vaardigheden die je niet paraat hebt, tuig dan een team van specialisten op (zie `.supergoal/phase-team.md`): knip de fase in sporen, los per spoor de skill op met de skill-finder-passes (installed matchen; anders zoeken en `npx skills add <owner/repo>` van skills.sh; anders zelf een skill schrijven), en dispatch de specialisten parallel. Print eerst `SUPERGOAL_PHASE_TEAM` (sporen plus opgeloste skills). Doe dan het werk, draai mandatory commands, stuur het artefact aan voor de empirische criteria, en print `SUPERGOAL_PHASE_EVIDENCE`: ruwe command-output + exit codes, gewijzigde bestanden, en de observaties. Het team velt geen oordeel; dat blijft de evaluator.
+3. **Generator (solo of als team)**: heeft de fase losse sporen of vraagt ze vaardigheden die je niet paraat hebt, tuig dan een team van specialisten op (zie `.supergoal/phase-team.md`): knip de fase in sporen, los per spoor de skill op met de skill-finder-passes (installed matchen; anders zoeken en `npx skills add <owner/repo>` van skills.sh; anders zelf een skill schrijven), en dispatch de specialisten via de lichtste manier die past (sequentieel in de `/goal` run als standaard, subagents of de Workflow-tool alleen als je account de credits heeft). Print eerst `SUPERGOAL_PHASE_TEAM` (sporen plus opgeloste skills). Doe dan het werk, draai mandatory commands, stuur het artefact aan voor de empirische criteria, en print `SUPERGOAL_PHASE_EVIDENCE`: ruwe command-output + exit codes, gewijzigde bestanden, en de observaties. Het team velt geen oordeel; dat blijft de evaluator.
 4. **Evaluator** (subagent met verse context, of fallback-pass): leest `phase-N.md` en `.supergoal/evaluator.md`, niet het generator-oordeel. Herdraait elke check per klasse: commands opnieuw, `repo-state.sh` voor deliverables, het artefact zelf aansturen voor `empirical`, blind oordeel voor `llm-judge`, her-grep voor `self-consistency`. Print `SUPERGOAL_EVAL_VERDICT phase=N` met per-criterium pass/fail + bewijs, en ACCEPT of REJECT.
 5. **Gate**: REJECT -> 3-strike recovery (zie onder). ACCEPT -> memory writeback check, dan `SUPERGOAL_PHASE_DONE`, update `STATE.md`.
 6. User-interrupt check op de fasegrens. N < total: volgende fase. N == total: final audit, dan pas `SUPERGOAL_RUN_COMPLETE`.
 
 ### Per-fase team (swarm) en dynamische skills
 
-De generator hoeft geen enkele agent te zijn. Per fase mag je er zoveel kracht op zetten als de taak verdient: een team van specialisten, elk met een eigen spoor en een eigen skillset, en bij grote fasen meerdere teams naast elkaar. Volledige instructie in `.supergoal/phase-team.md`.
+De generator hoeft geen enkele agent te zijn. Per fase mag je er zoveel kracht op zetten als de taak verdient: een team van specialisten, elk met een eigen spoor en een eigen skillset, en bij grote fasen meerdere teams naast elkaar. Volledige instructie in `.supergoal/phase-team.md`. Kies de lichtste dispatch die past: sequentieel binnen de `/goal` run (standaard, geen extra credits), subagents bij echte parallelle sporen, of de Workflow-tool alleen als je account de credits heeft. Zwaar is opt-in, want niet iedereen heeft een groot budget.
 
 Skills los je dynamisch op met de skill-finder-logica:
 
