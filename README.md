@@ -21,6 +21,7 @@ De grootste faalmodus van autonome agents is dat ze zichzelf "klaar" verklaren t
 - **Bewijs is empirisch.** De evaluator draait de echte app en kijkt of het gedrag klopt, niet alleen of de tests groen zijn.
 - **Gebouwd voor lange runs.** Plan en voortgang staan op schijf en overleven context-verlies. Een regressie rolt terug naar de baseline van de vorige fase. Aan het eind draait een audit tegen het oorspronkelijke plan.
 - **Plannen is een gesprek.** In de planfase interviewt de skill je als een architect: een scherpe vraag per keer, met een aanbeveling, plus artikelen en scenario's zodat je op inhoud beslist.
+- **Per fase een team.** De generator kan per fase een zwerm specialisten opzetten, elk met een eigen skillset, en ontbrekende skills bijhalen via de skills.sh registry of zelf schrijven. De onafhankelijke evaluator blijft er overheen, dus de bouwkracht groeit zonder dat het vertrouwen daalt.
 
 ## Hoe het werkt
 
@@ -29,7 +30,7 @@ De grootste faalmodus van autonome agents is dat ze zichzelf "klaar" verklaren t
 3. **Context verzamelen.** Info uit vier bronnen (code, docs, MCP's, skills), met een check of het genoeg is plus een tweede check die juist een gat zoekt.
 4. **Plan opdelen.** Zoveel fasen als de taak nodig heeft, elk op zichzelf te controleren, met empirisch bewijs waar gedrag ontstaat.
 5. **Plan-review.** Je krijgt een samenvatting plus een losse HTML-pagina met de fasen, de keuzes, de bronnen en de risico's. Jij keurt goed. Dit is de enige stop.
-6. **Autonome run.** Een ronde per fase: de generator bouwt, de onafhankelijke evaluator bewijst (ACCEPT of REJECT). REJECT start een herstel van maximaal drie pogingen.
+6. **Autonome run.** Een ronde per fase: de generator bouwt, de onafhankelijke evaluator bewijst (ACCEPT of REJECT). REJECT start een herstel van maximaal drie pogingen. Per fase kan de generator een team van specialisten opzetten en ontbrekende skills bijladen (via skills.sh of zelf geschreven); de evaluator blijft er onafhankelijk overheen.
 7. **Eindaudit.** Na de laatste fase controleert de evaluator het geheel nog eens tegen het oorspronkelijke plan, voordat de run als klaar geldt.
 
 Twee keer is jouw input nodig: de planfase en de plan-review. Daartussen en erna draait het zelf.
@@ -64,7 +65,7 @@ Claude Code en Codex. Waar geen subagents beschikbaar zijn, draait de evaluator 
 
 ```
 SKILL.md                de skill zelf
-prompts/                de evaluator en de drie context-checks
+prompts/                de evaluator, het per-fase team, en de drie context-checks
 references/             planning, fase-opdeling, /goal-formaat, repo-vergelijking
 scripts/                recon en de working-tree vergelijking
 templates/              ROADMAP, STATE, PROTOCOL, fase-spec, review.html

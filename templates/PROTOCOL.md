@@ -18,12 +18,17 @@ Herhaal tot `SUPERGOAL_RUN_COMPLETE` is geprint:
    Dit is het rollback-anker waar `phase-N-rationale.md` naar verwijst.
 4. Print `SUPERGOAL_PHASE_START` met de spec-metadata (fasenummer, naam, taak, mandatory
    commands, criteria-telling, vereist bewijs, afhankelijkheden, validatieklassen).
-5. **Generator.** Doe het werk uit de spec. Draai de mandatory commands. Voor elk
-   `[empirical]` criterium: stuur het draaiende artefact aan en leg de observatie vast
-   (screenshot-pad, HTTP-respons, CLI-output). Print `SUPERGOAL_PHASE_EVIDENCE`: ruwe
-   command-output (laatste ~10 regels + exit code), gewijzigde bestanden, en de
-   artefact-observaties. **Geen pass/fail-oordeel.** Je rapporteert wat je deed en zag,
-   niet of het slaagde.
+5. **Generator (solo of als team).** Heeft de fase losse sporen of vraagt ze vaardigheden
+   die je niet paraat hebt, tuig dan een team op volgens `.supergoal/phase-team.md`: knip de
+   fase in sporen, los per spoor de skill op (match installed; anders `npx skills add
+   <owner/repo>` van skills.sh; anders schrijf een skill), en dispatch de specialisten
+   parallel. Print eerst `SUPERGOAL_PHASE_TEAM` (sporen, opgeloste skills, fallback). Doe dan
+   het werk uit de spec, draai de mandatory commands, en stuur voor elk `[empirical]`
+   criterium het draaiende artefact aan en leg de observatie vast (screenshot-pad,
+   HTTP-respons, CLI-output). Print `SUPERGOAL_PHASE_EVIDENCE`: ruwe command-output
+   (laatste ~10 regels + exit code), gewijzigde bestanden, en de artefact-observaties.
+   **Geen pass/fail-oordeel**, ook het team niet. Je rapporteert wat je deed en zag, niet
+   of het slaagde.
 6. **Evaluator.** Draai de onafhankelijke evaluator uit `.supergoal/evaluator.md`.
    - **Claude Code** (Task/Agent tool aanwezig): spawn de evaluator als subagent met een
      verse context. Geef hem het pad naar `phase-N.md`, `evaluator.md`, de `Baseline ref`,
@@ -152,6 +157,7 @@ Zie de `Memory writeback` sectie in SKILL.md. Kort:
 
 Zie `references/goal-format.md` voor het exacte formaat van:
 - `SUPERGOAL_PHASE_START`
+- `SUPERGOAL_PHASE_TEAM` (generator, alleen als de fase een team draait)
 - `SUPERGOAL_PHASE_EVIDENCE` (generator, ruw, geen oordeel)
 - `SUPERGOAL_EVAL_VERDICT` (evaluator, ACCEPT/REJECT)
 - `MEMORY_SAVED`

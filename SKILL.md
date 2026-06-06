@@ -124,6 +124,8 @@ Schrijf het resultaat naar `$SUPERGOAL_ROOT/tools.md`. Detecteer specifiek:
 - **Empirisch gereedschap**: preview MCP, chrome-devtools MCP, een `/e2e` of `/run` skill, of gewoon curl/de shell. Dit bepaalt hoe `empirical` criteria bewezen worden. Noteer per surface-type wat beschikbaar is.
 - **Docs**: Context7, WebSearch, WebFetch. Zo niet aanwezig, val terug op training-cutoff kennis en log dat als aanname.
 - **Project skills**: domein-relevante skills in `$SUPERGOAL_ROOT/applied-skills.md`.
+- **Team-dispatch**: is er een Task/Agent of Workflow tool? Dan kan een fase een team van specialisten parallel draaien (zie de uitvoering). Zo niet, sporen sequentieel.
+- **Skill-bronnen**: is `npx` aanwezig plus de skill-finder skill? Dan los je per spoor ontbrekende skills op: eerst matchen, anders `npx skills add <owner/repo>` van de skills.sh registry, anders zelf een skill schrijven.
 - **Eerdere state**: bestaat `$SUPERGOAL_ROOT/STATE.md` van een vorige run, hervat in plaats van opnieuw te beginnen.
 
 ### Hervat-detectie
@@ -276,6 +278,8 @@ Acceptance criteria: <count>
 Evidence required: <list>
 Depends on phases: <list or "none">
 Validation classes: tool-output | deliverable | empirical | llm-judge | self-consistency
+Team: <sporen + specialisten, of "solo">
+Skills needed: <skills per spoor, of "none">
 Rollback target: phase <N-k> baseline ref (see phase-N-rationale.md)
 
 [... volledige werkbeschrijving, geklasseerde criteria, vereist bewijs ...]
@@ -379,7 +383,7 @@ Na "Start now" en voor het `/goal` blok: draai de mandatory commands (ontdubbeld
 Slash commands vuren alleen vanuit gebruikersinput, dus dit is een eerlijke een-plak overdracht. Na "Start now":
 
 1. Update `STATE.md`: `Status: READY_TO_DISPATCH`, `Current phase: 1`, en leg `Baseline ref:` vast op `git rev-parse HEAD 2>/dev/null || echo "no-git"`. Initialiseer `Phase baselines:` (leeg); de generator voegt per fasegrens een entry toe (`phase <N> pre: <ref>`), de rollback-ankers waar `phase-N-rationale.md` naar verwijst.
-2. Kopieer `$SUPERGOAL_DIR/templates/PROTOCOL.md` naar `.supergoal/PROTOCOL.md`, `$SUPERGOAL_DIR/prompts/phase-judge.md` naar `.supergoal/evaluator.md` (de evaluator-instructie die de subagent of fallback-pass leest), en `$SUPERGOAL_DIR/scripts/repo-state.sh` naar `.supergoal/repo-state.sh`.
+2. Kopieer `$SUPERGOAL_DIR/templates/PROTOCOL.md` naar `.supergoal/PROTOCOL.md`, `$SUPERGOAL_DIR/prompts/phase-judge.md` naar `.supergoal/evaluator.md` (de evaluator-instructie die de subagent of fallback-pass leest), `$SUPERGOAL_DIR/prompts/phase-team.md` naar `.supergoal/phase-team.md` (de team-instructie voor de generator), en `$SUPERGOAL_DIR/scripts/repo-state.sh` naar `.supergoal/repo-state.sh`.
 3. Verifieer elke `phase-N.md` en draai `validate-phase.sh` erop.
 4. Print het kant-en-klare `/goal` commando:
 
@@ -403,10 +407,22 @@ Dit is de loop die binnen de `/goal` sessie draait, herhaald tot `SUPERGOAL_RUN_
 
 1. Lees `STATE.md` -> huidige fase N. Lees `phase-N.md`. Snapshot de pre-fase baseline naar `STATE.md` `Phase baselines:`.
 2. Print `SUPERGOAL_PHASE_START`.
-3. **Generator**: doe het werk, draai mandatory commands, stuur het artefact aan voor de empirische criteria. Print `SUPERGOAL_PHASE_EVIDENCE`: ruwe command-output + exit codes, gewijzigde bestanden, en de observaties (screenshot-pad, HTTP-respons, CLI-output). Geen oordeel.
+3. **Generator (solo of als team)**: heeft de fase losse sporen of vraagt ze vaardigheden die je niet paraat hebt, tuig dan een team van specialisten op (zie `.supergoal/phase-team.md`): knip de fase in sporen, los per spoor de skill op met de skill-finder-passes (installed matchen; anders zoeken en `npx skills add <owner/repo>` van skills.sh; anders zelf een skill schrijven), en dispatch de specialisten parallel. Print eerst `SUPERGOAL_PHASE_TEAM` (sporen plus opgeloste skills). Doe dan het werk, draai mandatory commands, stuur het artefact aan voor de empirische criteria, en print `SUPERGOAL_PHASE_EVIDENCE`: ruwe command-output + exit codes, gewijzigde bestanden, en de observaties. Het team velt geen oordeel; dat blijft de evaluator.
 4. **Evaluator** (subagent met verse context, of fallback-pass): leest `phase-N.md` en `.supergoal/evaluator.md`, niet het generator-oordeel. Herdraait elke check per klasse: commands opnieuw, `repo-state.sh` voor deliverables, het artefact zelf aansturen voor `empirical`, blind oordeel voor `llm-judge`, her-grep voor `self-consistency`. Print `SUPERGOAL_EVAL_VERDICT phase=N` met per-criterium pass/fail + bewijs, en ACCEPT of REJECT.
 5. **Gate**: REJECT -> 3-strike recovery (zie onder). ACCEPT -> memory writeback check, dan `SUPERGOAL_PHASE_DONE`, update `STATE.md`.
 6. User-interrupt check op de fasegrens. N < total: volgende fase. N == total: final audit, dan pas `SUPERGOAL_RUN_COMPLETE`.
+
+### Per-fase team (swarm) en dynamische skills
+
+De generator hoeft geen enkele agent te zijn. Per fase mag je er zoveel kracht op zetten als de taak verdient: een team van specialisten, elk met een eigen spoor en een eigen skillset, en bij grote fasen meerdere teams naast elkaar. Volledige instructie in `.supergoal/phase-team.md`.
+
+Skills los je dynamisch op met de skill-finder-logica:
+
+1. Match eerst de geinstalleerde skills op wat het spoor nodig heeft.
+2. Past er niks, zoek een bewezen aanpak (de skills.sh registry, `gh search`, registries, docs) en installeer met `npx skills add <owner/repo>`.
+3. Keert het terug en dekt niks het, schrijf dan een nieuwe, generieke skill in de skill-finder-structuur, zodat een volgende run hem matcht in pass 1.
+
+Dit verandert niks aan de gate: het team is de generator, en de onafhankelijke evaluator herdraait daarna alles. Meer agents is meer bouwkracht, geen extra vertrouwen vooraf.
 
 ### Failure recovery (3-strike, op REJECT)
 
@@ -454,6 +470,7 @@ Waard om op te slaan: een API-eigenaardigheid die niet in de docs stond, een bev
 - **Plan door te grillen.** Een vraag per keer met aanbeveling, codebase-eerst, tot elke materiele beslissing is opgelost. Een plan op gedeeld begrip hoeft de evaluator later niet af te keuren.
 - **Maak de gebruiker architect, geen stempelaar.** Bij een zware keuze stuur je bronnen en scenario's mee, zodat hij snel het onderwerp snapt en op inhoud beslist in plaats van je voorstel af te stempelen.
 - **Route op rol, niet op kosten.** Goedkope modellen voor het mechanische volume, een sterk model voor de evaluator, zodat een lange run de limiet overleeft en de judge scherp blijft.
+- **Per fase zoveel kracht als nodig.** Een team van specialisten per fase, elk met een eigen skillset, en ontbrekende skills haal je erbij (skills.sh) of schrijf je zelf. De evaluator blijft er onafhankelijk overheen, dus meer agents kopen geen vertrouwen.
 - **Polish & Harden is verplicht.** Zo wordt "elk aspect is perfect" afgedwongen.
 
 ---
@@ -485,6 +502,7 @@ Waard om op te slaan: een API-eigenaardigheid die niet in de docs stond, een bev
 - `prompts/sufficient-context-judge.md`: de eerste context-judge (Stage 2c)
 - `prompts/adversarial-prober.md`: de tweede context-judge (Stage 2c-bis)
 - `prompts/phase-judge.md`: de onafhankelijke evaluator, gekopieerd naar `.supergoal/evaluator.md` bij dispatch
+- `prompts/phase-team.md`: de per-fase team-orchestratie (swarm) plus dynamische skill-resolutie, gekopieerd naar `.supergoal/phase-team.md` bij dispatch
 
 ## Templates
 

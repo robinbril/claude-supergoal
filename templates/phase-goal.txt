@@ -16,6 +16,8 @@ Acceptance criteria: {{CRIT_COUNT}}
 Evidence required: {{EVIDENCE_CSV}}
 Depends on phases: {{DEPS}}
 Validation classes: {{CLASSES_CSV}}
+Team: {{TEAM_OR_SOLO}}
+Skills needed: {{SKILLS_NEEDED}}
 Rollback target: {{ROLLBACK_TARGET}}
 
 ## Why

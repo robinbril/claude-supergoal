@@ -93,6 +93,14 @@
   <text x="900" y="716" font-size="12" fill="#5b4b00">app en bewijst het gedrag, niet</text>
   <text x="900" y="732" font-size="12" fill="#5b4b00">alleen "tests groen".</text>
 
+  <!-- sticky note: per-phase team -->
+  <rect x="886" y="470" width="286" height="98" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="900" y="494" font-size="12.5" font-weight="700" fill="#5b4b00">Per fase een team</text>
+  <text x="900" y="514" font-size="12" fill="#5b4b00">De bouwer mag een zwerm specialisten</text>
+  <text x="900" y="530" font-size="12" fill="#5b4b00">opzetten, elk met een eigen skillset.</text>
+  <text x="900" y="546" font-size="12" fill="#5b4b00">Mist er een skill, dan haalt hij die</text>
+  <text x="900" y="562" font-size="12" fill="#5b4b00">van skills.sh, of schrijft hem.</text>
+
   <!-- legend, bottom right -->
   <rect x="886" y="800" width="286" height="150" rx="10" fill="#ffffff" stroke="#e0e0e6" stroke-width="1.5"/>
   <text x="902" y="826" font-size="12.5" font-weight="700" fill="#3a3a42">Legenda</text>
