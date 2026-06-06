@@ -1,0 +1,14 @@
+# Supergoal runtime output (created when the skill runs in a target project)
+.supergoal/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+.vscode/
+
+# Node
+node_modules/
+*.log

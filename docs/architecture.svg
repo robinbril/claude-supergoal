@@ -1,0 +1,144 @@
+<svg viewBox="0 0 980 1060" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8a8a93"/></marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5d8a3a"/></marker>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.12"/></filter>
+    <filter id="shn" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.10"/></filter>
+  </defs>
+
+  <rect x="0" y="0" width="980" height="1060" fill="#fafaf9"/>
+
+  <text x="40" y="48" font-size="26" font-weight="700" fill="#1b1b1f">Supergoal</text>
+  <text x="40" y="76" font-size="15" fill="#6b6b73">Plan samen, bouw autonoom, bewijs onafhankelijk. Een skill voor Claude Code en Codex.</text>
+
+  <!-- central pipeline -->
+  <g>
+    <!-- N1 -->
+    <rect x="330" y="104" width="320" height="56" rx="12" fill="#FFE6CC" stroke="#D79B00" stroke-width="2" filter="url(#shn)"/>
+    <text x="490" y="138" text-anchor="middle" font-size="16" font-weight="600" fill="#1b1b1f">Jouw taak</text>
+
+    <line x1="490" y1="160" x2="490" y2="186" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+
+    <!-- N2 -->
+    <rect x="330" y="188" width="320" height="68" rx="12" fill="#E1D5E7" stroke="#9673A6" stroke-width="2" filter="url(#shn)"/>
+    <text x="490" y="219" text-anchor="middle" font-size="16" font-weight="600" fill="#1b1b1f">1. Plannen samen</text>
+    <text x="490" y="240" text-anchor="middle" font-size="12.5" fill="#5b5b63">interview, een scherpe vraag per keer</text>
+
+    <line x1="490" y1="256" x2="490" y2="282" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+
+    <!-- N3 -->
+    <rect x="330" y="284" width="320" height="68" rx="12" fill="#D5E8D4" stroke="#82B366" stroke-width="2" filter="url(#shn)"/>
+    <text x="490" y="315" text-anchor="middle" font-size="16" font-weight="600" fill="#1b1b1f">2. Context verzamelen</text>
+    <text x="490" y="336" text-anchor="middle" font-size="12.5" fill="#5b5b63">vier bronnen, een check en een tegencheck</text>
+
+    <line x1="490" y1="352" x2="490" y2="378" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+
+    <!-- N4 human gate -->
+    <rect x="330" y="380" width="320" height="68" rx="12" fill="#FFF2CC" stroke="#D6B656" stroke-width="2" filter="url(#shn)"/>
+    <text x="490" y="411" text-anchor="middle" font-size="16" font-weight="600" fill="#1b1b1f">3. Plan-review</text>
+    <text x="490" y="432" text-anchor="middle" font-size="12.5" fill="#5b5b63">jij keurt het plan goed (de enige stop)</text>
+
+    <line x1="490" y1="448" x2="490" y2="486" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+  </g>
+
+  <!-- autonomous run box -->
+  <rect x="250" y="488" width="480" height="318" rx="16" fill="#f1f1f4" stroke="#c9c9d1" stroke-width="2"/>
+  <text x="270" y="514" font-size="14" font-weight="700" fill="#3a3a42">Autonome run onder een /goal</text>
+  <text x="270" y="533" font-size="12" fill="#6b6b73">fase voor fase, ook urenlang, zonder babysitten</text>
+
+  <!-- N5 generator -->
+  <rect x="330" y="552" width="320" height="62" rx="12" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="2" filter="url(#shn)"/>
+  <text x="490" y="582" text-anchor="middle" font-size="16" font-weight="600" fill="#1b1b1f">Generator bouwt de fase</text>
+  <text x="490" y="601" text-anchor="middle" font-size="12.5" fill="#5b5b63">en levert ruw bewijs op, geen oordeel</text>
+
+  <line x1="490" y1="614" x2="490" y2="650" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+
+  <!-- N6 evaluator -->
+  <rect x="330" y="652" width="320" height="74" rx="12" fill="#C7DCF7" stroke="#4f79b0" stroke-width="2.5" filter="url(#sh)"/>
+  <text x="490" y="682" text-anchor="middle" font-size="16" font-weight="700" fill="#16314f">Onafhankelijke evaluator</text>
+  <text x="490" y="702" text-anchor="middle" font-size="12.5" fill="#314a66">doet elke check zelf opnieuw</text>
+  <text x="490" y="718" text-anchor="middle" font-size="12.5" font-weight="600" fill="#16314f">ACCEPT of REJECT</text>
+
+  <!-- reject loop -->
+  <path d="M 330 700 L 286 700 L 286 583 L 330 583" fill="none" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ar)"/>
+  <text x="292" y="645" font-size="11.5" fill="#c0392b" transform="rotate(-90 292 645)">REJECT: herstel, max 3x</text>
+
+  <!-- accept down out of box -->
+  <line x1="490" y1="806" x2="490" y2="846" stroke="#5d8a3a" stroke-width="2.5" marker-end="url(#ag)"/>
+  <text x="500" y="830" font-size="12" font-weight="600" fill="#5d8a3a">ACCEPT</text>
+
+  <!-- N7 audit -->
+  <rect x="330" y="848" width="320" height="60" rx="12" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="2" filter="url(#shn)"/>
+  <text x="490" y="877" text-anchor="middle" font-size="16" font-weight="600" fill="#1b1b1f">Eindaudit tegen het plan</text>
+  <text x="490" y="896" text-anchor="middle" font-size="12.5" fill="#5b5b63">opnieuw, tegen de oorspronkelijke opdracht</text>
+
+  <line x1="490" y1="908" x2="490" y2="944" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+
+  <!-- N8 done -->
+  <rect x="385" y="946" width="210" height="54" rx="12" fill="#D5E8D4" stroke="#5d8a3a" stroke-width="2.5" filter="url(#shn)"/>
+  <text x="490" y="979" text-anchor="middle" font-size="17" font-weight="700" fill="#1b1b1f">Klaar</text>
+
+  <!-- STICKY NOTES -->
+  <!-- S1 near N2 (right) -->
+  <g transform="rotate(2 815 215)">
+    <rect x="690" y="176" width="250" height="84" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
+    <text x="704" y="200" font-size="12.5" font-weight="700" fill="#5b4b00">Jij blijft de architect</text>
+    <text x="704" y="220" font-size="12" fill="#5b4b00">Hij praat je bij met artikelen en</text>
+    <text x="704" y="236" font-size="12" fill="#5b4b00">scenario's, en vraagt een keuze</text>
+    <text x="704" y="252" font-size="12" fill="#5b4b00">per keer met een aanbeveling.</text>
+  </g>
+  <line x1="688" y1="220" x2="652" y2="222" stroke="#D9B40A" stroke-width="1.3" stroke-dasharray="3 3"/>
+
+  <!-- S2 near N3 (left) -->
+  <g transform="rotate(-2 165 312)">
+    <rect x="40" y="276" width="252" height="84" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
+    <text x="54" y="300" font-size="12.5" font-weight="700" fill="#5b4b00">Eerst echt uitzoeken</text>
+    <text x="54" y="320" font-size="12" fill="#5b4b00">Code, docs, MCP's en skills. Een</text>
+    <text x="54" y="336" font-size="12" fill="#5b4b00">check of het genoeg is, plus een</text>
+    <text x="54" y="352" font-size="12" fill="#5b4b00">die juist een gat probeert te vinden.</text>
+  </g>
+  <line x1="292" y1="318" x2="328" y2="318" stroke="#D9B40A" stroke-width="1.3" stroke-dasharray="3 3"/>
+
+  <!-- S3 near run box (left) -->
+  <g transform="rotate(-1.5 165 560)">
+    <rect x="40" y="524" width="252" height="72" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
+    <text x="54" y="548" font-size="12.5" font-weight="700" fill="#5b4b00">Overleeft lange runs</text>
+    <text x="54" y="568" font-size="12" fill="#5b4b00">Plan en voortgang staan op schijf,</text>
+    <text x="54" y="584" font-size="12" fill="#5b4b00">dus context-verlies gooit niks weg.</text>
+  </g>
+  <line x1="292" y1="566" x2="330" y2="575" stroke="#D9B40A" stroke-width="1.3" stroke-dasharray="3 3"/>
+
+  <!-- S4 near N6 (right) -->
+  <g transform="rotate(2 815 690)">
+    <rect x="690" y="648" width="250" height="96" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
+    <text x="704" y="672" font-size="12.5" font-weight="700" fill="#5b4b00">De kern van het verschil</text>
+    <text x="704" y="692" font-size="12" fill="#5b4b00">De bouwer keurt nooit zijn eigen</text>
+    <text x="704" y="708" font-size="12" fill="#5b4b00">werk. De evaluator draait de echte</text>
+    <text x="704" y="724" font-size="12" fill="#5b4b00">app en bewijst het gedrag, niet</text>
+    <text x="704" y="740" font-size="12" fill="#5b4b00">alleen "tests groen".</text>
+  </g>
+  <line x1="688" y1="692" x2="652" y2="689" stroke="#D9B40A" stroke-width="1.3" stroke-dasharray="3 3"/>
+
+  <!-- S5 near reject/rollback (left) -->
+  <g transform="rotate(-2 165 700)">
+    <rect x="40" y="664" width="232" height="72" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
+    <text x="54" y="688" font-size="12.5" font-weight="700" fill="#5b4b00">Stuk? Terugrollen</text>
+    <text x="54" y="708" font-size="12" fill="#5b4b00">Een regressie gaat terug naar de</text>
+    <text x="54" y="724" font-size="12" fill="#5b4b00">baseline van de vorige fase.</text>
+  </g>
+  <line x1="272" y1="700" x2="284" y2="700" stroke="#D9B40A" stroke-width="1.3" stroke-dasharray="3 3"/>
+
+  <!-- legend -->
+  <g transform="translate(690, 880)">
+    <rect x="0" y="0" width="250" height="120" rx="10" fill="#ffffff" stroke="#e0e0e6" stroke-width="1.5"/>
+    <text x="14" y="24" font-size="12.5" font-weight="700" fill="#3a3a42">Legenda</text>
+    <rect x="14" y="36" width="14" height="14" rx="3" fill="#FFE6CC" stroke="#D79B00"/><text x="36" y="48" font-size="11.5" fill="#444">invoer</text>
+    <rect x="14" y="56" width="14" height="14" rx="3" fill="#E1D5E7" stroke="#9673A6"/><text x="36" y="68" font-size="11.5" fill="#444">plannen</text>
+    <rect x="14" y="76" width="14" height="14" rx="3" fill="#DAE8FC" stroke="#6C8EBF"/><text x="36" y="88" font-size="11.5" fill="#444">bouwen en bewijzen</text>
+    <rect x="14" y="96" width="14" height="14" rx="3" fill="#FFF2CC" stroke="#D6B656"/><text x="36" y="108" font-size="11.5" fill="#444">jij beslist</text>
+    <rect x="140" y="36" width="14" height="14" rx="3" fill="#D5E8D4" stroke="#82B366"/><text x="162" y="48" font-size="11.5" fill="#444">klaar</text>
+    <rect x="140" y="56" width="14" height="14" rx="3" fill="#FEF3A3" stroke="#D9B40A"/><text x="162" y="68" font-size="11.5" fill="#444">uitleg</text>
+    <line x1="140" y1="83" x2="156" y2="83" stroke="#c0392b" stroke-width="2" stroke-dasharray="4 3"/><text x="162" y="88" font-size="11.5" fill="#444">herstel-lus</text>
+  </g>
+</svg>
