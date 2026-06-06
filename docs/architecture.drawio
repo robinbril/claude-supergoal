@@ -1,107 +1,80 @@
 <mxfile host="app.diagrams.net" type="device">
   <diagram name="Supergoal Architectuur" id="supergoal-arch">
-    <mxGraphModel dx="1200" dy="800" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" math="0" shadow="0">
+    <mxGraphModel dx="1200" dy="900" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
 
-        <mxCell id="title" value="Supergoal: Agentic Context Assembly" style="text;html=1;fontSize=22;fontStyle=1;align=left;verticalAlign=middle;" vertex="1" parent="1">
-          <mxGeometry x="40" y="20" width="1120" height="36" as="geometry" />
+        <mxCell id="title" value="Supergoal" style="text;html=1;fontSize=22;fontStyle=1;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="22" width="420" height="32" as="geometry" />
         </mxCell>
-        <mxCell id="meta" value="Cross-corpus fanout voor de planning. Daarna bouwt de generator en bewijst een onafhankelijke evaluator elke fase op het draaiende artefact." style="text;html=1;fontSize=12;align=left;verticalAlign=middle;fontColor=#555555;" vertex="1" parent="1">
-          <mxGeometry x="40" y="56" width="1120" height="22" as="geometry" />
-        </mxCell>
-
-        <mxCell id="a_user_orch" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#888888;strokeWidth=2;endArrow=block;" edge="1" parent="1" source="user" target="orch"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="a_orch_qr" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#888888;strokeWidth=2;endArrow=block;" edge="1" parent="1" source="orch" target="qr"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="a_qr_frame" value="fanout" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#333333;strokeWidth=2;endArrow=block;fontSize=12;" edge="1" parent="1" source="qr" target="frame"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="a_frame_judge" value="snippets" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#333333;strokeWidth=2;endArrow=block;fontSize=12;" edge="1" parent="1" source="frame" target="judge"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="a_judge_qr" value="insufficient: gaps + redenen (max 3 rondes)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#B85450;strokeWidth=2;endArrow=block;fontSize=11;fontColor=#B85450;dashed=1;" edge="1" parent="1" source="judge" target="qr">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points"><mxPoint x="490" y="340" /></Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="a_judge_synth" value="voldoende context" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#82B366;strokeWidth=3;endArrow=block;fontSize=12;fontColor=#5d8a3a;" edge="1" parent="1" source="judge" target="synth"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="a_synth_decomp" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#888888;strokeWidth=2;endArrow=block;" edge="1" parent="1" source="synth" target="decomp"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="a_decomp_gate" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#888888;strokeWidth=2;endArrow=block;" edge="1" parent="1" source="decomp" target="gate"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="a_gate_goal" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#888888;strokeWidth=2;endArrow=block;" edge="1" parent="1" source="gate" target="goal"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="a_goal_done" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#888888;strokeWidth=2;endArrow=block;" edge="1" parent="1" source="goal" target="done"><mxGeometry relative="1" as="geometry" /></mxCell>
-
-        <mxCell id="frame" value="" tooltip="Stage 2b: dispatcht sub-queries naar vier corpora parallel of sequentieel. Elke worker retourneert brongetagde snippets." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#999999;strokeWidth=2;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="610" y="95" width="540" height="215" as="geometry" />
-        </mxCell>
-        <mxCell id="frametitle" value="Cross-Corpus Retrieval (Stage 2b)" style="text;html=1;fontSize=14;fontStyle=1;align=left;verticalAlign=middle;" vertex="1" parent="1">
-          <mxGeometry x="640" y="105" width="480" height="24" as="geometry" />
-        </mxCell>
-        <mxCell id="framesub" value="gerichte queries, parallel via subagents waar beschikbaar" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;fontColor=#666666;" vertex="1" parent="1">
-          <mxGeometry x="640" y="128" width="480" height="18" as="geometry" />
-        </mxCell>
-        <mxCell id="code" value="Code&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;recon + grep&lt;/font&gt;" tooltip="Draait recon-scripts en beantwoordt repo-vragen met file:line bewijs." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="640" y="158" width="115" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="docs" value="Docs&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Context7 / Web&lt;/font&gt;" tooltip="Zoekt actuele API-docs via Context7 of WebFetch met versie-pinning." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="765" y="158" width="115" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="mcps" value="MCPs&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;aangesloten&lt;/font&gt;" tooltip="Controleert aangesloten MCP-servers op relevante tools en data." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="890" y="158" width="110" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="skills" value="Skills&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;skill-finder&lt;/font&gt;" tooltip="Inventariseert beschikbare skills die matchen met het taakdomein." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="1010" y="158" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="framenote" value="elke corpus retourneert brongetagde snippets, nooit rauwe dumps" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;fontColor=#666666;fontStyle=2;" vertex="1" parent="1">
-          <mxGeometry x="640" y="270" width="490" height="24" as="geometry" />
+        <mxCell id="sub" value="Plan samen, bouw autonoom, bewijs onafhankelijk. Een skill voor Claude Code en Codex." style="text;html=1;fontSize=13;align=left;verticalAlign=middle;fontColor=#6b6b73;" vertex="1" parent="1">
+          <mxGeometry x="40" y="54" width="760" height="22" as="geometry" />
         </mxCell>
 
-        <mxCell id="user" value="Gebruikerstaak" tooltip="Startpunt: de gebruiker beschrijft wat er gebouwd, gefixt of verscheept moet worden." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="40" y="160" width="120" height="70" as="geometry" />
-        </mxCell>
-        <mxCell id="orch" value="Orchestrator&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Stage 0-1: memory + intake&lt;/font&gt;" tooltip="Laadt memory, detecteert tools (Context7, WebSearch, MCPs), stelt verduidelijkingsvragen bij ontbrekende informatie." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="210" y="160" width="150" height="70" as="geometry" />
-        </mxCell>
-        <mxCell id="qr" value="Planner &amp;amp; Query Rewriter&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Stage 2a&lt;/font&gt;" tooltip="Herschrijft de taak naar gerichte sub-queries per open planningsvraag. Schrijft naar queries.md." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="410" y="160" width="160" height="70" as="geometry" />
+        <mxCell id="box" value="Autonome run onder een /goal&#10;fase voor fase, ook urenlang, zonder babysitten" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f1f4;strokeColor=#c9c9d1;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=14;spacingTop=8;fontSize=12;fontColor=#3a3a42;" vertex="1" parent="1">
+          <mxGeometry x="340" y="488" width="520" height="258" as="geometry" />
         </mxCell>
 
-        <mxCell id="judge" value="Sufficient-Context Judge +&lt;br&gt;Adversarial Prober&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Stage 2c: inline judges&lt;/font&gt;" tooltip="Twee judges met tegengestelde bias. De eerste zoekt compleetheid, de tweede probeert een gat te vinden. INSUFFICIENT triggert retry (max 3 rondes)." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="610" y="370" width="320" height="70" as="geometry" />
+        <mxCell id="n1" value="Jouw taak" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="430" y="104" width="340" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="1. Plannen samen&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;interview, een scherpe vraag per keer&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="430" y="188" width="340" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="2. Context verzamelen&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;vier bronnen, een check en een tegencheck&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="430" y="284" width="340" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="3. Plan-review&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;jij keurt het plan goed (de enige stop)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="430" y="380" width="340" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="Generator bouwt de fase&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;en levert ruw bewijs op, geen oordeel&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="430" y="552" width="340" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="n6" value="Onafhankelijke evaluator&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;doet elke check zelf opnieuw&lt;/font&gt;&lt;br&gt;&lt;b&gt;ACCEPT of REJECT&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C7DCF7;strokeColor=#4f79b0;strokeWidth=2;fontSize=15;fontColor=#16314f;" vertex="1" parent="1">
+          <mxGeometry x="430" y="652" width="340" height="76" as="geometry" />
+        </mxCell>
+        <mxCell id="n7" value="Eindaudit tegen het plan&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;opnieuw, tegen de oorspronkelijke opdracht&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="430" y="788" width="340" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="n8" value="Klaar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#5d8a3a;strokeWidth=2;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="882" width="240" height="56" as="geometry" />
         </mxCell>
 
-        <mxCell id="synth" value="Synthese&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Stage 3&lt;/font&gt;" tooltip="Destilleert risico's en afhankelijkheden uit de verzamelde context. Schrijft THINKING.md." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="980" y="370" width="170" height="70" as="geometry" />
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a8a93;strokeWidth=2;endArrow=block;" edge="1" parent="1" source="n1" target="n2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a8a93;strokeWidth=2;endArrow=block;" edge="1" parent="1" source="n2" target="n3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a8a93;strokeWidth=2;endArrow=block;" edge="1" parent="1" source="n3" target="n4"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a8a93;strokeWidth=2;endArrow=block;" edge="1" parent="1" source="n4" target="n5"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a8a93;strokeWidth=2;endArrow=block;" edge="1" parent="1" source="n5" target="n6"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e6" value="ACCEPT" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#5d8a3a;strokeWidth=2.5;endArrow=block;fontSize=11;fontColor=#5d8a3a;" edge="1" parent="1" source="n6" target="n7"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a8a93;strokeWidth=2;endArrow=block;" edge="1" parent="1" source="n7" target="n8"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ereject" value="REJECT: herstel, max 3x" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#c0392b;strokeWidth=2;dashed=1;endArrow=block;fontSize=10;fontColor=#c0392b;exitX=0;exitY=0.6;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="n6" target="n5"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="s2" value="Eerst echt uitzoeken&#10;Code, docs, MCP's en skills. Een check of het genoeg is, plus een die juist een gat probeert te vinden." style="shape=note;whiteSpace=wrap;html=1;fillColor=#FEF3A3;strokeColor=#D9B40A;fontSize=12;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;shadow=1;fontColor=#5b4b00;" vertex="1" parent="1">
+          <mxGeometry x="28" y="276" width="286" height="86" as="geometry" />
         </mxCell>
-        <mxCell id="decomp" value="Faseopdeling&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Stage 4-5&lt;/font&gt;" tooltip="Splitst werk in verifieerbare fasen met criteria, mandatory commands en rollback-doelen. Laatste fase: Polish &amp; Harden." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="980" y="480" width="170" height="70" as="geometry" />
+        <mxCell id="s3" value="Overleeft lange runs&#10;Plan en voortgang op schijf, dus context-verlies gooit niks weg." style="shape=note;whiteSpace=wrap;html=1;fillColor=#FEF3A3;strokeColor=#D9B40A;fontSize=12;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;shadow=1;fontColor=#5b4b00;" vertex="1" parent="1">
+          <mxGeometry x="28" y="540" width="286" height="72" as="geometry" />
         </mxCell>
-        <mxCell id="gate" value="Planreview (HTML + tekst)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;menselijke gate, Stage 6&lt;/font&gt;" tooltip="Enige goedkeuringsstap. Rendert review.html + tekst. Revisie-opties: Start now, Adjust assumption, Tweak phase, Restructure phases." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="760" y="480" width="180" height="70" as="geometry" />
+        <mxCell id="s5" value="Stuk? Terugrollen&#10;Een regressie gaat terug naar de baseline van de vorige fase." style="shape=note;whiteSpace=wrap;html=1;fillColor=#FEF3A3;strokeColor=#D9B40A;fontSize=12;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;shadow=1;fontColor=#5b4b00;" vertex="1" parent="1">
+          <mxGeometry x="28" y="628" width="286" height="72" as="geometry" />
         </mxCell>
-        <mxCell id="goal" value="/goal run&lt;br&gt;generator bouwt, evaluator bewijst&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Stage 7 + final audit&lt;/font&gt;" tooltip="Een /goal dispatch. Per fase: de generator bouwt en print ruw bewijs zonder oordeel; een onafhankelijke evaluator herdraait elke check zelf op het draaiende artefact, blind voor het generator-relaas, en geeft ACCEPT of REJECT. 3-strike recovery, rollback naar de fase-baseline, memory writeback. Final audit herverifieert tegen de oorspronkelijke ROADMAP.md." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="540" y="480" width="180" height="70" as="geometry" />
+        <mxCell id="s1" value="Jij blijft de architect&#10;Hij praat je bij met artikelen en scenario's, en vraagt een keuze per keer met een aanbeveling." style="shape=note;whiteSpace=wrap;html=1;fillColor=#FEF3A3;strokeColor=#D9B40A;fontSize=12;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;shadow=1;fontColor=#5b4b00;" vertex="1" parent="1">
+          <mxGeometry x="886" y="176" width="286" height="86" as="geometry" />
         </mxCell>
-        <mxCell id="done" value="Klaar" tooltip="Alle fasen voltooid, audit geslaagd, SUPERGOAL_RUN_COMPLETE verschenen in het transcript." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="540" y="590" width="180" height="60" as="geometry" />
+        <mxCell id="s4" value="De kern van het verschil&#10;De bouwer keurt nooit zijn eigen werk. De evaluator draait de echte app en bewijst het gedrag, niet alleen 'tests groen'." style="shape=note;whiteSpace=wrap;html=1;fillColor=#FEF3A3;strokeColor=#D9B40A;fontSize=12;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;shadow=1;fontColor=#5b4b00;" vertex="1" parent="1">
+          <mxGeometry x="886" y="640" width="286" height="100" as="geometry" />
         </mxCell>
 
-        <mxCell id="legend" value="Legenda" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#cccccc;verticalAlign=top;align=left;fontSize=12;fontStyle=1;spacingLeft=8;spacingTop=6;" vertex="1" parent="1">
-          <mxGeometry x="40" y="370" width="290" height="180" as="geometry" />
+        <mxCell id="lgbox" value="Legenda" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e6;verticalAlign=top;align=left;fontSize=12;fontStyle=1;spacingLeft=10;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="886" y="800" width="286" height="150" as="geometry" />
         </mxCell>
-        <mxCell id="lg1" value="Invoer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=11;" vertex="1" parent="1"><mxGeometry x="55" y="400" width="80" height="24" as="geometry" /></mxCell>
-        <mxCell id="lg2" value="Orchestratie / planning" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=11;" vertex="1" parent="1"><mxGeometry x="145" y="400" width="170" height="24" as="geometry" /></mxCell>
-        <mxCell id="lg3" value="Retrieval-corpus" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=11;" vertex="1" parent="1"><mxGeometry x="55" y="432" width="120" height="24" as="geometry" /></mxCell>
-        <mxCell id="lg4" value="Judge / synthese / uitvoering" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=11;" vertex="1" parent="1"><mxGeometry x="185" y="432" width="130" height="24" as="geometry" /></mxCell>
-        <mxCell id="lg5" value="Menselijke gate" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=11;" vertex="1" parent="1"><mxGeometry x="55" y="464" width="120" height="24" as="geometry" /></mxCell>
-        <mxCell id="lg6" value="Onvoldoende-context loop" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;fontColor=#B85450;" vertex="1" parent="1"><mxGeometry x="55" y="500" width="250" height="20" as="geometry" /></mxCell>
-        <mxCell id="lg6b" value="(gestippeld rood = retry met verfijnde queries)" style="text;html=1;fontSize=10;align=left;verticalAlign=middle;fontColor=#888888;" vertex="1" parent="1"><mxGeometry x="55" y="520" width="260" height="20" as="geometry" /></mxCell>
-
-        <mxCell id="note1" value="Jij blijft de architect. De skill praat je bij met artikelen en scenario's, en vraagt een keuze per keer met een aanbeveling." style="shape=note;whiteSpace=wrap;html=1;fillColor=#FEF3A3;strokeColor=#D9B40A;fontSize=12;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="40" y="680" width="330" height="96" as="geometry" />
-        </mxCell>
-        <mxCell id="note2" value="De bouwer keurt nooit zijn eigen werk. De onafhankelijke evaluator draait de echte app en bewijst het gedrag, niet alleen 'tests groen'." style="shape=note;whiteSpace=wrap;html=1;fillColor=#FEF3A3;strokeColor=#D9B40A;fontSize=12;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="420" y="680" width="330" height="96" as="geometry" />
-        </mxCell>
-        <mxCell id="note3" value="Gebouwd voor lange runs: plan en voortgang op schijf, rollback bij regressie, en een eindaudit tegen het oorspronkelijke plan." style="shape=note;whiteSpace=wrap;html=1;fillColor=#FEF3A3;strokeColor=#D9B40A;fontSize=12;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="800" y="680" width="330" height="96" as="geometry" />
-        </mxCell>
+        <mxCell id="lg1" value="invoer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=11;" vertex="1" parent="1"><mxGeometry x="902" y="836" width="120" height="22" as="geometry" /></mxCell>
+        <mxCell id="lg2" value="plannen" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=11;" vertex="1" parent="1"><mxGeometry x="902" y="864" width="120" height="22" as="geometry" /></mxCell>
+        <mxCell id="lg3" value="bouwen en bewijzen" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=11;" vertex="1" parent="1"><mxGeometry x="902" y="892" width="150" height="22" as="geometry" /></mxCell>
+        <mxCell id="lg4" value="jij beslist" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=11;" vertex="1" parent="1"><mxGeometry x="902" y="920" width="120" height="22" as="geometry" /></mxCell>
+        <mxCell id="lg5" value="klaar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1040" y="836" width="120" height="22" as="geometry" /></mxCell>
+        <mxCell id="lg6" value="uitleg (sticky note)" style="shape=note;whiteSpace=wrap;html=1;fillColor=#FEF3A3;strokeColor=#D9B40A;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1040" y="864" width="120" height="24" as="geometry" /></mxCell>
 
       </root>
     </mxGraphModel>
