@@ -5,8 +5,9 @@ Plan een grote softwaretaak samen met de agent, laat hem daarna autonoom bouwen,
 Een skill voor Claude Code en Codex.
 
 <p align="center">
-  <img src="docs/architecture.svg" alt="Supergoal architectuur" width="760">
+  <img src="docs/architecture.png" alt="Supergoal architectuur" width="820">
 </p>
+<p align="center"><sub>Schaalbare bron: <a href="docs/architecture.svg">architecture.svg</a> &middot; bewerkbaar: <a href="docs/architecture.drawio">architecture.drawio</a></sub></p>
 
 ## Wat het is
 
