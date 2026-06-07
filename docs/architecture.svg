@@ -93,6 +93,14 @@
   <text x="900" y="716" font-size="12" fill="#5b4b00">app en bewijst het gedrag, niet</text>
   <text x="900" y="732" font-size="12" fill="#5b4b00">alleen "tests groen".</text>
 
+  <!-- sticky note: dispatch selector -->
+  <rect x="28" y="372" width="286" height="96" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="42" y="396" font-size="12.5" font-weight="700" fill="#5b4b00">Kies de dispatch</text>
+  <text x="42" y="416" font-size="12" fill="#5b4b00">Op vraag en budget: /goal als</text>
+  <text x="42" y="432" font-size="12" fill="#5b4b00">standaard, Workflow-swarms per fase</text>
+  <text x="42" y="448" font-size="12" fill="#5b4b00">alleen met credits, of /loop voor</text>
+  <text x="42" y="464" font-size="12" fill="#5b4b00">terugkerende taken.</text>
+
   <!-- sticky note: per-phase team -->
   <rect x="886" y="470" width="286" height="98" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
   <text x="900" y="494" font-size="12.5" font-weight="700" fill="#5b4b00">Per fase een team</text>

@@ -76,6 +76,9 @@
         <mxCell id="lg5" value="klaar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1040" y="836" width="120" height="22" as="geometry" /></mxCell>
         <mxCell id="lg6" value="uitleg (sticky note)" style="shape=note;whiteSpace=wrap;html=1;fillColor=#FEF3A3;strokeColor=#D9B40A;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1040" y="864" width="120" height="24" as="geometry" /></mxCell>
 
+        <mxCell id="sdispatch" value="Kies de dispatch&#10;Op vraag en budget: /goal als standaard, Workflow-swarms per fase alleen met credits, of /loop voor terugkerende taken." style="shape=note;whiteSpace=wrap;html=1;fillColor=#FEF3A3;strokeColor=#D9B40A;fontSize=12;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;shadow=1;fontColor=#5b4b00;" vertex="1" parent="1">
+          <mxGeometry x="28" y="372" width="286" height="96" as="geometry" />
+        </mxCell>
         <mxCell id="steam" value="Per fase een team&#10;De bouwer mag een zwerm specialisten opzetten, elk met een eigen skillset. Mist er een skill, dan haalt hij die van skills.sh of schrijft hem." style="shape=note;whiteSpace=wrap;html=1;fillColor=#FEF3A3;strokeColor=#D9B40A;fontSize=12;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;shadow=1;fontColor=#5b4b00;" vertex="1" parent="1">
           <mxGeometry x="886" y="472" width="286" height="98" as="geometry" />
         </mxCell>
