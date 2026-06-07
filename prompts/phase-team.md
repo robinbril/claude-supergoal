@@ -59,6 +59,8 @@ van de acceptatiecriteria dat hij dekt, en de opdracht om werk plus ruw bewijs t
 
 Op Codex of zonder dispatch-tool: altijd manier 1, sequentieel. Zelfde resultaat, langzamer.
 
+De run-brede keuze staat in `.supergoal/STATE.md` (`Dispatch:`). Ga daar niet zwaarder overheen: koos Stage 6.6 zuinig, dan blijf je sequentieel, ook als er een Workflow-tool beschikbaar is.
+
 ## Stap 4: voeg samen
 
 De lead voegt de sporen samen tot de deliverable van de fase en tot een enkel

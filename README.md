@@ -35,6 +35,8 @@ De grootste faalmodus van autonome agents is dat ze zichzelf "klaar" verklaren t
 
 Twee keer is jouw input nodig: de planfase en de plan-review. Daartussen en erna draait het zelf.
 
+Supergoal kiest zelf de uitvoeringsvorm: `/goal` voor een gewone build, parallelle swarms per fase als je budget het toelaat, of `/loop` (of een scheduled task) als de taak terugkerend is. Niet iedereen heeft een max-account, dus zuinig is de standaard.
+
 ## Installeren
 
 ```bash

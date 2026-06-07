@@ -125,6 +125,7 @@ Schrijf het resultaat naar `$SUPERGOAL_ROOT/tools.md`. Detecteer specifiek:
 - **Docs**: Context7, WebSearch, WebFetch. Zo niet aanwezig, val terug op training-cutoff kennis en log dat als aanname.
 - **Project skills**: domein-relevante skills in `$SUPERGOAL_ROOT/applied-skills.md`.
 - **Team-dispatch**: standaard draait een fase-team sequentieel binnen de `/goal` run (geen extra credits). Is er een Task/Agent tool, dan kunnen sporen parallel; de Workflow-tool alleen als je account de credits heeft (zwaar, opt-in).
+- **Dispatch-primitieven**: detecteer wat er is, `/goal` (altijd), de Workflow-tool, `/loop`, scheduled-tasks. Stage 6.6 kiest hiermee de uitvoeringsvorm op basis van de vraag en het budget.
 - **Skill-bronnen**: is `npx` aanwezig plus de skill-finder skill? Dan los je per spoor ontbrekende skills op: eerst matchen, anders `npx skills add <owner/repo>` van de skills.sh registry, anders zelf een skill schrijven.
 - **Eerdere state**: bestaat `$SUPERGOAL_ROOT/STATE.md` van een vorige run, hervat in plaats van opnieuw te beginnen.
 
@@ -337,6 +338,7 @@ Fasen:
 Stack: <stack> | pkg: <pm> | build/test/lint: <commands>
 Evaluator: <subagent-geisoleerd | aparte-pass fallback>
 Empirisch bewijs via: <preview MCP | /e2e | curl | ...>
+Dispatch: <goal | loop> + fase-intensiteit <sequentieel | subagents | workflow> (zeg het als je zuiniger of zwaarder wilt)
 
 Belangrijke aannames (corrigeer wat fout is):
   - <aanname 1>
@@ -353,7 +355,7 @@ Artefacten:
   Fase specs: .supergoal/phases/phase-1..N.md
   Review: .supergoal/review.html
 
-Zodra je bevestigt, print ik een kant-en-klare /goal regel.
+Zodra je bevestigt, print ik de kant-en-klare dispatch-regel (meestal /goal).
 ```
 
 Roep dan `AskUserQuestion` aan, header "Start chain?", met concrete revisiemodi:
@@ -378,9 +380,26 @@ Na "Start now" en voor het `/goal` blok: draai de mandatory commands (ontdubbeld
 
 ---
 
-## Stage 7 - Dispatch de `/goal` (een plak)
+## Stage 6.6 - Kies de uitvoeringsvorm (dispatch)
 
-Slash commands vuren alleen vanuit gebruikersinput, dus dit is een eerlijke een-plak overdracht. Na "Start now":
+Niet elke taak verdient dezelfde machinerie, en niet elk account heeft dezelfde credits. Kies on the spot welke vorm je de gebruiker laat plakken, op twee assen: hoe complex de vraag is en hoeveel budget er is. Het budget leid je af uit wat beschikbaar is (geen Workflow-tool, behandel als zuinig) of je vraagt het een keer (zuinig / standaard / max). De keuze stond al in de plan-review, dus de gebruiker kon hem overrulen.
+
+| Vraag-vorm | Zuinig of klein account | Ruim of max account |
+|---|---|---|
+| Triviaal (1 bestand, < 1 uur) | Geen Supergoal, gewoon doen | idem |
+| Standaard feature (enkele fasen) | een `/goal`, fase-teams sequentieel | een `/goal`, fase-teams met subagents |
+| Complexe build (veel losse sporen) | een `/goal`, sequentieel, met de waarschuwing dat het lang duurt | een `/goal` plus Workflow-swarms per fase |
+| Terugkerend of gepland ("elke dag", "blijf X doen") | `/loop` of een scheduled task in plaats van een eenmalige run | idem |
+
+De toplaag is bijna altijd `/goal`: dat is de ruggengraat met de evaluator-gate. De Workflow-tool is geen aparte plak; hij wordt binnen de `/goal` run per fase ingezet voor zware parallelle swarms, alleen bij genoeg credits. `/loop` (of een scheduled task) vervangt de hele eenmalige run wanneer de taak in werkelijkheid terugkerend is en niet bouw-tot-klaar.
+
+Leg de keuze vast in `STATE.md` als `Dispatch: <goal | loop> + <sequentieel | subagents | workflow>`. Stage 7 print de bijbehorende plak, en de fase-loop kiest dezelfde intensiteit.
+
+---
+
+## Stage 7 - Dispatch (een plak)
+
+Slash commands vuren alleen vanuit gebruikersinput, dus dit is een eerlijke een-plak overdracht. Print de vorm die Stage 6.6 koos. In de meeste gevallen is dat de `/goal` plak hieronder; bij een terugkerende taak print je in plaats daarvan een `/loop` (zie onder). Na "Start now":
 
 1. Update `STATE.md`: `Status: READY_TO_DISPATCH`, `Current phase: 1`, en leg `Baseline ref:` vast op `git rev-parse HEAD 2>/dev/null || echo "no-git"`. Initialiseer `Phase baselines:` (leeg); de generator voegt per fasegrens een entry toe (`phase <N> pre: <ref>`), de rollback-ankers waar `phase-N-rationale.md` naar verwijst.
 2. Kopieer `$SUPERGOAL_DIR/templates/PROTOCOL.md` naar `.supergoal/PROTOCOL.md`, `$SUPERGOAL_DIR/prompts/phase-judge.md` naar `.supergoal/evaluator.md` (de evaluator-instructie die de subagent of fallback-pass leest), `$SUPERGOAL_DIR/prompts/phase-team.md` naar `.supergoal/phase-team.md` (de team-instructie voor de generator), en `$SUPERGOAL_DIR/scripts/repo-state.sh` naar `.supergoal/repo-state.sh`.
@@ -398,6 +417,10 @@ Slash commands vuren alleen vanuit gebruikersinput, dus dit is een eerlijke een-
 > **Plak de `/goal` regel hierboven in je input om de keten te dispatchen.** Daarna draait het autonoom: generator bouwt, onafhankelijke evaluator bewijst, rollback bij regressie, memory writeback per fase, tot `SUPERGOAL_RUN_COMPLETE` verschijnt.
 
 6. **Stop.** Geen verdere output. De plak start de autonome run onder een verse `/goal` sessie die alles van schijf leest.
+
+### Terugkerende taak: `/loop` in plaats van `/goal`
+
+Koos Stage 6.6 voor `/loop` (de taak is terugkerend, niet bouw-tot-klaar), print dan in stap 4 een `/loop` regel in plaats van de `/goal` regel, met hetzelfde interval-idee en dezelfde verwijzing naar `.supergoal/`. Bijvoorbeeld: `/loop <interval> voer de volgende ronde uit volgens .supergoal/PROTOCOL.md`. Voor een vaste tijd gebruik je een scheduled task. De rest van de overdracht is gelijk: een plak, daarna autonoom.
 
 ---
 
@@ -471,6 +494,7 @@ Waard om op te slaan: een API-eigenaardigheid die niet in de docs stond, een bev
 - **Maak de gebruiker architect, geen stempelaar.** Bij een zware keuze stuur je bronnen en scenario's mee, zodat hij snel het onderwerp snapt en op inhoud beslist in plaats van je voorstel af te stempelen.
 - **Route op rol, niet op kosten.** Goedkope modellen voor het mechanische volume, een sterk model voor de evaluator, zodat een lange run de limiet overleeft en de judge scherp blijft.
 - **Per fase zoveel kracht als nodig.** Een team van specialisten per fase, elk met een eigen skillset, en ontbrekende skills haal je erbij (skills.sh) of schrijf je zelf. De evaluator blijft er onafhankelijk overheen, dus meer agents kopen geen vertrouwen.
+- **Kies de uitvoeringsvorm naar vraag en budget.** `/goal` is de standaard; Workflow-swarms alleen bij genoeg credits; `/loop` of een scheduled task voor terugkerende taken. Niet iedereen heeft een max-account, dus zuinig is het uitgangspunt.
 - **Polish & Harden is verplicht.** Zo wordt "elk aspect is perfect" afgedwongen.
 
 ---

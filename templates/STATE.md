@@ -2,6 +2,7 @@
 
 **Status:** PLANNING → IN_PROGRESS → COMPLETE
 **Current phase:** —
+**Dispatch:** {{DISPATCH}}    <!-- Stage 6.6: goal | loop, plus fase-intensiteit sequentieel | subagents | workflow -->
 **Started:** {{DATE}}
 **Last update:** {{DATE}}
 **Baseline ref:** {{BASELINE_SHA}}    <!-- HEAD sha captured at Stage 7 dispatch; the audit + cleanliness checks compare the COMPLETE working tree (committed + staged + unstaged + untracked) against it via repo-state.sh -->
