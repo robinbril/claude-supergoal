@@ -1,4 +1,4 @@
-<svg viewBox="0 0 1200 980" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 1480 1320" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">
   <defs>
     <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8a8a93"/></marker>
     <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker>
@@ -7,116 +7,206 @@
     <filter id="shn" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.10"/></filter>
   </defs>
 
-  <rect x="0" y="0" width="1200" height="980" fill="#fafaf9"/>
+  <rect x="0" y="0" width="1480" height="1320" fill="#fafaf9"/>
 
-  <text x="40" y="48" font-size="26" font-weight="700" fill="#1b1b1f">Supergoal</text>
-  <text x="40" y="76" font-size="15" fill="#6b6b73">Plan samen, bouw autonoom, bewijs onafhankelijk. Een skill voor Claude Code en Codex.</text>
+  <text x="48" y="52" font-size="28" font-weight="700" fill="#1b1b1f">Supergoal</text>
+  <text x="48" y="82" font-size="15" fill="#6b6b73">Plan samen, bouw autonoom, bewijs onafhankelijk. Een skill voor Claude Code en Codex.</text>
 
-  <!-- central pipeline, centered on x=600 -->
-  <rect x="430" y="104" width="340" height="56" rx="12" fill="#FFE6CC" stroke="#D79B00" stroke-width="2" filter="url(#shn)"/>
-  <text x="600" y="138" text-anchor="middle" font-size="16" font-weight="600" fill="#1b1b1f">Jouw taak</text>
-  <line x1="600" y1="160" x2="600" y2="186" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+  <!-- ============ SPINE (center x=740) ============ -->
 
-  <rect x="430" y="188" width="340" height="68" rx="12" fill="#E1D5E7" stroke="#9673A6" stroke-width="2" filter="url(#shn)"/>
-  <text x="600" y="219" text-anchor="middle" font-size="16" font-weight="600" fill="#1b1b1f">1. Plannen samen</text>
-  <text x="600" y="240" text-anchor="middle" font-size="12.5" fill="#5b5b63">interview, een scherpe vraag per keer</text>
-  <line x1="600" y1="256" x2="600" y2="282" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="560" y="104" width="360" height="52" rx="12" fill="#FFE6CC" stroke="#D79B00" stroke-width="2" filter="url(#shn)"/>
+  <text x="740" y="136" text-anchor="middle" font-size="16" font-weight="600" fill="#1b1b1f">Jouw taak</text>
+  <line x1="740" y1="156" x2="740" y2="184" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
 
-  <rect x="430" y="284" width="340" height="68" rx="12" fill="#D5E8D4" stroke="#82B366" stroke-width="2" filter="url(#shn)"/>
-  <text x="600" y="315" text-anchor="middle" font-size="16" font-weight="600" fill="#1b1b1f">2. Context verzamelen</text>
-  <text x="600" y="336" text-anchor="middle" font-size="12.5" fill="#5b5b63">vier bronnen, een check en een tegencheck</text>
-  <line x1="600" y1="352" x2="600" y2="378" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="560" y="186" width="360" height="66" rx="12" fill="#E1D5E7" stroke="#9673A6" stroke-width="2" filter="url(#shn)"/>
+  <text x="740" y="215" text-anchor="middle" font-size="16" font-weight="600" fill="#1b1b1f">1. Plannen samen</text>
+  <text x="740" y="236" text-anchor="middle" font-size="12.5" fill="#5b5b63">interview, een scherpe vraag per keer</text>
+  <line x1="740" y1="252" x2="740" y2="280" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
 
-  <rect x="430" y="380" width="340" height="68" rx="12" fill="#FFF2CC" stroke="#D6B656" stroke-width="2" filter="url(#shn)"/>
-  <text x="600" y="411" text-anchor="middle" font-size="16" font-weight="600" fill="#1b1b1f">3. Plan-review</text>
-  <text x="600" y="432" text-anchor="middle" font-size="12.5" fill="#5b5b63">jij keurt het plan goed (de enige stop)</text>
-  <line x1="600" y1="448" x2="600" y2="486" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+  <!-- ====== 2. CONTEXT CLUSTER ====== -->
+  <rect x="460" y="282" width="560" height="214" rx="14" fill="#eef4ed" stroke="#b9d3b4" stroke-width="2"/>
+  <text x="482" y="308" font-size="14" font-weight="700" fill="#3a4a37">2. Context verzamelen</text>
+  <text x="482" y="326" font-size="12" fill="#5b6b58">vier bronnen ophalen, dan twee checks die elkaar tegenspreken</text>
 
-  <!-- autonomous run box -->
-  <rect x="340" y="488" width="520" height="258" rx="16" fill="#f1f1f4" stroke="#c9c9d1" stroke-width="2"/>
-  <text x="362" y="514" font-size="14" font-weight="700" fill="#3a3a42">Autonome run onder een /goal</text>
-  <text x="362" y="533" font-size="12" fill="#6b6b73">fase voor fase, ook urenlang, zonder babysitten</text>
+  <rect x="484" y="340" width="116" height="40" rx="9" fill="#D5E8D4" stroke="#82B366" stroke-width="1.5" filter="url(#shn)"/>
+  <text x="542" y="365" text-anchor="middle" font-size="13" font-weight="600" fill="#28391f">Code</text>
+  <rect x="616" y="340" width="116" height="40" rx="9" fill="#D5E8D4" stroke="#82B366" stroke-width="1.5" filter="url(#shn)"/>
+  <text x="674" y="365" text-anchor="middle" font-size="13" font-weight="600" fill="#28391f">Docs</text>
+  <rect x="748" y="340" width="116" height="40" rx="9" fill="#D5E8D4" stroke="#82B366" stroke-width="1.5" filter="url(#shn)"/>
+  <text x="806" y="365" text-anchor="middle" font-size="13" font-weight="600" fill="#28391f">MCP's</text>
+  <rect x="880" y="340" width="116" height="40" rx="9" fill="#D5E8D4" stroke="#82B366" stroke-width="1.5" filter="url(#shn)"/>
+  <text x="938" y="365" text-anchor="middle" font-size="13" font-weight="600" fill="#28391f">Skills</text>
 
-  <rect x="430" y="552" width="340" height="64" rx="12" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="2" filter="url(#shn)"/>
-  <text x="600" y="582" text-anchor="middle" font-size="16" font-weight="600" fill="#1b1b1f">Generator bouwt de fase</text>
-  <text x="600" y="601" text-anchor="middle" font-size="12.5" fill="#5b5b63">en levert ruw bewijs op, geen oordeel</text>
-  <line x1="600" y1="616" x2="600" y2="650" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="740" y1="380" x2="740" y2="398" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
 
-  <rect x="430" y="652" width="340" height="76" rx="12" fill="#C7DCF7" stroke="#4f79b0" stroke-width="2.5" filter="url(#sh)"/>
-  <text x="600" y="680" text-anchor="middle" font-size="16" font-weight="700" fill="#16314f">Onafhankelijke evaluator</text>
-  <text x="600" y="700" text-anchor="middle" font-size="12.5" fill="#314a66">doet elke check zelf opnieuw</text>
-  <text x="600" y="718" text-anchor="middle" font-size="12.5" font-weight="700" fill="#16314f">ACCEPT of REJECT</text>
+  <rect x="486" y="400" width="246" height="50" rx="10" fill="#D5E8D4" stroke="#5d8a3a" stroke-width="2" filter="url(#shn)"/>
+  <text x="609" y="421" text-anchor="middle" font-size="13.5" font-weight="700" fill="#28391f">Genoeg context?</text>
+  <text x="609" y="438" text-anchor="middle" font-size="11.5" fill="#41603a">sufficient-judge: is het compleet</text>
 
-  <!-- reject loop inside the box, left of the nodes -->
-  <path d="M 430 702 L 402 702 L 402 584 L 430 584" fill="none" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ar)"/>
+  <rect x="752" y="400" width="250" height="50" rx="10" fill="#ffffff" stroke="#c0392b" stroke-width="2" filter="url(#shn)"/>
+  <text x="877" y="421" text-anchor="middle" font-size="13.5" font-weight="700" fill="#a02c20">Tegencheck</text>
+  <text x="877" y="438" text-anchor="middle" font-size="11.5" fill="#a02c20">adversarial prober: zoekt een gat</text>
 
-  <!-- accept out of box -->
-  <line x1="600" y1="746" x2="600" y2="786" stroke="#5d8a3a" stroke-width="2.5" marker-end="url(#ag)"/>
-  <text x="612" y="770" font-size="12" font-weight="600" fill="#5d8a3a">ACCEPT</text>
+  <line x1="732" y1="425" x2="750" y2="425" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
 
-  <rect x="430" y="788" width="340" height="60" rx="12" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="2" filter="url(#shn)"/>
-  <text x="600" y="817" text-anchor="middle" font-size="16" font-weight="600" fill="#1b1b1f">Eindaudit tegen het plan</text>
-  <text x="600" y="836" text-anchor="middle" font-size="12.5" fill="#5b5b63">opnieuw, tegen de oorspronkelijke opdracht</text>
-  <line x1="600" y1="848" x2="600" y2="880" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M 800 450 L 800 474 L 474 474 L 474 360 L 482 360" fill="none" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ar)"/>
+  <text x="556" y="469" font-size="11" font-weight="600" fill="#c0392b">gat gevonden, meer ophalen</text>
 
-  <rect x="480" y="882" width="240" height="56" rx="12" fill="#D5E8D4" stroke="#5d8a3a" stroke-width="2.5" filter="url(#shn)"/>
-  <text x="600" y="916" text-anchor="middle" font-size="17" font-weight="700" fill="#1b1b1f">Klaar</text>
+  <line x1="740" y1="450" x2="740" y2="524" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
 
-  <!-- STICKY NOTES, straight, left column (x 28..314) -->
-  <rect x="28" y="276" width="286" height="86" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
-  <text x="42" y="300" font-size="12.5" font-weight="700" fill="#5b4b00">Eerst echt uitzoeken</text>
-  <text x="42" y="320" font-size="12" fill="#5b4b00">Code, docs, MCP's en skills. Een</text>
-  <text x="42" y="336" font-size="12" fill="#5b4b00">check of het genoeg is, plus een</text>
-  <text x="42" y="352" font-size="12" fill="#5b4b00">die juist een gat probeert te vinden.</text>
+  <!-- 3. Plan-review -->
+  <rect x="560" y="526" width="360" height="62" rx="12" fill="#FFF2CC" stroke="#D6B656" stroke-width="2" filter="url(#shn)"/>
+  <text x="740" y="552" text-anchor="middle" font-size="16" font-weight="600" fill="#1b1b1f">3. Plan-review</text>
+  <text x="740" y="572" text-anchor="middle" font-size="12.5" fill="#5b5b63">jij keurt het plan goed (de enige stop)</text>
+  <line x1="740" y1="588" x2="740" y2="612" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
 
-  <rect x="28" y="540" width="286" height="72" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
-  <text x="42" y="564" font-size="12.5" font-weight="700" fill="#5b4b00">Overleeft lange runs</text>
-  <text x="42" y="584" font-size="12" fill="#5b4b00">Plan en voortgang op schijf, dus</text>
-  <text x="42" y="600" font-size="12" fill="#5b4b00">context-verlies gooit niks weg.</text>
+  <!-- ====== DISPATCH HUB + /loop ====== -->
+  <rect x="590" y="614" width="300" height="54" rx="12" fill="#FFF2CC" stroke="#D6B656" stroke-width="2.5" filter="url(#sh)"/>
+  <text x="740" y="638" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1b1b1f">Dispatch</text>
+  <text x="740" y="656" text-anchor="middle" font-size="11.5" fill="#5b5b63">on the spot, op vraag x budget</text>
 
-  <rect x="28" y="628" width="286" height="72" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
-  <text x="42" y="652" font-size="12.5" font-weight="700" fill="#5b4b00">Stuk? Terugrollen</text>
-  <text x="42" y="672" font-size="12" fill="#5b4b00">Een regressie gaat terug naar de</text>
-  <text x="42" y="688" font-size="12" fill="#5b4b00">baseline van de vorige fase.</text>
+  <line x1="890" y1="641" x2="928" y2="641" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="930" y="618" width="184" height="48" rx="10" fill="#ffffff" stroke="#6C8EBF" stroke-width="2" filter="url(#shn)"/>
+  <text x="1022" y="638" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2c4870">/loop of scheduled task</text>
+  <text x="1022" y="654" text-anchor="middle" font-size="10.5" fill="#5b6b80">terugkerend, herhaalt de run</text>
+  <path d="M 1022 666 L 1022 682 L 1006 682 L 1006 692" fill="none" stroke="#8a8a93" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#a)"/>
+  <text x="1030" y="682" font-size="10.5" fill="#6b6b73">elke ronde</text>
 
-  <!-- STICKY NOTES, straight, right column (x 886..1172) -->
-  <rect x="886" y="176" width="286" height="86" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
-  <text x="900" y="200" font-size="12.5" font-weight="700" fill="#5b4b00">Jij blijft de architect</text>
-  <text x="900" y="220" font-size="12" fill="#5b4b00">Hij praat je bij met artikelen en</text>
-  <text x="900" y="236" font-size="12" fill="#5b4b00">scenario's, en vraagt een keuze</text>
-  <text x="900" y="252" font-size="12" fill="#5b4b00">per keer met een aanbeveling.</text>
+  <line x1="740" y1="668" x2="740" y2="692" stroke="#8a8a93" stroke-width="2.5" marker-end="url(#a)"/>
+  <text x="752" y="686" font-size="12.5" font-weight="700" fill="#2c4870">/goal</text>
 
-  <rect x="886" y="640" width="286" height="100" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
-  <text x="900" y="664" font-size="12.5" font-weight="700" fill="#5b4b00">De kern van het verschil</text>
-  <text x="900" y="684" font-size="12" fill="#5b4b00">De bouwer keurt nooit zijn eigen</text>
-  <text x="900" y="700" font-size="12" fill="#5b4b00">werk. De evaluator draait de echte</text>
-  <text x="900" y="716" font-size="12" fill="#5b4b00">app en bewijst het gedrag, niet</text>
-  <text x="900" y="732" font-size="12" fill="#5b4b00">alleen "tests groen".</text>
+  <!-- ====== AUTONOMOUS RUN ====== -->
+  <rect x="460" y="694" width="560" height="422" rx="16" fill="#f1f1f4" stroke="#c9c9d1" stroke-width="2"/>
+  <text x="482" y="720" font-size="14" font-weight="700" fill="#3a3a42">Autonome run onder /goal</text>
+  <text x="482" y="738" font-size="12" fill="#6b6b73">fase voor fase, ook urenlang, zonder babysitten</text>
 
-  <!-- sticky note: dispatch selector -->
-  <rect x="28" y="372" width="286" height="96" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
-  <text x="42" y="396" font-size="12.5" font-weight="700" fill="#5b4b00">Kies de dispatch</text>
-  <text x="42" y="416" font-size="12" fill="#5b4b00">Op vraag en budget: /goal als</text>
-  <text x="42" y="432" font-size="12" fill="#5b4b00">standaard, Workflow-swarms per fase</text>
-  <text x="42" y="448" font-size="12" fill="#5b4b00">alleen met credits, of /loop voor</text>
-  <text x="42" y="464" font-size="12" fill="#5b4b00">terugkerende taken.</text>
+  <text x="740" y="760" text-anchor="middle" font-size="11.5" fill="#6b6b73">per fase kiest hij <tspan font-weight="700" fill="#3a3a42">automatisch</tspan> een patroon (de vorm) en de zwaarte</text>
 
-  <!-- sticky note: per-phase team -->
-  <rect x="886" y="470" width="286" height="98" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
-  <text x="900" y="494" font-size="12.5" font-weight="700" fill="#5b4b00">Per fase een team</text>
-  <text x="900" y="514" font-size="12" fill="#5b4b00">De bouwer mag een zwerm specialisten</text>
-  <text x="900" y="530" font-size="12" fill="#5b4b00">opzetten, elk met een eigen skillset.</text>
-  <text x="900" y="546" font-size="12" fill="#5b4b00">Mist er een skill, dan haalt hij die</text>
-  <text x="900" y="562" font-size="12" fill="#5b4b00">van skills.sh, of schrijft hem.</text>
+  <!-- pattern picker: 6 chips, 2 rows of 3 -->
+  <rect x="478" y="770" width="168" height="26" rx="7" fill="#ffffff" stroke="#8aa6cc" stroke-width="1.5"/>
+  <text x="562" y="787" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">classify-and-act</text>
+  <rect x="654" y="770" width="168" height="26" rx="7" fill="#ffffff" stroke="#8aa6cc" stroke-width="1.5"/>
+  <text x="738" y="787" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">fan-out</text>
+  <rect x="830" y="770" width="168" height="26" rx="7" fill="#ffffff" stroke="#8aa6cc" stroke-width="1.5"/>
+  <text x="914" y="787" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">adversarial verify</text>
+  <rect x="478" y="800" width="168" height="26" rx="7" fill="#ffffff" stroke="#8aa6cc" stroke-width="1.5"/>
+  <text x="562" y="817" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">generate-and-filter</text>
+  <rect x="654" y="800" width="168" height="26" rx="7" fill="#ffffff" stroke="#8aa6cc" stroke-width="1.5"/>
+  <text x="738" y="817" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">tournament</text>
+  <rect x="830" y="800" width="168" height="26" rx="7" fill="#ffffff" stroke="#8aa6cc" stroke-width="1.5"/>
+  <text x="914" y="817" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">loop-until-done</text>
 
-  <!-- legend, bottom right -->
-  <rect x="886" y="800" width="286" height="150" rx="10" fill="#ffffff" stroke="#e0e0e6" stroke-width="1.5"/>
-  <text x="902" y="826" font-size="12.5" font-weight="700" fill="#3a3a42">Legenda</text>
-  <rect x="902" y="840" width="14" height="14" rx="3" fill="#FFE6CC" stroke="#D79B00"/><text x="924" y="852" font-size="11.5" fill="#444">invoer</text>
-  <rect x="902" y="864" width="14" height="14" rx="3" fill="#E1D5E7" stroke="#9673A6"/><text x="924" y="876" font-size="11.5" fill="#444">plannen</text>
-  <rect x="902" y="888" width="14" height="14" rx="3" fill="#DAE8FC" stroke="#6C8EBF"/><text x="924" y="900" font-size="11.5" fill="#444">bouwen en bewijzen</text>
-  <rect x="902" y="912" width="14" height="14" rx="3" fill="#FFF2CC" stroke="#D6B656"/><text x="924" y="924" font-size="11.5" fill="#444">jij beslist</text>
-  <rect x="1050" y="840" width="14" height="14" rx="3" fill="#D5E8D4" stroke="#82B366"/><text x="1072" y="852" font-size="11.5" fill="#444">klaar</text>
-  <rect x="1050" y="864" width="14" height="14" rx="3" fill="#FEF3A3" stroke="#D9B40A"/><text x="1072" y="876" font-size="11.5" fill="#444">uitleg</text>
-  <line x1="1050" y1="895" x2="1066" y2="895" stroke="#c0392b" stroke-width="2" stroke-dasharray="4 3"/><text x="1072" y="900" font-size="11.5" fill="#444">herstel-lus, max 3x</text>
+  <!-- intensity dial -->
+  <rect x="515" y="836" width="140" height="28" rx="14" fill="#DAE8FC" stroke="#4f79b0" stroke-width="2"/>
+  <text x="585" y="854" text-anchor="middle" font-size="11" font-weight="700" fill="#1f3a5c">sequentieel</text>
+  <text x="662" y="855" font-size="13" font-weight="700" fill="#9aa0a8">&#8250;</text>
+  <rect x="676" y="836" width="118" height="28" rx="14" fill="#eaf1fb" stroke="#8aa6cc" stroke-width="1.5"/>
+  <text x="735" y="854" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">subagents</text>
+  <text x="800" y="855" font-size="13" font-weight="700" fill="#9aa0a8">&#8250;</text>
+  <rect x="814" y="836" width="152" height="28" rx="14" fill="#eaf1fb" stroke="#8aa6cc" stroke-width="1.5"/>
+  <text x="890" y="854" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">Workflow-swarm</text>
+
+  <!-- generator lead -->
+  <rect x="590" y="876" width="300" height="48" rx="12" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="2" filter="url(#shn)"/>
+  <text x="740" y="897" text-anchor="middle" font-size="15" font-weight="700" fill="#1b1b1f">Generator: lead bouwt de fase</text>
+  <text x="740" y="914" text-anchor="middle" font-size="11.5" fill="#5b5b63">levert ruw bewijs, geen oordeel</text>
+
+  <text x="740" y="942" text-anchor="middle" font-size="11" fill="#6b6b73">skill-finder per specialist: eerst matchen, anders van skills.sh, anders zelf schrijven</text>
+
+  <rect x="491" y="950" width="150" height="44" rx="10" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="1.5" filter="url(#shn)"/>
+  <text x="566" y="970" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1b1b1f">specialist</text>
+  <text x="566" y="985" text-anchor="middle" font-size="10.5" fill="#4f6a8c">skill: installed</text>
+  <rect x="665" y="950" width="150" height="44" rx="10" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="1.5" filter="url(#shn)"/>
+  <text x="740" y="970" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1b1b1f">specialist</text>
+  <text x="740" y="985" text-anchor="middle" font-size="10.5" fill="#4f6a8c">skill: van skills.sh</text>
+  <rect x="839" y="950" width="150" height="44" rx="10" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="1.5" filter="url(#shn)"/>
+  <text x="914" y="970" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1b1b1f">specialist</text>
+  <text x="914" y="985" text-anchor="middle" font-size="10.5" fill="#4f6a8c">skill: zelf geschreven</text>
+
+  <line x1="566" y1="994" x2="722" y2="1018" stroke="#9aa0a8" stroke-width="1.5"/>
+  <line x1="914" y1="994" x2="758" y2="1018" stroke="#9aa0a8" stroke-width="1.5"/>
+  <line x1="740" y1="994" x2="740" y2="1020" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+
+  <rect x="560" y="1022" width="360" height="74" rx="12" fill="#C7DCF7" stroke="#4f79b0" stroke-width="2.5" filter="url(#sh)"/>
+  <text x="740" y="1049" text-anchor="middle" font-size="16" font-weight="700" fill="#16314f">Onafhankelijke evaluator</text>
+  <text x="740" y="1068" text-anchor="middle" font-size="12" fill="#314a66">herdraait elke check op de echte app</text>
+  <text x="740" y="1086" text-anchor="middle" font-size="12.5" font-weight="700" fill="#16314f">ACCEPT of REJECT</text>
+
+  <path d="M 560 1060 L 536 1060 L 536 901 L 590 901" fill="none" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ar)"/>
+  <text x="512" y="928" font-size="11" font-weight="600" fill="#c0392b">REJECT</text>
+
+  <line x1="740" y1="1116" x2="740" y2="1150" stroke="#5d8a3a" stroke-width="2.5" marker-end="url(#ag)"/>
+  <text x="752" y="1138" font-size="12" font-weight="700" fill="#5d8a3a">ACCEPT</text>
+
+  <rect x="560" y="1152" width="360" height="58" rx="12" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="2" filter="url(#shn)"/>
+  <text x="740" y="1177" text-anchor="middle" font-size="15" font-weight="600" fill="#1b1b1f">Eindaudit tegen het plan</text>
+  <text x="740" y="1196" text-anchor="middle" font-size="12" fill="#5b5b63">opnieuw, tegen de oorspronkelijke opdracht</text>
+  <line x1="740" y1="1210" x2="740" y2="1236" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+
+  <rect x="620" y="1238" width="240" height="54" rx="12" fill="#D5E8D4" stroke="#5d8a3a" stroke-width="2.5" filter="url(#shn)"/>
+  <text x="740" y="1272" text-anchor="middle" font-size="17" font-weight="700" fill="#1b1b1f">Klaar</text>
+
+  <!-- ============ STICKY NOTES ============ -->
+  <rect x="40" y="300" width="300" height="108" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="56" y="324" font-size="12.5" font-weight="700" fill="#5b4b00">Twee checks, niet een</text>
+  <text x="56" y="344" font-size="12" fill="#5b4b00">De ene agent vraagt of de context</text>
+  <text x="56" y="360" font-size="12" fill="#5b4b00">genoeg is. De andere zoekt juist een</text>
+  <text x="56" y="376" font-size="12" fill="#5b4b00">gat. Vinden ze er een, dan haalt hij</text>
+  <text x="56" y="392" font-size="12" fill="#5b4b00">eerst meer op voor het plannen begint.</text>
+
+  <rect x="40" y="724" width="300" height="72" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="56" y="748" font-size="12.5" font-weight="700" fill="#5b4b00">Overleeft lange runs</text>
+  <text x="56" y="768" font-size="12" fill="#5b4b00">Plan en voortgang staan op schijf,</text>
+  <text x="56" y="784" font-size="12" fill="#5b4b00">dus context-verlies gooit niks weg.</text>
+
+  <rect x="40" y="812" width="300" height="72" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="56" y="836" font-size="12.5" font-weight="700" fill="#5b4b00">Stuk? Terugrollen</text>
+  <text x="56" y="856" font-size="12" fill="#5b4b00">Een regressie gaat terug naar de</text>
+  <text x="56" y="872" font-size="12" fill="#5b4b00">baseline van de vorige fase.</text>
+
+  <rect x="40" y="940" width="300" height="112" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="56" y="964" font-size="12.5" font-weight="700" fill="#5b4b00">Per fase een team</text>
+  <text x="56" y="984" font-size="12" fill="#5b4b00">De lead tuigt een zwerm specialisten</text>
+  <text x="56" y="1000" font-size="12" fill="#5b4b00">op, elk met een eigen skill. Mist er</text>
+  <text x="56" y="1016" font-size="12" fill="#5b4b00">een, dan haalt hij die van skills.sh</text>
+  <text x="56" y="1032" font-size="12" fill="#5b4b00">of schrijft hij hem zelf.</text>
+
+  <rect x="1140" y="190" width="300" height="88" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="1156" y="214" font-size="12.5" font-weight="700" fill="#5b4b00">Jij blijft de architect</text>
+  <text x="1156" y="234" font-size="12" fill="#5b4b00">Hij praat je bij met artikelen en</text>
+  <text x="1156" y="250" font-size="12" fill="#5b4b00">scenario's, en vraagt een keuze</text>
+  <text x="1156" y="266" font-size="12" fill="#5b4b00">per keer met een aanbeveling.</text>
+
+  <rect x="1140" y="560" width="300" height="108" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="1156" y="584" font-size="12.5" font-weight="700" fill="#5b4b00">Een keuze, drie zwaartes</text>
+  <text x="1156" y="604" font-size="12" fill="#5b4b00">Op vraag en budget kiest hij on the</text>
+  <text x="1156" y="620" font-size="12" fill="#5b4b00">spot: /goal als standaard, subagents</text>
+  <text x="1156" y="636" font-size="12" fill="#5b4b00">of Workflow-swarms als het mag, en</text>
+  <text x="1156" y="652" font-size="12" fill="#5b4b00">/loop als de taak terugkeert.</text>
+
+  <rect x="1140" y="724" width="300" height="108" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="1156" y="748" font-size="12.5" font-weight="700" fill="#5b4b00">Kiest zelf het patroon</text>
+  <text x="1156" y="768" font-size="12" fill="#5b4b00">Hij leest de aard van de fase en</text>
+  <text x="1156" y="784" font-size="12" fill="#5b4b00">kiest het patroon dat past, of laat</text>
+  <text x="1156" y="800" font-size="12" fill="#5b4b00">een classifier-agent het bepalen.</text>
+  <text x="1156" y="816" font-size="12" fill="#5b4b00">Niks bijzonders? Dan gewoon bouwen.</text>
+
+  <rect x="1140" y="1000" width="300" height="108" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="1156" y="1024" font-size="12.5" font-weight="700" fill="#5b4b00">De kern van het verschil</text>
+  <text x="1156" y="1044" font-size="12" fill="#5b4b00">De bouwer keurt nooit zijn eigen</text>
+  <text x="1156" y="1060" font-size="12" fill="#5b4b00">werk. De evaluator draait de echte</text>
+  <text x="1156" y="1076" font-size="12" fill="#5b4b00">app en bewijst het gedrag, niet</text>
+  <text x="1156" y="1092" font-size="12" fill="#5b4b00">alleen "tests groen".</text>
+
+  <!-- ============ LEGEND ============ -->
+  <rect x="1140" y="1150" width="300" height="152" rx="10" fill="#ffffff" stroke="#e0e0e6" stroke-width="1.5"/>
+  <text x="1156" y="1176" font-size="12.5" font-weight="700" fill="#3a3a42">Legenda</text>
+  <rect x="1156" y="1188" width="14" height="14" rx="3" fill="#FFE6CC" stroke="#D79B00"/><text x="1178" y="1200" font-size="11.5" fill="#444">invoer</text>
+  <rect x="1156" y="1212" width="14" height="14" rx="3" fill="#E1D5E7" stroke="#9673A6"/><text x="1178" y="1224" font-size="11.5" fill="#444">plannen</text>
+  <rect x="1156" y="1236" width="14" height="14" rx="3" fill="#DAE8FC" stroke="#6C8EBF"/><text x="1178" y="1248" font-size="11.5" fill="#444">bouwen en bewijzen</text>
+  <rect x="1156" y="1260" width="14" height="14" rx="3" fill="#FFF2CC" stroke="#D6B656"/><text x="1178" y="1272" font-size="11.5" fill="#444">jij beslist</text>
+  <rect x="1306" y="1188" width="14" height="14" rx="3" fill="#ffffff" stroke="#8aa6cc"/><text x="1328" y="1200" font-size="11.5" fill="#444">patroon</text>
+  <rect x="1306" y="1212" width="14" height="14" rx="3" fill="#D5E8D4" stroke="#82B366"/><text x="1328" y="1224" font-size="11.5" fill="#444">klaar</text>
+  <rect x="1306" y="1236" width="14" height="14" rx="3" fill="#FEF3A3" stroke="#D9B40A"/><text x="1328" y="1248" font-size="11.5" fill="#444">uitleg</text>
+  <line x1="1306" y1="1267" x2="1322" y2="1267" stroke="#c0392b" stroke-width="2" stroke-dasharray="4 3"/><text x="1328" y="1272" font-size="11.5" fill="#444">herstel-lus, max 3x</text>
 </svg>
