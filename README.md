@@ -37,6 +37,17 @@ Twee keer is jouw input nodig: de planfase en de plan-review. Daartussen en erna
 
 Supergoal kiest zelf de uitvoeringsvorm: `/goal` voor een gewone build, parallelle swarms per fase als je budget het toelaat, of `/loop` (of een scheduled task) als de taak terugkerend is. Niet iedereen heeft een max-account, dus zuinig is de standaard.
 
+## Datamodel
+
+Wil je runs achteraf analyseren, dan past het proces in een dimensioneel model (Kimball star schema). De grain is een door de evaluator beoordeelde fase-poging: elke rij in de fact is een keer dat de generator een fase bouwde en de evaluator er een verdict op gaf.
+
+<p align="center">
+  <img src="docs/star-schema.png" alt="Supergoal dimensioneel datamodel" width="900">
+</p>
+<p align="center"><sub>Bewerkbare bron: <a href="docs/star-schema.svg">star-schema.svg</a></sub></p>
+
+De fact `fact_phase_evaluation` houdt de measures bij (criteria pass, fail en inconclusive, retries, gewijzigde bestanden, tokens) en verwijst via surrogate keys naar zes dimensies: `dim_goal`, `dim_phase`, `dim_pattern`, `dim_dispatch`, `dim_verdict` en `dim_date`.
+
 ## Installeren
 
 ```bash
@@ -71,7 +82,8 @@ prompts/                de evaluator, het per-fase team, en de drie context-chec
 references/             planning, fase-opdeling, /goal-formaat, repo-vergelijking
 scripts/                recon en de working-tree vergelijking
 templates/              ROADMAP, STATE, PROTOCOL, fase-spec, review.html
-docs/architecture.svg   het diagram hierboven (bewerkbare bron: architecture.drawio)
+docs/architecture.svg   de procesflow (bewerkbare bron: architecture.drawio)
+docs/star-schema.svg    het dimensioneel datamodel (star schema)
 ```
 
 ## Credits
