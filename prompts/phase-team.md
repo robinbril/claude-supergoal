@@ -16,6 +16,21 @@ vaardigheid, niet voor goedkeuring.
   docs), of vraagt vaardigheden die je niet paraat hebt. Dan tuig je een team op, zo zwaar
   als de taak verdient. Grote fasen kunnen meerdere teams naast elkaar draaien.
 
+## Stap 0: kies het werkpatroon
+
+Voor je de fase in sporen knipt, kies het patroon dat bij de aard van de fase past. Volg de
+selectie-heuristiek in `.supergoal/workflow-patterns.md`: lees de fase-spec, match het signaal op
+een patroon, en val terug op geen patroon (sequentieel) als de fase een coherente klus is die een
+agent goed alleen afmaakt. De meeste fasen verdienen geen patroon, en een patroon kost extra
+tokens, dus zet het alleen in als de aard erom vraagt.
+
+Is de aard niet eenduidig uit de spec te lezen, spawn dan de lichte classifier-agent uit dat
+bestand. Het gekozen patroon stuurt de volgende stappen: fan-out-and-synthesize knipt in veel
+parallelle sporen met een synthese-barrier, tournament zet N pogingen op dezelfde taak met
+paarsgewijze judges, loop-until-done spawnt tot er niks nieuws komt, adversarial verification
+hangt een refuter aan elk spoor. Het patroon staat los van de evaluator-gate; die herdraait
+sowieso.
+
 ## Stap 1: knip de fase in sporen
 
 Elk spoor is het werk van een specialist: een duidelijke deelopgave, een eigen deliverable,
@@ -73,6 +88,7 @@ Print voor het bouwen:
 
 ```
 SUPERGOAL_PHASE_TEAM phase=<N>
+Pattern: <geen | classify-and-act | fan-out-and-synthesize | adversarial-verification | generate-and-filter | tournament | loop-until-done>
 Tracks:
 - <spoor 1>: <deliverable> | skill: <installed|acquired|written|none + naam/bron> | criteria: <welke>
 - <spoor 2>: ...

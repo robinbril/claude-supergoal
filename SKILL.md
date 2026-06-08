@@ -402,7 +402,7 @@ Leg de keuze vast in `STATE.md` als `Dispatch: <goal | loop> + <sequentieel | su
 Slash commands vuren alleen vanuit gebruikersinput, dus dit is een eerlijke een-plak overdracht. Print de vorm die Stage 6.6 koos. In de meeste gevallen is dat de `/goal` plak hieronder; bij een terugkerende taak print je in plaats daarvan een `/loop` (zie onder). Na "Start now":
 
 1. Update `STATE.md`: `Status: READY_TO_DISPATCH`, `Current phase: 1`, en leg `Baseline ref:` vast op `git rev-parse HEAD 2>/dev/null || echo "no-git"`. Initialiseer `Phase baselines:` (leeg); de generator voegt per fasegrens een entry toe (`phase <N> pre: <ref>`), de rollback-ankers waar `phase-N-rationale.md` naar verwijst.
-2. Kopieer `$SUPERGOAL_DIR/templates/PROTOCOL.md` naar `.supergoal/PROTOCOL.md`, `$SUPERGOAL_DIR/prompts/phase-judge.md` naar `.supergoal/evaluator.md` (de evaluator-instructie die de subagent of fallback-pass leest), `$SUPERGOAL_DIR/prompts/phase-team.md` naar `.supergoal/phase-team.md` (de team-instructie voor de generator), en `$SUPERGOAL_DIR/scripts/repo-state.sh` naar `.supergoal/repo-state.sh`.
+2. Kopieer `$SUPERGOAL_DIR/templates/PROTOCOL.md` naar `.supergoal/PROTOCOL.md`, `$SUPERGOAL_DIR/prompts/phase-judge.md` naar `.supergoal/evaluator.md` (de evaluator-instructie die de subagent of fallback-pass leest), `$SUPERGOAL_DIR/prompts/phase-team.md` naar `.supergoal/phase-team.md` (de team-instructie voor de generator), `$SUPERGOAL_DIR/references/workflow-patterns.md` naar `.supergoal/workflow-patterns.md` (de patroon-keuze voor de generator), en `$SUPERGOAL_DIR/scripts/repo-state.sh` naar `.supergoal/repo-state.sh`.
 3. Verifieer elke `phase-N.md` en draai `validate-phase.sh` erop.
 4. Print het kant-en-klare `/goal` commando:
 
@@ -430,7 +430,7 @@ Dit is de loop die binnen de `/goal` sessie draait, herhaald tot `SUPERGOAL_RUN_
 
 1. Lees `STATE.md` -> huidige fase N. Lees `phase-N.md`. Snapshot de pre-fase baseline naar `STATE.md` `Phase baselines:`.
 2. Print `SUPERGOAL_PHASE_START`.
-3. **Generator (solo of als team)**: heeft de fase losse sporen of vraagt ze vaardigheden die je niet paraat hebt, tuig dan een team van specialisten op (zie `.supergoal/phase-team.md`): knip de fase in sporen, los per spoor de skill op met de skill-finder-passes (installed matchen; anders zoeken en `npx skills add <owner/repo>` van skills.sh; anders zelf een skill schrijven), en dispatch de specialisten via de lichtste manier die past (sequentieel in de `/goal` run als standaard, subagents of de Workflow-tool alleen als je account de credits heeft). Print eerst `SUPERGOAL_PHASE_TEAM` (sporen plus opgeloste skills). Doe dan het werk, draai mandatory commands, stuur het artefact aan voor de empirische criteria, en print `SUPERGOAL_PHASE_EVIDENCE`: ruwe command-output + exit codes, gewijzigde bestanden, en de observaties. Het team velt geen oordeel; dat blijft de evaluator.
+3. **Generator (solo of als team)**: kies eerst het werkpatroon dat bij de fase past (zie `references/workflow-patterns.md`): default geen patroon (sequentieel), anders classify-and-act, fan-out-and-synthesize, adversarial verification, generate-and-filter, tournament of loop-until-done naar het signaal in de spec, bij twijfel een lichte classifier-agent. Heeft de fase losse sporen of vraagt ze vaardigheden die je niet paraat hebt, tuig dan een team van specialisten op (zie `.supergoal/phase-team.md`): knip de fase in sporen, los per spoor de skill op met de skill-finder-passes (installed matchen; anders zoeken en `npx skills add <owner/repo>` van skills.sh; anders zelf een skill schrijven), en dispatch de specialisten via de lichtste manier die past (sequentieel in de `/goal` run als standaard, subagents of de Workflow-tool alleen als je account de credits heeft). Print eerst `SUPERGOAL_PHASE_TEAM` (patroon, sporen plus opgeloste skills). Doe dan het werk, draai mandatory commands, stuur het artefact aan voor de empirische criteria, en print `SUPERGOAL_PHASE_EVIDENCE`: ruwe command-output + exit codes, gewijzigde bestanden, en de observaties. Het team velt geen oordeel; dat blijft de evaluator.
 4. **Evaluator** (subagent met verse context, of fallback-pass): leest `phase-N.md` en `.supergoal/evaluator.md`, niet het generator-oordeel. Herdraait elke check per klasse: commands opnieuw, `repo-state.sh` voor deliverables, het artefact zelf aansturen voor `empirical`, blind oordeel voor `llm-judge`, her-grep voor `self-consistency`. Print `SUPERGOAL_EVAL_VERDICT phase=N` met per-criterium pass/fail + bewijs, en ACCEPT of REJECT.
 5. **Gate**: REJECT -> 3-strike recovery (zie onder). ACCEPT -> memory writeback check, dan `SUPERGOAL_PHASE_DONE`, update `STATE.md`.
 6. User-interrupt check op de fasegrens. N < total: volgende fase. N == total: final audit, dan pas `SUPERGOAL_RUN_COMPLETE`.
@@ -438,6 +438,8 @@ Dit is de loop die binnen de `/goal` sessie draait, herhaald tot `SUPERGOAL_RUN_
 ### Per-fase team (swarm) en dynamische skills
 
 De generator hoeft geen enkele agent te zijn. Per fase mag je er zoveel kracht op zetten als de taak verdient: een team van specialisten, elk met een eigen spoor en een eigen skillset, en bij grote fasen meerdere teams naast elkaar. Volledige instructie in `.supergoal/phase-team.md`. Kies de lichtste dispatch die past: sequentieel binnen de `/goal` run (standaard, geen extra credits), subagents bij echte parallelle sporen, of de Workflow-tool alleen als je account de credits heeft. Zwaar is opt-in, want niet iedereen heeft een groot budget.
+
+Per fase kies je ook het werkpatroon dat bij de aard van de taak past, voor je de sporen knipt: geen patroon als default, anders een van de zes (classify-and-act, fan-out-and-synthesize, adversarial verification, generate-and-filter, tournament, loop-until-done), bij twijfel via een lichte classifier-agent. Het patroon kiest de vorm, de dispatch-modus kiest de zwaarte. Volledige heuristiek in `references/workflow-patterns.md`.
 
 Skills los je dynamisch op met de skill-finder-logica:
 
@@ -494,6 +496,7 @@ Waard om op te slaan: een API-eigenaardigheid die niet in de docs stond, een bev
 - **Maak de gebruiker architect, geen stempelaar.** Bij een zware keuze stuur je bronnen en scenario's mee, zodat hij snel het onderwerp snapt en op inhoud beslist in plaats van je voorstel af te stempelen.
 - **Route op rol, niet op kosten.** Goedkope modellen voor het mechanische volume, een sterk model voor de evaluator, zodat een lange run de limiet overleeft en de judge scherp blijft.
 - **Per fase zoveel kracht als nodig.** Een team van specialisten per fase, elk met een eigen skillset, en ontbrekende skills haal je erbij (skills.sh) of schrijf je zelf. De evaluator blijft er onafhankelijk overheen, dus meer agents kopen geen vertrouwen.
+- **Kies het patroon naar de aard van de fase.** Geen patroon als default, anders het beste van de zes (classify-and-act, fan-out-and-synthesize, adversarial verification, generate-and-filter, tournament, loop-until-done), automatisch gekozen op het signaal in de fase. Het patroon is de vorm aan de bouwkant en staat los van de evaluator-gate.
 - **Kies de uitvoeringsvorm naar vraag en budget.** `/goal` is de standaard; Workflow-swarms alleen bij genoeg credits; `/loop` of een scheduled task voor terugkerende taken. Niet iedereen heeft een max-account, dus zuinig is het uitgangspunt.
 - **Polish & Harden is verplicht.** Zo wordt "elk aspect is perfect" afgedwongen.
 
@@ -511,6 +514,7 @@ Waard om op te slaan: een API-eigenaardigheid die niet in de docs stond, een bev
 
 - `references/planning-depth.md`: wat een plan diep genoeg maakt
 - `references/phase-design.md`: hoe fasen op te delen die schoon auto-chainen
+- `references/workflow-patterns.md`: de zes workflow-patronen en hoe de generator er per fase automatisch een kiest
 - `references/goal-format.md`: `/goal` op Claude Code + Codex, de vereiste transcript-blokken
 - `references/repo-state-comparison.md`: hoe de working-tree vergelijking werkt
 

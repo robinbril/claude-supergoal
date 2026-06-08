@@ -18,13 +18,17 @@ Herhaal tot `SUPERGOAL_RUN_COMPLETE` is geprint:
    Dit is het rollback-anker waar `phase-N-rationale.md` naar verwijst.
 4. Print `SUPERGOAL_PHASE_START` met de spec-metadata (fasenummer, naam, taak, mandatory
    commands, criteria-telling, vereist bewijs, afhankelijkheden, validatieklassen).
-5. **Generator (solo of als team).** Heeft de fase losse sporen of vraagt ze vaardigheden
+5. **Generator (solo of als team).** Kies eerst het werkpatroon dat bij de fase past (zie
+   `.supergoal/workflow-patterns.md`): default geen patroon (sequentieel), anders
+   classify-and-act, fan-out-and-synthesize, adversarial verification, generate-and-filter,
+   tournament of loop-until-done naar het signaal in de spec; bij twijfel een lichte
+   classifier-agent. Heeft de fase losse sporen of vraagt ze vaardigheden
    die je niet paraat hebt, tuig dan een team op volgens `.supergoal/phase-team.md`: knip de
    fase in sporen, los per spoor de skill op (match installed; anders `npx skills add
    <owner/repo>` van skills.sh; anders schrijf een skill), en dispatch de specialisten
    via de lichtste manier die past (sequentieel in de run als standaard; subagents of de
-   Workflow-tool alleen met genoeg credits). Print eerst `SUPERGOAL_PHASE_TEAM` (sporen,
-   opgeloste skills, dispatch-modus). Doe dan
+   Workflow-tool alleen met genoeg credits). Print eerst `SUPERGOAL_PHASE_TEAM` (patroon,
+   sporen, opgeloste skills, dispatch-modus). Doe dan
    het werk uit de spec, draai de mandatory commands, en stuur voor elk `[empirical]`
    criterium het draaiende artefact aan en leg de observatie vast (screenshot-pad,
    HTTP-respons, CLI-output). Print `SUPERGOAL_PHASE_EVIDENCE`: ruwe command-output
