@@ -7,7 +7,7 @@ Een skill voor Claude Code en Codex.
 <p align="center">
   <img src="docs/architecture.png" alt="Supergoal architectuur" width="820">
 </p>
-<p align="center"><sub>Schaalbare bron: <a href="docs/architecture.svg">architecture.svg</a> &middot; bewerkbaar: <a href="docs/architecture.drawio">architecture.drawio</a></sub></p>
+<p align="center"><sub>Schaalbare bron: <a href="docs/architecture.svg">architecture.svg</a></sub></p>
 
 ## Wat het is
 
@@ -20,8 +20,8 @@ De grootste faalmodus van autonome agents is dat ze zichzelf "klaar" verklaren t
 - **De bouwer keurt nooit zijn eigen werk.** Een onafhankelijke evaluator met een schone context doet elke check zelf opnieuw, blind voor wat de bouwer beweert.
 - **Bewijs is empirisch.** De evaluator draait de echte app en kijkt of het gedrag klopt, niet alleen of de tests groen zijn.
 - **Gebouwd voor lange runs.** Plan en voortgang staan op schijf en overleven context-verlies. Een regressie rolt terug naar de baseline van de vorige fase. Aan het eind draait een audit tegen het oorspronkelijke plan.
-- **Plannen is een gesprek.** In de planfase interviewt de skill je als een architect: een scherpe vraag per keer, met een aanbeveling, plus artikelen en scenario's zodat je op inhoud beslist.
-- **Per fase een team.** De generator kan per fase een zwerm specialisten opzetten, elk met een eigen skillset, en ontbrekende skills bijhalen via de skills.sh registry of zelf schrijven. De onafhankelijke evaluator blijft er overheen, dus de bouwkracht groeit zonder dat het vertrouwen daalt. Het schaalt mee met je budget: standaard sequentieel binnen de run, en pas grote parallelle swarms als je account de credits heeft.
+- **Plannen is een gesprek.** In de planfase interviewt de skill je als een architect: een scherpe vraag per keer, met een aanbeveling, plus artikelen en scenario's zodat je op inhoud beslist. Bij een echt zware, onomkeerbare keuze convoceert hij een council van onafhankelijke adviseurs die de afweging voor je uitvecht.
+- **Per fase een team.** Een fase met losse sporen draait standaard als team: een specialist per spoor, parallel, elk met een eigen skillset, en ontbrekende skills bijgehaald via de skills.sh registry of zelf geschreven. De onafhankelijke evaluator blijft er overheen, dus de bouwkracht groeit zonder dat het vertrouwen daalt. Parallelle subagents kosten geen extra credits; alleen grote swarms via de Workflow-tool wel.
 
 ## Hoe het werkt
 
@@ -35,18 +35,7 @@ De grootste faalmodus van autonome agents is dat ze zichzelf "klaar" verklaren t
 
 Twee keer is jouw input nodig: de planfase en de plan-review. Daartussen en erna draait het zelf.
 
-Supergoal kiest zelf de uitvoeringsvorm: `/goal` voor een gewone build, parallelle swarms per fase als je budget het toelaat, of `/loop` (of een scheduled task) als de taak terugkerend is. Niet iedereen heeft een max-account, dus zuinig is de standaard.
-
-## Datamodel
-
-Wil je runs achteraf analyseren, dan past het proces in een dimensioneel model (Kimball star schema). De grain is een door de evaluator beoordeelde fase-poging: elke rij in de fact is een keer dat de generator een fase bouwde en de evaluator er een verdict op gaf.
-
-<p align="center">
-  <img src="docs/star-schema.png" alt="Supergoal dimensioneel datamodel" width="900">
-</p>
-<p align="center"><sub>Bewerkbare bron: <a href="docs/star-schema.svg">star-schema.svg</a></sub></p>
-
-De fact `fact_phase_evaluation` houdt de measures bij (criteria pass, fail en inconclusive, retries, gewijzigde bestanden, tokens) en verwijst via surrogate keys naar zes dimensies: `dim_goal`, `dim_phase`, `dim_pattern`, `dim_dispatch`, `dim_verdict` en `dim_date`.
+Supergoal kiest zelf de uitvoeringsvorm: `/goal` voor een gewone build, met parallelle subagents per scheidbaar spoor (gratis), grote Workflow-swarms alleen als je budget het toelaat, of `/loop` (of een scheduled task) als de taak terugkerend is.
 
 ## Installeren
 
@@ -82,8 +71,7 @@ prompts/                de evaluator, het per-fase team, en de drie context-chec
 references/             planning, fase-opdeling, /goal-formaat, repo-vergelijking
 scripts/                recon en de working-tree vergelijking
 templates/              ROADMAP, STATE, PROTOCOL, fase-spec, review.html
-docs/architecture.svg   de procesflow (bewerkbare bron: architecture.drawio)
-docs/star-schema.svg    het dimensioneel datamodel (star schema)
+docs/architecture.svg   de procesflow, stage voor stage (dark theme)
 ```
 
 ## Credits
