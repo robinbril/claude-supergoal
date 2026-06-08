@@ -18,9 +18,10 @@ Supergoal neemt een taak die je normaal de hele dag moet babysitten en draait he
 De grootste faalmodus van autonome agents is dat ze zichzelf "klaar" verklaren terwijl het niet klopt. Supergoal haalt dat weg:
 
 - **De bouwer keurt nooit zijn eigen werk.** Een onafhankelijke evaluator met een schone context doet elke check zelf opnieuw, blind voor wat de bouwer beweert.
-- **Bewijs is empirisch.** De evaluator draait de echte app en kijkt of het gedrag klopt, niet alleen of de tests groen zijn.
+- **Bewijs komt uit de echte app.** De evaluator draait de app en kijkt of het gedrag klopt, niet alleen of de tests groen zijn.
 - **Gebouwd voor lange runs.** Plan en voortgang staan op schijf en overleven context-verlies. Een regressie rolt terug naar de baseline van de vorige fase. Aan het eind draait een audit tegen het oorspronkelijke plan.
-- **Plannen is een gesprek.** In de planfase interviewt de skill je als een architect: een scherpe vraag per keer, met een aanbeveling, plus artikelen en scenario's zodat je op inhoud beslist. Bij een echt zware, onomkeerbare keuze convoceert hij een council van onafhankelijke adviseurs die de afweging voor je uitvecht.
+- **Plannen is een gesprek.** In de planfase interviewt de skill je als een architect: een scherpe vraag per keer, met een aanbeveling, plus artikelen en scenario's zodat je op inhoud beslist. Bij een echt zware, onomkeerbare keuze roept hij een adviesraad (council) van onafhankelijke adviseurs bijeen die de afweging voor je uitvecht.
+- **Een adviesraad bewaakt de richting.** Tijdens de run kijkt na elke goedgekeurde fase een adviesraad of de koers nog klopt. Meestal gaat het automatisch door. Alleen bij een zware koerskeuze pauzeert hij en legt hij je een aanbeveling met alternatieven en bronnen voor: zeg `go` om de raad te volgen, of `B`/`C` om bij te sturen. Is er niemand om te antwoorden, dan volgt hij zijn eigen aanbeveling, zodat een lange run niet stilstaat.
 - **Per fase een team.** Een fase met losse sporen draait standaard als team: een specialist per spoor, parallel, elk met een eigen skillset, en ontbrekende skills bijgehaald via de skills.sh registry of zelf geschreven. De onafhankelijke evaluator blijft er overheen, dus de bouwkracht groeit zonder dat het vertrouwen daalt. Parallelle subagents kosten geen extra credits; alleen grote swarms via de Workflow-tool wel.
 
 ## Hoe het werkt
@@ -30,10 +31,10 @@ De grootste faalmodus van autonome agents is dat ze zichzelf "klaar" verklaren t
 3. **Context verzamelen.** Info uit vier bronnen (code, docs, MCP's, skills), met een check of het genoeg is plus een tweede check die juist een gat zoekt.
 4. **Plan opdelen.** Zoveel fasen als de taak nodig heeft, elk op zichzelf te controleren, met empirisch bewijs waar gedrag ontstaat.
 5. **Plan-review.** Je krijgt een samenvatting plus een losse HTML-pagina met de fasen, de keuzes, de bronnen en de risico's. Jij keurt goed. Dit is de enige stop.
-6. **Autonome run.** Een ronde per fase: de generator bouwt, de onafhankelijke evaluator bewijst (ACCEPT of REJECT). REJECT start een herstel van maximaal drie pogingen. Per fase kan de generator een team van specialisten opzetten en ontbrekende skills bijladen (via skills.sh of zelf geschreven); de evaluator blijft er onafhankelijk overheen.
+6. **Autonome run.** Een ronde per fase: de generator bouwt, de onafhankelijke evaluator bewijst (ACCEPT of REJECT). REJECT start een herstel van maximaal drie pogingen. Per fase kan de generator een team van specialisten opzetten en ontbrekende skills bijladen (via skills.sh of zelf geschreven); de evaluator blijft er onafhankelijk overheen. Na elke goedgekeurde fase checkt de adviesraad de richting: meestal gaat het door, alleen bij een zware koerskeuze vraagt hij jou (`go` / `B` / `C`).
 7. **Eindaudit.** Na de laatste fase controleert de evaluator het geheel nog eens tegen het oorspronkelijke plan, voordat de run als klaar geldt.
 
-Twee keer is jouw input nodig: de planfase en de plan-review. Daartussen en erna draait het zelf.
+Twee vaste momenten vragen jouw input: de planfase en de plan-review. Daarbovenop pauzeert de adviesraad de run alleen wanneer alleen jij een koerskeuze kunt maken. Verder draait het zelf.
 
 Supergoal kiest zelf de uitvoeringsvorm: `/goal` voor een gewone build, met parallelle subagents per scheidbaar spoor (gratis), grote Workflow-swarms alleen als je budget het toelaat, of `/loop` (of een scheduled task) als de taak terugkerend is.
 

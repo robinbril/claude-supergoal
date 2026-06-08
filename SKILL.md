@@ -12,7 +12,7 @@ $ARGUMENTS
 
 **Het principe waar alles omheen gebouwd is: niks is klaar tot iets onafhankelijks het bewijst, tegen de oorspronkelijke opdracht, door de app echt te draaien.** Claude Code stopt standaard zodra de agent zegt dat hij klaar is. Supergoal stopt pas als een controleur die het werk niet zelf maakte het bewijst. Dat ene verschil is de reden dat deze skill bestaat; al het andere staat daarvoor in dienst.
 
-## De twee rollen: generator en evaluator
+## De drie rollen: generator, evaluator en council
 
 Dit is de ruggengraat. Houd ze strikt gescheiden.
 
@@ -22,6 +22,8 @@ Dit is de ruggengraat. Houd ze strikt gescheiden.
 Een fase is pas klaar bij het oordeel van de evaluator, niet bij het rapport van de generator. REJECT start het herstel (drie pogingen, zie onder); pas bij ACCEPT sluit de fase.
 
 **Waarom dit beter is dan de standaard:** de grootste valkuil van autonome agents is dat ze zichzelf "klaar" verklaren terwijl het niet klopt. Een controleur met een schone lei, die alles zelf opnieuw doet, kan dat zelfbedrog niet overnemen.
+
+**De derde rol: council (de richtings-gate).** Op elke fasegrens, maar alleen nadat de evaluator de fase op correctheid heeft goedgekeurd, draait een lichte council-pass. De evaluator bewijst dat de fase doet wat de spec zegt (klopt het, werkt het); de council kijkt naar iets anders: stuurt het resultaat de juiste kant op, of moet de gebruiker de richting bijsturen. Default is AUTO-APPROVE en doorgaan zonder de gebruiker te storen. Alleen bij een keuze die moeilijk omkeerbaar is, meerdere geloofwaardige paden heeft, en buiten de bevestigde scope valt, escaleert de council: dan convoceert hij de volledige `council`-skill voor een aanbeveling (A), alternatieven (B/C) en bronnen, en presenteert die zodat jij `go`, `B` of `C` zegt. De council oordeelt nooit over correctheid en kan een ACCEPT niet terugdraaien, dus de evaluator-moat blijft intact. Volledige instructie in `prompts/council-gate.md`.
 
 **Isolatie per host:**
 - **Claude Code** (Task/Agent tool aanwezig): spawn de evaluator als subagent met een verse context. Echte isolatie.
@@ -38,6 +40,7 @@ Een lange run valt niet om door kosten maar door rate limits en door een te zwak
 | Sufficient-context judge + adversarial prober | sterk | dit is de context-gate; een zwakke judge laat gaten door |
 | Generator (executor) | het sessiemodel | bouwt het echte werk |
 | Evaluator | sterk, bij voorkeur opus | het hele voordeel hangt op een scherpe, onafhankelijke beoordelaar, dus nooit goedkoop |
+| Council (richtings-triage, en convocatie bij escalatie) | sessiemodel voor de triage, sterk voor een volle convocatie | de per-fase triage is een goedkope go/escaleer-call; een echte richtingskeuze verdient sterke onafhankelijke adviseurs |
 
 ## Wat "klaar" vereist
 
@@ -68,9 +71,9 @@ Het gewone plannen en uitvoeren leunt op wat Claude Code al kan (plan mode, /goa
 4. **Decompose**: het juiste aantal onafhankelijk verifieerbare fasen, elk met empirisch bewijs waar gedrag ontstaat.
 5. **Specs**: per fase een werk-spec met geklasseerde criteria plus een rationale met rollback-doel.
 6. **Plan review**: een menselijke gate, met self-critique en een HTML-overzicht.
-7. **Dispatch**: een kant-en-klare `/goal`. Daarna draait de generator/evaluator-loop autonoom tot de final audit het geheel tegen de oorspronkelijke spec bewijst.
+7. **Dispatch**: een kant-en-klare `/goal`. Daarna draait de generator/evaluator/council-loop autonoom tot de final audit het geheel tegen de oorspronkelijke spec bewijst. Per fase: de generator bouwt, de evaluator bewijst correctheid (ACCEPT/REJECT), en op ACCEPT keurt de council de richting goed of escaleert hij naar jou.
 
-Twee menselijke gates: verduidelijkingsvragen (Stage 1) en plan review (Stage 6). Daartussen en erna autonoom.
+Twee vaste menselijke gates (verduidelijkingsvragen in Stage 1, plan review in Stage 6), plus een dynamische gate die de council bepaalt: hij pauzeert de run alleen wanneer alleen jij de richting kunt kiezen. Bij geen live input volgt hij zijn eigen aanbeveling en gaat door, zodat je niets hoeft te babysitten.
 
 ## Lokaliseer de skill-directory
 
@@ -403,13 +406,13 @@ Leg de keuze vast in `STATE.md` als `Dispatch: <goal | loop> + <subagents | work
 Slash commands vuren alleen vanuit gebruikersinput, dus dit is een eerlijke een-plak overdracht. Print de vorm die Stage 6.6 koos. In de meeste gevallen is dat de `/goal` plak hieronder; bij een terugkerende taak print je in plaats daarvan een `/loop` (zie onder). Na "Start now":
 
 1. Update `STATE.md`: `Status: READY_TO_DISPATCH`, `Current phase: 1`, en leg `Baseline ref:` vast op `git rev-parse HEAD 2>/dev/null || echo "no-git"`. Initialiseer `Phase baselines:` (leeg); de generator voegt per fasegrens een entry toe (`phase <N> pre: <ref>`), de rollback-ankers waar `phase-N-rationale.md` naar verwijst.
-2. Kopieer `$SUPERGOAL_DIR/templates/PROTOCOL.md` naar `.supergoal/PROTOCOL.md`, `$SUPERGOAL_DIR/prompts/phase-judge.md` naar `.supergoal/evaluator.md` (de evaluator-instructie die de subagent of fallback-pass leest), `$SUPERGOAL_DIR/prompts/phase-team.md` naar `.supergoal/phase-team.md` (de team-instructie voor de generator), `$SUPERGOAL_DIR/references/workflow-patterns.md` naar `.supergoal/workflow-patterns.md` (de patroon-keuze voor de generator), en `$SUPERGOAL_DIR/scripts/repo-state.sh` naar `.supergoal/repo-state.sh`.
+2. Kopieer `$SUPERGOAL_DIR/templates/PROTOCOL.md` naar `.supergoal/PROTOCOL.md`, `$SUPERGOAL_DIR/prompts/phase-judge.md` naar `.supergoal/evaluator.md` (de evaluator-instructie die de subagent of fallback-pass leest), `$SUPERGOAL_DIR/prompts/phase-team.md` naar `.supergoal/phase-team.md` (de team-instructie voor de generator), `$SUPERGOAL_DIR/references/workflow-patterns.md` naar `.supergoal/workflow-patterns.md` (de patroon-keuze voor de generator), `$SUPERGOAL_DIR/prompts/council-gate.md` naar `.supergoal/council-gate.md` (de richtings-gate die na een evaluator-ACCEPT draait), en `$SUPERGOAL_DIR/scripts/repo-state.sh` naar `.supergoal/repo-state.sh`.
 3. Verifieer elke `phase-N.md` en draai `validate-phase.sh` erop.
 4. Print het kant-en-klare `/goal` commando:
 
 ````
 ```
-/goal "Execute all phases in .supergoal/ROADMAP.md sequentially per .supergoal/PROTOCOL.md. For each phase: read phase-N.md, do the work as the GENERATOR, print SUPERGOAL_PHASE_EVIDENCE (raw commands+output+exit codes, files changed, artifact observations; NO verdict). Then run the INDEPENDENT EVALUATOR per .supergoal/evaluator.md: it re-runs every check itself against repository ground truth and the running artifact, blind to the generator's account, and prints SUPERGOAL_EVAL_VERDICT phase=N with ACCEPT or REJECT. Only on ACCEPT print SUPERGOAL_PHASE_DONE and advance; on REJECT follow the 3-strike recovery in PROTOCOL.md. After the last phase, the evaluator runs the FINAL AUDIT against the original ROADMAP.md and re-observes the artifact; only after AUDIT_COMPLETE print SUPERGOAL_RUN_COMPLETE. Done when SUPERGOAL_RUN_COMPLETE appears with one ACCEPT and one SUPERGOAL_PHASE_DONE per phase, AUDIT_COMPLETE before it, and no FAILURE_HANDOFF or AUDIT_HANDOFF this run."
+/goal "Execute all phases in .supergoal/ROADMAP.md sequentially per .supergoal/PROTOCOL.md. For each phase: read phase-N.md, do the work as the GENERATOR, print SUPERGOAL_PHASE_EVIDENCE (raw commands+output+exit codes, files changed, artifact observations; NO verdict). Then run the INDEPENDENT EVALUATOR per .supergoal/evaluator.md: it re-runs every check itself against repository ground truth and the running artifact, blind to the generator's account, and prints SUPERGOAL_EVAL_VERDICT phase=N with ACCEPT or REJECT. Only on ACCEPT run the COUNCIL DIRECTION GATE per .supergoal/council-gate.md: it judges direction not correctness, prints SUPERGOAL_COUNCIL_VERDICT phase=N with AUTO-APPROVE or ESCALATE; on ESCALATE it convenes the council skill, prints SUPERGOAL_COUNCIL_ESCALATE with recommendation A, alternatives B/C and sources, and either takes the user's go/B/C or, with no live input, follows A and logs it. Then print SUPERGOAL_PHASE_DONE and advance; on REJECT follow the 3-strike recovery in PROTOCOL.md. After the last phase, the evaluator runs the FINAL AUDIT against the original ROADMAP.md and re-observes the artifact; only after AUDIT_COMPLETE print SUPERGOAL_RUN_COMPLETE. Done when SUPERGOAL_RUN_COMPLETE appears with one ACCEPT, one SUPERGOAL_COUNCIL_VERDICT (AUTO-APPROVE or a resolved escalation), and one SUPERGOAL_PHASE_DONE per phase, AUDIT_COMPLETE before it, and no FAILURE_HANDOFF or AUDIT_HANDOFF this run."
 ```
 ````
 
@@ -425,7 +428,7 @@ Koos Stage 6.6 voor `/loop` (de taak is terugkerend, niet bouw-tot-klaar), print
 
 ---
 
-## Uitvoering: generator bouwt, evaluator bewijst
+## Uitvoering: generator bouwt, evaluator bewijst, council bewaakt de richting
 
 Dit is de loop die binnen de `/goal` sessie draait, herhaald tot `SUPERGOAL_RUN_COMPLETE`. Volledige mechaniek in `.supergoal/PROTOCOL.md`; de kern:
 
@@ -433,8 +436,9 @@ Dit is de loop die binnen de `/goal` sessie draait, herhaald tot `SUPERGOAL_RUN_
 2. Print `SUPERGOAL_PHASE_START`.
 3. **Generator (team by default, solo alleen bij een atomaire fase)**: kies eerst het werkpatroon dat bij de fase past (zie `references/workflow-patterns.md`): default geen patroon, anders classify-and-act, fan-out-and-synthesize, adversarial verification, generate-and-filter, tournament of loop-until-done naar het signaal in de spec. Knip de fase in onafhankelijke sporen; bij twee of meer sporen dispatch je een specialist-subagent per spoor parallel (zie `.supergoal/phase-team.md`), en los per spoor de skill op met de skill-finder-passes (installed matchen; anders zoeken en `npx skills add <owner/repo>` van skills.sh; anders zelf een skill schrijven). Parallelle subagents zijn de default en kosten geen credits; sequentieel is alleen voor een atomaire fase of zonder subagent-tool, de Workflow-tool alleen voor grote swarms met credits. Een fase met twee of meer sporen draait nooit als een enkele agent, en een team met een agent bestaat niet. Print eerst `SUPERGOAL_PHASE_TEAM` (patroon, sporen, specialisten parallel, opgeloste skills). Doe dan het werk, draai mandatory commands, stuur het artefact aan voor de empirische criteria, en print `SUPERGOAL_PHASE_EVIDENCE`: ruwe command-output + exit codes, gewijzigde bestanden, en de observaties. Het team velt geen oordeel; dat blijft de evaluator.
 4. **Evaluator** (subagent met verse context, of fallback-pass): leest `phase-N.md` en `.supergoal/evaluator.md`, niet het generator-oordeel. Herdraait elke check per klasse: commands opnieuw, `repo-state.sh` voor deliverables, het artefact zelf aansturen voor `empirical`, blind oordeel voor `llm-judge`, her-grep voor `self-consistency`. Print `SUPERGOAL_EVAL_VERDICT phase=N` met per-criterium pass/fail + bewijs, en ACCEPT of REJECT.
-5. **Gate**: REJECT -> 3-strike recovery (zie onder). ACCEPT -> memory writeback check, dan `SUPERGOAL_PHASE_DONE`, update `STATE.md`.
-6. User-interrupt check op de fasegrens. N < total: volgende fase. N == total: final audit, dan pas `SUPERGOAL_RUN_COMPLETE`.
+5. **Correctheids-gate** (evaluator): REJECT -> 3-strike recovery (zie onder). ACCEPT -> stap 5b.
+5b. **Council (richtings-gate, alleen na een ACCEPT)**: draai de council-pass uit `.supergoal/council-gate.md`. Hij beoordeelt alleen richting, niet correctheid, en krijgt de fase-spec, het evaluator-verdict en een compacte diff, niet het transcript. AUTO-APPROVE (default): print `SUPERGOAL_COUNCIL_VERDICT` en door. ESCALATE (alleen bij een moeilijk omkeerbare keuze met meerdere paden buiten de bevestigde scope): convoceer de `council`-skill, print `SUPERGOAL_COUNCIL_ESCALATE` (aanbeveling A, alternatieven B/C, bronnen), wacht op `go/B/C`, of volg bij geen live input A en log het. Bij `B/C` herschrijf je de geraakte toekomstige fase-specs en de bijbehorende `ROADMAP.md`-blokken, herdraai je `validate-phase.sh`, en log je onder `STATE.md` Council decisions. De council kan een ACCEPT niet overrulen.
+6. Memory writeback check, dan `SUPERGOAL_PHASE_DONE`, update `STATE.md`. User-interrupt check op de fasegrens. N < total: volgende fase. N == total: final audit, dan pas `SUPERGOAL_RUN_COMPLETE`.
 
 ### Per-fase team (swarm) en dynamische skills
 
@@ -449,6 +453,14 @@ Skills los je dynamisch op met de skill-finder-logica:
 3. Keert het terug en dekt niks het, schrijf dan een nieuwe, generieke skill in de skill-finder-structuur, zodat een volgende run hem matcht in pass 1.
 
 Dit verandert niks aan de gate: het team is de generator, en de onafhankelijke evaluator herdraait daarna alles. Meer agents is meer bouwkracht, geen extra vertrouwen vooraf.
+
+### Council-gate per fase (richting) en escalatie
+
+Na elke evaluator-ACCEPT draait een council-triage (`.supergoal/council-gate.md`). Hij krijgt de fase-spec, het evaluator-verdict en een compacte diff, niet het volledige gesprek (anti-anchoring). Vraag: legt deze fase een richting vast die de gebruiker zou willen bevestigen of bijsturen?
+
+Escaleer alleen bij alle drie tegelijk: (1) moeilijk of niet omkeerbaar (stack, datamodel, architectuur, vendor-binding), (2) meerdere geloofwaardige paden, (3) buiten wat de gebruiker al in Stage 1 of Stage 6 bevestigde. Mist er een, dan AUTO-APPROVE en door. Correctheids-twijfel hoort hier niet, dat is de evaluator.
+
+Bij escalatie convoceer je de volledige `council`-skill voor een verdict en presenteer je via `AskUserQuestion`: optie A (de aanbeveling, eerst), B en C, met de bronnen erbij. De gebruiker zegt `go` (volg A), of `B`/`C` (stuur bij). Bij `B/C` herschrijf je de geraakte toekomstige fase-specs in-place en de bijbehorende `ROADMAP.md`-blokken, herdraai je `validate-phase.sh`, en log je de afwijking onder `STATE.md` Council decisions. Is er geen levende gebruiker, volg dan automatisch A en log het als `auto-A`, zodat de run niet stilstaat. De geraakte fasen worden later opnieuw door de evaluator bewezen, dus de moat blijft intact.
 
 ### Failure recovery (3-strike, op REJECT)
 
@@ -487,10 +499,12 @@ Waard om op te slaan: een API-eigenaardigheid die niet in de docs stond, een bev
 ## Werkingsprincipes
 
 - **De evaluator beoordeelt nooit zijn eigen werk.** Generator en evaluator zijn strikt gescheiden; het verdict komt van de partij die het werk niet maakte.
+- **Evaluator bewijst correctheid, council bewaakt richting.** De evaluator gate-t op klopt-het en sluit de fase; de council gate-t op welke-richting en haalt alleen de mens erbij wanneer alleen die kan beslissen. Ze raken elkaar niet, dus de council vervangt de moat niet en kan een ACCEPT niet overrulen.
+- **De council escaleert spaarzaam.** Default is auto-approve en doorgaan. Escaleren mag alleen bij een moeilijk omkeerbare keuze met meerdere paden buiten de bevestigde scope; bij geen live input volgt de council zijn eigen aanbeveling, zodat de run niet stilstaat.
 - **Bewijs is empirisch, niet declaratief.** Het draaiende artefact observeren slaat "tests groen" als bewijs van gedrag.
 - **Herdraaien boven vertrouwen.** De evaluator produceert eigen exit codes, eigen observaties, eigen tree-diff. Hij neemt geen enkel generator-rapport over.
 - **"Perfect" is geen stopconditie, criteria wel.** Elk "perfect" wordt een falsifieerbaar, geklasseerd criterium.
-- **Twee menselijke gates.** Grill-intake (Stage 1) en plan review (Stage 6). Daartussen autonoom.
+- **Twee vaste gates plus een dynamische.** Grill-intake (Stage 1) en plan review (Stage 6) zijn vast; daarbovenop pauzeert de council de run alleen wanneer alleen jij de richting kunt kiezen. Daartussen autonoom.
 - **De loop herstelt zichzelf, dan reverteert hij, dan escaleert hij.** Auto-retry, fix spec, rollback naar baseline, handoff.
 - **State leeft op schijf.** Plan, voortgang en baselines overleven context-compaction en laten een run mid-loop hervatten.
 - **Plan door te grillen.** Een vraag per keer met aanbeveling, codebase-eerst, tot elke materiele beslissing is opgelost. Een plan op gedeeld begrip hoeft de evaluator later niet af te keuren.
@@ -532,6 +546,7 @@ Waard om op te slaan: een API-eigenaardigheid die niet in de docs stond, een bev
 - `prompts/adversarial-prober.md`: de tweede context-judge (Stage 2c-bis)
 - `prompts/phase-judge.md`: de onafhankelijke evaluator, gekopieerd naar `.supergoal/evaluator.md` bij dispatch
 - `prompts/phase-team.md`: de per-fase team-orchestratie (swarm) plus dynamische skill-resolutie, gekopieerd naar `.supergoal/phase-team.md` bij dispatch
+- `prompts/council-gate.md`: de per-fase richtings-gate (council) plus escalatie, gekopieerd naar `.supergoal/council-gate.md` bij dispatch
 
 ## Templates
 

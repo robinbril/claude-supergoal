@@ -111,6 +111,34 @@ Verdict: ACCEPT | REJECT
 
 ACCEPT only if every criterion is `pass` or `inconclusive` and cleanliness counts are zero (unless the spec sets `Cleanliness override:`). Any `fail` or non-zero cleanliness count forces REJECT.
 
+### `SUPERGOAL_COUNCIL_VERDICT` (council direction gate, once per phase, only after an ACCEPT)
+
+The council judges direction, never correctness. It runs only on an evaluator ACCEPT, and cannot overrule it.
+
+```
+SUPERGOAL_COUNCIL_VERDICT phase=<N>
+decision: AUTO-APPROVE | ESCALATE
+reason: <one line: why no direction call is needed, or why this escalates>
+```
+
+AUTO-APPROVE is the default. ESCALATE only when all three hold: the choice is hard to reverse, has multiple credible paths, and falls outside what the user already confirmed in Stage 1 or Stage 6.
+
+### `SUPERGOAL_COUNCIL_ESCALATE` (council, only on ESCALATE, pauses for go/B/C)
+
+Printed when the gate convenes the full `council` skill for a genuine direction call.
+
+```
+SUPERGOAL_COUNCIL_ESCALATE phase=<N>
+Question: <the direction at stake, one line>
+A (council recommendation): <option> - <half-line why>
+B: <alternative> - <main trade-off>
+C: <alternative> - <main trade-off>
+Sources: <1-3 links or file:line the choice rests on>
+Waiting for: go (follow A) | B | C
+```
+
+On `go`: follow A, no spec change. On `B`/`C`: rewrite the affected future phase-specs in-place AND the matching `ROADMAP.md` phase blocks, rerun `validate-phase.sh`, log under `STATE.md` Council decisions. With no live answer in an autonomous run: follow A and log it as `auto-A`.
+
 ### `MEMORY_SAVED` (once per phase, after ACCEPT, before DONE)
 
 ```

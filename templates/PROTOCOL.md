@@ -3,9 +3,12 @@
 Dit bestand wordt gelezen door de uitvoerende agent aan het begin van de enkele `/goal`
 sessie en de hele run gevolgd. Het is de operating manual voor de autonome run.
 
-De kern: **de generator bouwt, een onafhankelijke evaluator bewijst.** De generator velt
-nooit zijn eigen pass/fail-oordeel. De fase-gate is het verdict van de evaluator. De
-evaluator-instructie staat in `.supergoal/evaluator.md`.
+De kern: **de generator bouwt, een onafhankelijke evaluator bewijst, en een council bewaakt de
+richting.** De generator velt nooit zijn eigen pass/fail-oordeel. De evaluator gate-t op
+correctheid (ACCEPT/REJECT) en is de enige die een fase sluit. De council draait alleen na een
+evaluator-ACCEPT, oordeelt nooit over correctheid, en bepaalt of de gebruiker nodig is om de
+richting te houden. De evaluator-instructie staat in `.supergoal/evaluator.md`, de
+council-instructie in `.supergoal/council-gate.md`.
 
 ## De loop
 
@@ -55,9 +58,22 @@ Herhaal tot `SUPERGOAL_RUN_COMPLETE` is geprint:
    (Go), plus TODO/FIXME en dode imports toegevoegd deze fase. Een non-zero telling telt
    als fail, tenzij de spec een `Cleanliness override:` regel draagt. Strategie:
    `references/repo-state-comparison.md`.
-8. **Gate.**
+8. **Correctheids-gate (evaluator).**
    - **REJECT**: ga naar Failure recovery. Niet doorgaan.
-   - **ACCEPT**: ga door naar stap 9.
+   - **ACCEPT**: ga door naar stap 8b.
+8b. **Council-gate (richting, alleen op ACCEPT).** Draai de council-pass uit
+   `.supergoal/council-gate.md`. Hij krijgt `phase-N.md`, het `SUPERGOAL_EVAL_VERDICT` en een
+   compacte diff (`repo-state.sh added-lines` vs `Baseline ref`) plus de observaties, niet het hele
+   transcript. Hij beoordeelt alleen richting, niet correctheid. Print
+   `SUPERGOAL_COUNCIL_VERDICT phase=N` met `decision=AUTO-APPROVE` of `ESCALATE` en een reden.
+   - **AUTO-APPROVE** (default): door naar stap 9.
+   - **ESCALATE** (alleen bij een one-way-door met meerdere paden buiten de bevestigde scope):
+     convoceer de `council`-skill, print `SUPERGOAL_COUNCIL_ESCALATE` (aanbeveling A, alternatieven
+     B/C, bronnen), pauzeer en wacht op `go/B/C`. Verwerk het antwoord (`go` = A volgen; `B/C` = de
+     geraakte toekomstige fase-specs en de bijbehorende `ROADMAP.md`-blokken in-place herschrijven,
+     `validate-phase.sh` herdraaien), log onder `STATE.md` Council decisions, ga dan naar stap 9. Is
+     er geen levende gebruiker, volg dan A en log het als `auto-A`. De council kan de fase niet
+     sluiten zonder de ACCEPT en niet heropenen.
 9. **Memory writeback check.** Iets niet-voor-de-hand-liggends geleerd? Zo ja, schrijf een
    memory-bestand onder MEM_DIR (frontmatter: `name`, `description`, `metadata.type`),
    link vanuit `MEMORY.md`. Print `MEMORY_SAVED: <name>` of `MEMORY_SAVED: none`.
@@ -153,6 +169,10 @@ Bij een gebruikersbericht tijdens de run: pauzeer op de fasegrens (na
 `SUPERGOAL_PHASE_DONE`, voor de volgende spec), adresseer het, vraag of je hervat, de
 volgende spec herziet, of stopt.
 
+Een `SUPERGOAL_COUNCIL_ESCALATE` is zelf een geplande pauze op de fasegrens (na de
+evaluator-ACCEPT): behandel het `go/B/C`-antwoord als richtingsbeslissing, niet als een gewone
+mid-run onderbreking, en hervat daarna de loop bij stap 9. Komt er geen antwoord, volg A en ga door.
+
 ## Memory writeback rules
 
 Zie de `Memory writeback` sectie in SKILL.md. Kort:
@@ -169,6 +189,8 @@ Zie `references/goal-format.md` voor het exacte formaat van:
 - `SUPERGOAL_PHASE_TEAM` (generator, alleen als de fase een team draait)
 - `SUPERGOAL_PHASE_EVIDENCE` (generator, ruw, geen oordeel)
 - `SUPERGOAL_EVAL_VERDICT` (evaluator, ACCEPT/REJECT)
+- `SUPERGOAL_COUNCIL_VERDICT` (council, na een ACCEPT, AUTO-APPROVE of ESCALATE)
+- `SUPERGOAL_COUNCIL_ESCALATE` (council, alleen bij ESCALATE: aanbeveling A, alternatieven B/C, bronnen, wacht op go/B/C)
 - `MEMORY_SAVED`
 - `SUPERGOAL_PHASE_DONE`
 - `AUDIT_START` / `AUDIT_VERIFY` / `AUDIT_GAPS` / `AUDIT_COMPLETE` / `AUDIT_HANDOFF`

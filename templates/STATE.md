@@ -39,6 +39,12 @@ Append-only log of anything noteworthy that happened during execution (assumptio
 - {{DATE}} — Plan locked, {{N}} phases.
 - ...
 
+## Council decisions
+
+Append-only log of every council direction-gate outcome that needed a call: an escalation the user answered (`go`/`B`/`C`), or an `auto-A` when there was no live input. AUTO-APPROVE outcomes are not logged here.
+
+- (empty until a phase escalates)
+
 ## Failure log
 
 If a phase hits FAILURE_PROBE, record it here:
