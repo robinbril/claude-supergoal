@@ -59,6 +59,23 @@ Depends on phases: <list, or "none">
 Validation classes: <classes present, e.g. tool-output, deliverable, empirical>
 ```
 
+### `SUPERGOAL_PHASE_TEAM` (generator, only when a phase runs as a team)
+
+Printed before the work when a phase has two or more separable tracks. A phase with 2+ independent tracks runs as a team: one specialist subagent per track, in parallel. Solo is only for an atomic phase. A team with one agent, or a Tracks>=2 block with sequential dispatch, is invalid.
+
+```
+SUPERGOAL_PHASE_TEAM phase=<N>
+Pattern: <none | classify-and-act | fan-out-and-synthesize | adversarial-verification | generate-and-filter | tournament | loop-until-done>
+Tracks:
+- <track 1>: <deliverable> | skill: <installed|acquired|written|none> | criteria: <which>
+- <track 2>: ...
+Specialisten parallel: <N, at least 2; if 1 it is not a team, run solo>
+Teams parallel: <1 or more concurrent teams>
+Dispatch: <subagents (Task) | workflow-tool | sequential in /goal>
+```
+
+With 2+ Tracks, Dispatch must be `subagents` or `workflow-tool`, never `sequential`.
+
 ### `SUPERGOAL_PHASE_EVIDENCE` (generator, once per phase, before the verdict)
 
 Raw evidence, no pass/fail judgment. The generator reports what it did and observed; the evaluator decides.

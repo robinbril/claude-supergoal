@@ -9,15 +9,17 @@ in een vaste vorm laten samenwerken. Het patroon staat los van de evaluator-gate
 generator ook kiest, de onafhankelijke evaluator herdraait daarna elke check op het draaiende
 artefact. Meer structuur aan de bouwkant koopt geen vertrouwen vooraf.
 
-## Eerst: heeft deze fase een patroon nodig?
+## Eerst: is deze fase scheidbaar?
 
-Default is **geen speciaal patroon**: de generator bouwt de fase gewoon, sequentieel. De meeste
-fasen verdienen dat. Een patroon kost meer tokens en agents, dus zet het alleen in als de aard
-van de fase erom vraagt. Vraag per fase: heeft dit echt meer compute nodig, of is het een
-coherente klus die een agent goed alleen afmaakt?
+Aparte agents met een eigen schone context en een scherp, afgebakend doel zijn de default zodra er
+scheidbaar werk ligt. Heeft de fase twee of meer onafhankelijke sporen (frontend, backend, tests,
+data, docs, of onafhankelijke items of bestanden), dan draait een specialist per spoor parallel;
+het aantal sporen bepaalt de teamgrootte. Solo en sequentieel zijn de uitzondering: alleen bij een
+atomaire fase, een onsplitsbaar deliverable waarvan de sporen state delen en niet onafhankelijk
+kunnen draaien.
 
-Een patroon verdient zich terug wanneer een fase last heeft van een van deze drie faalvormen van
-een enkele lange context:
+Een werkpatroon kiezen is de tweede vraag, bovenop de fan-out. Een patroon helpt extra wanneer een
+fase last heeft van een van deze drie faalvormen van een enkele lange context:
 
 - **Halverwege stoppen.** Een agent verklaart een grote, meervoudige taak klaar na deelwerk (20
   van de 50 punten in een review).
@@ -26,7 +28,8 @@ een enkele lange context:
 - **Doel-drift.** Over veel beurten en na compaction lekt het oorspronkelijke doel weg, en
   verdwijnen randvoorwaarden en "doe X niet"-regels.
 
-Aparte agents met een eigen schone context en een scherp, afgebakend doel halen die druk weg.
+Dit zijn aanvullende redenen voor structuur, niet de enige trigger; scheidbaar werk fan je sowieso
+parallel uit.
 
 ## De zes patronen
 
@@ -38,8 +41,9 @@ Aparte agents met een eigen schone context en een scherp, afgebakend doel halen 
 2. **Fan-out-and-synthesize.** Knip de fase in veel kleine deelstappen, een agent per stap, dan
    een synthese-stap die alle gestructureerde resultaten samenvoegt. De synthese is een barrier:
    hij wacht op alle fan-out-agents. *Wanneer:* veel onafhankelijke deelstappen, of elke stap is
-   gebaat bij een eigen schone context zodat ze elkaar niet besmetten. *Hoe:* subagents of een
-   Workflow-fan-out, dan een synthese-agent.
+   gebaat bij een eigen schone context zodat ze elkaar niet besmetten. Het aantal sporen bepaalt de
+   teamgrootte, niet of je fan-out doet. *Hoe:* subagents of een Workflow-fan-out, dan een
+   synthese-agent.
 
 3. **Adversarial verification.** Voor elke geproduceerde uitkomst draait een aparte agent die hem
    juist probeert te weerleggen tegen een rubric of criterium. *Wanneer:* de uitkomst moet hard
@@ -67,26 +71,28 @@ adversarial verification om elk spoor te toetsen.
 
 | Signaal in de fase-spec of de gebruikersvraag | Patroon |
 |---|---|
-| Coherente klus, een agent maakt het goed alleen af | geen patroon, sequentieel (default) |
+| Fase valt in twee of meer onafhankelijke sporen (frontend, backend, tests, data, docs) | een specialist per spoor, parallel (fan-out), default |
 | De aanpak hangt af van het type input, of werk moet gesorteerd | classify-and-act |
-| Veel onafhankelijke deelstappen, elk eigen context | fan-out-and-synthesize |
 | Uitkomst moet hard kloppen: security, correctheid, claims | adversarial verification |
 | Veel kandidaten of ideeen, beste eruit | generate-and-filter |
 | Smaak of keuze, beste van meerdere aanpakken | tournament |
 | Onbekende omvang, door tot niks nieuws | loop until done |
+| Onsplitsbaar deliverable, sporen delen state | solo, sequentieel |
 
 Wijst meer dan een rij naar een patroon, kies de zwaarste die past, of combineer ze.
 
-## Twijfel: een classifier-agent
+## Twijfel: leun naar splitsen
 
-Is de aard van de fase niet eenduidig uit de spec te lezen, spawn dan een lichte classifier-agent
-(dat is classify-and-act toegepast op de keuze zelf): hij leest de fase-spec en geeft een patroon
-terug met een reden. Default blijft de heuristiek; de classifier is voor de randgevallen, zodat
-een zuinig account niet per fase een extra agent betaalt.
+Is de aard niet eenduidig, leun dan naar splitsen zodra je twee of meer onafhankelijke sporen kunt
+benoemen, en fan parallel uit. Spawn een lichte classifier-agent alleen als zelfs de spoor-grenzen
+onduidelijk zijn (dat is classify-and-act toegepast op de keuze zelf): hij bepaalt de spoor-grenzen
+en eventueel het patroon, niet of je een team vormt.
 
 ## Kosten
 
-Patronen die parallel spawnen (fan-out, tournament, adversarial met veel refuters) verbranden
-tokens. Ze volgen dezelfde dispatch-as als de team-zwaarte: sequentieel binnen de `/goal` run als
-standaard, subagents bij echte parallelle sporen, de Workflow-tool alleen met genoeg credits. Het
-patroon kiest de vorm, de dispatch-modus kiest hoe zwaar je hem draait.
+Scheidbare sporen defaulten naar de subagent-tier: een specialist per spoor, parallel, zonder extra
+credits. De sequentieel-in-run-rung is de fallback bij een atomaire fase of als er geen dispatch-tool
+is. Alleen grote swarms via de Workflow-tool dragen een echte credit-zorg. Een zuinig account knipt
+de fan-out smaller (minder sporen per batch, geen Workflow-swarm), maar blijft per scheidbare fase
+meerdere specialisten parallel draaien. Het patroon kiest de vorm, de dispatch-modus regelt alleen de
+breedte van de zware tier.

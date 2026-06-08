@@ -1,7 +1,8 @@
 # Phase team prompt (per-fase swarm, onderdeel van de generator)
 
 Bij dispatch wordt dit bestand gekopieerd naar `.supergoal/phase-team.md`. De generator
-leest het wanneer een fase meer kracht verdient dan een enkele agent.
+leest het per fase. Een fase met twee of meer niet-overlappende sporen draait als team: een
+specialist-subagent per spoor, parallel. Solo is de uitzondering, alleen voor een atomaire fase.
 
 Je bent de **lead** (de "bedrijfseigenaar") van een fase. Je mag de fase bouwen met een
 team van specialisten in plaats van alleen. Het team is en blijft de generator: het levert
@@ -9,20 +10,25 @@ werk plus ruw bewijs op, het velt **nooit** een eigen oordeel over slagen of fal
 herdraait de onafhankelijke evaluator alles. Het team is voor doorzet en gespecialiseerde
 vaardigheid, niet voor goedkeuring.
 
-## Wanneer een team, wanneer solo
+## Team is de default, solo de uitzondering
 
-- **Solo**: de fase is een coherente eenheid die een agent goed alleen afmaakt.
-- **Team**: de fase heeft losse sporen die parallel kunnen (frontend, backend, tests, data,
-  docs), of vraagt vaardigheden die je niet paraat hebt. Dan tuig je een team op, zo zwaar
-  als de taak verdient. Grote fasen kunnen meerdere teams naast elkaar draaien.
+Scheidbaarheid bepaalt de vorm, niet de kosten.
+
+- **Team (default)**: kun je de fase in Stap 1 in twee of meer niet-overlappende sporen knippen
+  (bijvoorbeeld frontend, backend, tests, data, docs), dan is het een team: een specialist per
+  spoor, parallel. Het aantal sporen bepaalt de teamgrootte. Grote fasen kunnen meerdere teams
+  naast elkaar draaien. Ontbrekende vaardigheden zijn een extra reden voor meer specialisten,
+  niet de enige trigger.
+- **Solo (uitzondering)**: alleen als de fase atomair is, de wijzigingen raken hetzelfde bestand
+  of dezelfde functie met een strikte volgorde-afhankelijkheid, zodat splitsen geen zin heeft.
 
 ## Stap 0: kies het werkpatroon
 
 Voor je de fase in sporen knipt, kies het patroon dat bij de aard van de fase past. Volg de
 selectie-heuristiek in `.supergoal/workflow-patterns.md`: lees de fase-spec, match het signaal op
-een patroon, en val terug op geen patroon (sequentieel) als de fase een coherente klus is die een
-agent goed alleen afmaakt. De meeste fasen verdienen geen patroon, en een patroon kost extra
-tokens, dus zet het alleen in als de aard erom vraagt.
+een patroon, en val terug op geen patroon alleen als de fase atomair is. Is de fase scheidbaar in
+twee of meer onafhankelijke sporen, dan fan je sowieso parallel uit (een specialist per spoor);
+het patroon kiest daarbovenop de vorm.
 
 Is de aard niet eenduidig uit de spec te lezen, spawn dan de lichte classifier-agent uit dat
 bestand. Het gekozen patroon stuurt de volgende stappen: fan-out-and-synthesize knipt in veel
@@ -55,26 +61,30 @@ Log per benodigde skill een regel: `installed:<naam>` | `acquired:<owner/repo vi
 | `written:<naam>` | `none:<reden>`. Een spoor zonder oplosbare skill val je terug op een
 generalist, en je noteert dat.
 
-## Stap 3: dispatch de specialisten (kies de lichtste manier die past)
+## Stap 3: dispatch de specialisten (match de vorm op het werk)
 
-Er zijn drie manieren, van licht naar zwaar. Kies op wat beschikbaar is en wat je account
-aankan. Niet iedereen heeft een groot credit-budget, dus de standaard is licht.
+Drie manieren. De vorm volgt uit het werk, niet uit je budget.
 
-1. **Sequentieel in de `/goal` run (standaard, geen extra credits).** De generator doet de
-   sporen zelf, een voor een, binnen dezelfde run. Geen extra agents, geen extra credits.
-   Voor de meeste fasen is dit genoeg.
-2. **Subagents (Task), matige kosten.** Een specialist per spoor, parallel, als de fase echt
-   losse sporen heeft en de snelheid het waard is.
-3. **Workflow-tool (zwaar, opt-in).** Grote swarms parallel. Alleen als je account de credits
-   heeft en de taak het rechtvaardigt. Verbrandt veel tokens, dus nooit de standaard.
+1. **Subagents (Task), de default bij twee of meer sporen.** Een specialist-subagent per spoor,
+   parallel. Dit kost geen extra credits. Zodra Stap 1 twee of meer niet-overlappende sporen
+   oplevert, is dit de juiste vorm.
+2. **Sequentieel in de `/goal` run (fallback).** Alleen voor een atomaire fase (een spoor), of
+   als er geen dispatch-tool is. Geen default, een terugval.
+3. **Workflow-tool (alleen voor grote fan-outs met credits).** Een ongewoon groot aantal
+   parallelle sporen tegelijk. Alleen als je account de credits heeft. Verbrandt veel tokens,
+   dus voorbehouden aan echt brede swarms.
 
 Geef elke specialist mee: zijn spoor en deliverable, de skill(s) die hij gebruikt, het deel
 van de acceptatiecriteria dat hij dekt, en de opdracht om werk plus ruw bewijs terug te geven
 (commando-output, gewijzigde bestanden, observaties), zonder eigen pass/fail-oordeel.
 
-Op Codex of zonder dispatch-tool: altijd manier 1, sequentieel. Zelfde resultaat, langzamer.
+Zonder dispatch-tool (bijvoorbeeld Codex): val terug op sequentieel binnen de run. Dat is een
+fallback, geen default. Een specialist per spoor geeft skill-dekking en parallellisme die een
+enkele agent niet heeft, dat is waarom het team-pad bestaat.
 
-De run-brede keuze staat in `.supergoal/STATE.md` (`Dispatch:`). Ga daar niet zwaarder overheen: koos Stage 6.6 zuinig, dan blijf je sequentieel, ook als er een Workflow-tool beschikbaar is.
+De `Dispatch:`-regel in `.supergoal/STATE.md` begrenst alleen de zware Workflow-tier. Parallelle
+subagents zet je altijd in voor een fase met twee of meer sporen, tenzij de gebruiker subagents
+expliciet uitzette. Het is geen vloer die parallellisme blokkeert.
 
 ## Stap 4: voeg samen
 
@@ -92,12 +102,23 @@ Pattern: <geen | classify-and-act | fan-out-and-synthesize | adversarial-verific
 Tracks:
 - <spoor 1>: <deliverable> | skill: <installed|acquired|written|none + naam/bron> | criteria: <welke>
 - <spoor 2>: ...
-Teams parallel: <1 of meer>
-Dispatch: <sequentieel in /goal | subagents (Task) | workflow-tool>
+Specialisten parallel: <N, minimaal 2; bij 1 is het geen team, draai solo>
+Teams parallel: <1 of meer naast elkaar draaiende teams>
+Dispatch: <subagents (Task) | workflow-tool | sequentieel in /goal>
 ```
+
+Bij twee of meer Tracks hoort hier `subagents` of `workflow-tool`, nooit `sequentieel`. Een
+team-blok met een spoor of met `Specialisten parallel: 1` is geen team: schrap het blok en draai
+de fase solo.
 
 ## Grens
 
 Het team verandert niks aan de gate. Wie bouwt keurt nooit zichzelf, ook een team niet. Na
 `SUPERGOAL_PHASE_EVIDENCE` herdraait de onafhankelijke evaluator elke check op het draaiende
 artefact. Meer agents betekent meer bouwkracht, niet meer vertrouwen vooraf.
+
+Een team met een agent bestaat niet, dat is een solo-fase met overhead. Een Workflow die maar
+een agent spawnt is verboden: de Workflow-tool en een team zijn er voor twee of meer sporen die
+tegelijk draaien. Bij precies een spoor draai je solo (inline of een enkele subagent), nooit als
+Workflow of team. Een `SUPERGOAL_PHASE_TEAM` met twee of meer Tracks maar `Dispatch: sequentieel`
+is fout en moet je overdoen als parallelle subagents.

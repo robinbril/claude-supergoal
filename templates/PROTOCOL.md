@@ -18,17 +18,20 @@ Herhaal tot `SUPERGOAL_RUN_COMPLETE` is geprint:
    Dit is het rollback-anker waar `phase-N-rationale.md` naar verwijst.
 4. Print `SUPERGOAL_PHASE_START` met de spec-metadata (fasenummer, naam, taak, mandatory
    commands, criteria-telling, vereist bewijs, afhankelijkheden, validatieklassen).
-5. **Generator (solo of als team).** Kies eerst het werkpatroon dat bij de fase past (zie
-   `.supergoal/workflow-patterns.md`): default geen patroon (sequentieel), anders
+5. **Generator (team by default, solo alleen bij een atomaire fase).** Kies eerst het werkpatroon
+   dat bij de fase past (zie `.supergoal/workflow-patterns.md`): default geen patroon, anders
    classify-and-act, fan-out-and-synthesize, adversarial verification, generate-and-filter,
-   tournament of loop-until-done naar het signaal in de spec; bij twijfel een lichte
-   classifier-agent. Heeft de fase losse sporen of vraagt ze vaardigheden
-   die je niet paraat hebt, tuig dan een team op volgens `.supergoal/phase-team.md`: knip de
-   fase in sporen, los per spoor de skill op (match installed; anders `npx skills add
-   <owner/repo>` van skills.sh; anders schrijf een skill), en dispatch de specialisten
-   via de lichtste manier die past (sequentieel in de run als standaard; subagents of de
-   Workflow-tool alleen met genoeg credits). Print eerst `SUPERGOAL_PHASE_TEAM` (patroon,
-   sporen, opgeloste skills, dispatch-modus). Doe dan
+   tournament of loop-until-done naar het signaal in de spec. Knip de fase eerst in onafhankelijke
+   sporen (verschillende bestanden of modules, eigen criteria, geen onderlinge afhankelijkheid
+   binnen de fase); bij onduidelijke scheidbaarheid splits je in kandidaat-sporen, een classifier
+   bepaalt hooguit de spoor-grenzen, niet of je een team vormt. Bij twee of meer sporen is het een
+   team: dispatch een specialist-subagent per spoor parallel via `.supergoal/phase-team.md`, en los
+   per spoor de skill op (match installed; anders `npx skills add <owner/repo>` van skills.sh;
+   anders schrijf een skill). Sequentieel of inline is alleen de juiste vorm bij precies een spoor
+   (atomaire fase) of als er geen subagent-tool is; de Workflow-tool is voorbehouden aan grote
+   swarms met credits. Een team met een agent, of een `Dispatch: sequentieel` bij twee of meer
+   sporen, is fout. Print eerst `SUPERGOAL_PHASE_TEAM` (patroon, sporen, specialisten parallel,
+   opgeloste skills, dispatch-modus). Doe dan
    het werk uit de spec, draai de mandatory commands, en stuur voor elk `[empirical]`
    criterium het draaiende artefact aan en leg de observatie vast (screenshot-pad,
    HTTP-respons, CLI-output). Print `SUPERGOAL_PHASE_EVIDENCE`: ruwe command-output

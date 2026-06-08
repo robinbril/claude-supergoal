@@ -47,6 +47,15 @@ check_section "Acceptance criteria"
 check_section "Mandatory commands"
 check_section "Evidence required"
 
+# Team marker: solo must be justified as atomic, else the phase must list tracks + specialists
+team_line=$(grep -iE '^[[:space:]]*Team:' "$f" | head -1 || true)
+if [[ -n "$team_line" ]] && echo "$team_line" | grep -qiE 'solo'; then
+  if ! echo "$team_line" | grep -qiE 'atomair|atomic'; then
+    echo "❌ $f: Team is 'solo' zonder atomariteits-reden. Een scheidbare fase moet sporen + specialisten dragen; solo vereist 'atomair: <reden>'." >&2
+    errors=$((errors + 1))
+  fi
+fi
+
 # Sanity check: at least one criterion line
 crits=$(grep -cE '^[[:space:]]*-' "$f" || true)
 if [[ "$crits" -lt 3 ]]; then
