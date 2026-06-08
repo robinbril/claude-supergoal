@@ -1,212 +1,166 @@
-<svg viewBox="0 0 1480 1320" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 1600 910" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">
   <defs>
     <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8a8a93"/></marker>
     <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker>
     <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5d8a3a"/></marker>
-    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.12"/></filter>
-    <filter id="shn" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.10"/></filter>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.10"/></filter>
   </defs>
 
-  <rect x="0" y="0" width="1480" height="1320" fill="#fafaf9"/>
+  <rect x="0" y="0" width="1600" height="910" fill="#f5f5f3"/>
 
-  <text x="48" y="52" font-size="28" font-weight="700" fill="#1b1b1f">Supergoal</text>
-  <text x="48" y="82" font-size="15" fill="#6b6b73">Plan samen, bouw autonoom, bewijs onafhankelijk. Een skill voor Claude Code en Codex.</text>
+  <text x="48" y="56" font-size="28" font-weight="700" fill="#1b1b1f">Supergoal</text>
+  <text x="48" y="84" font-size="14" fill="#6b6b73">Plan samen, bouw autonoom, bewijs onafhankelijk. Een skill voor Claude Code en Codex.</text>
 
-  <!-- ============ SPINE (center x=740) ============ -->
+  <!-- ============ OVERVIEW FLOW ============ -->
+  <rect x="48" y="128" width="210" height="62" rx="12" fill="#FFE6CC" stroke="#D79B00" stroke-width="2" filter="url(#sh)"/>
+  <text x="153" y="165" text-anchor="middle" font-size="15" font-weight="600" fill="#1b1b1f">Jouw taak</text>
+  <line x1="260" y1="159" x2="305" y2="159" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
 
-  <rect x="560" y="104" width="360" height="52" rx="12" fill="#FFE6CC" stroke="#D79B00" stroke-width="2" filter="url(#shn)"/>
-  <text x="740" y="136" text-anchor="middle" font-size="16" font-weight="600" fill="#1b1b1f">Jouw taak</text>
-  <line x1="740" y1="156" x2="740" y2="184" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="307" y="128" width="210" height="62" rx="12" fill="#FFF2CC" stroke="#D6B656" stroke-width="2" filter="url(#sh)"/>
+  <text x="412" y="154" text-anchor="middle" font-size="15" font-weight="600" fill="#1b1b1f">Plannen samen</text>
+  <text x="412" y="173" text-anchor="middle" font-size="10.5" fill="#9a7b1f">jij beslist</text>
+  <line x1="519" y1="159" x2="564" y2="159" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
 
-  <rect x="560" y="186" width="360" height="66" rx="12" fill="#E1D5E7" stroke="#9673A6" stroke-width="2" filter="url(#shn)"/>
-  <text x="740" y="215" text-anchor="middle" font-size="16" font-weight="600" fill="#1b1b1f">1. Plannen samen</text>
-  <text x="740" y="236" text-anchor="middle" font-size="12.5" fill="#5b5b63">interview, een scherpe vraag per keer</text>
-  <line x1="740" y1="252" x2="740" y2="280" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="566" y="128" width="210" height="62" rx="12" fill="#D5E8D4" stroke="#82B366" stroke-width="2" filter="url(#sh)"/>
+  <text x="671" y="165" text-anchor="middle" font-size="15" font-weight="600" fill="#1b1b1f">Context</text>
+  <line x1="778" y1="159" x2="823" y2="159" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
 
-  <!-- ====== 2. CONTEXT CLUSTER ====== -->
-  <rect x="460" y="282" width="560" height="214" rx="14" fill="#eef4ed" stroke="#b9d3b4" stroke-width="2"/>
-  <text x="482" y="308" font-size="14" font-weight="700" fill="#3a4a37">2. Context verzamelen</text>
-  <text x="482" y="326" font-size="12" fill="#5b6b58">vier bronnen ophalen, dan twee checks die elkaar tegenspreken</text>
+  <rect x="825" y="128" width="210" height="62" rx="12" fill="#FFF2CC" stroke="#D6B656" stroke-width="2" filter="url(#sh)"/>
+  <text x="930" y="154" text-anchor="middle" font-size="15" font-weight="600" fill="#1b1b1f">Plan-review</text>
+  <text x="930" y="173" text-anchor="middle" font-size="10.5" fill="#9a7b1f">jij beslist</text>
+  <line x1="1037" y1="159" x2="1082" y2="159" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
 
-  <rect x="484" y="340" width="116" height="40" rx="9" fill="#D5E8D4" stroke="#82B366" stroke-width="1.5" filter="url(#shn)"/>
-  <text x="542" y="365" text-anchor="middle" font-size="13" font-weight="600" fill="#28391f">Code</text>
-  <rect x="616" y="340" width="116" height="40" rx="9" fill="#D5E8D4" stroke="#82B366" stroke-width="1.5" filter="url(#shn)"/>
-  <text x="674" y="365" text-anchor="middle" font-size="13" font-weight="600" fill="#28391f">Docs</text>
-  <rect x="748" y="340" width="116" height="40" rx="9" fill="#D5E8D4" stroke="#82B366" stroke-width="1.5" filter="url(#shn)"/>
-  <text x="806" y="365" text-anchor="middle" font-size="13" font-weight="600" fill="#28391f">MCP's</text>
-  <rect x="880" y="340" width="116" height="40" rx="9" fill="#D5E8D4" stroke="#82B366" stroke-width="1.5" filter="url(#shn)"/>
-  <text x="938" y="365" text-anchor="middle" font-size="13" font-weight="600" fill="#28391f">Skills</text>
+  <rect x="1084" y="128" width="210" height="62" rx="12" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="2" filter="url(#sh)"/>
+  <text x="1189" y="154" text-anchor="middle" font-size="15" font-weight="600" fill="#1b1b1f">Autonome run</text>
+  <text x="1189" y="173" text-anchor="middle" font-size="10.5" fill="#4f6a8c">bouwen + bewijzen</text>
+  <line x1="1296" y1="159" x2="1341" y2="159" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
 
-  <line x1="740" y1="380" x2="740" y2="398" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="1343" y="128" width="210" height="62" rx="12" fill="#D5E8D4" stroke="#5d8a3a" stroke-width="2.5" filter="url(#sh)"/>
+  <text x="1448" y="165" text-anchor="middle" font-size="16" font-weight="700" fill="#1b1b1f">Klaar</text>
 
-  <rect x="486" y="400" width="246" height="50" rx="10" fill="#D5E8D4" stroke="#5d8a3a" stroke-width="2" filter="url(#shn)"/>
-  <text x="609" y="421" text-anchor="middle" font-size="13.5" font-weight="700" fill="#28391f">Genoeg context?</text>
-  <text x="609" y="438" text-anchor="middle" font-size="11.5" fill="#41603a">sufficient-judge: is het compleet</text>
+  <text x="800" y="218" text-anchor="middle" font-size="12.5" fill="#6b6b73">Twee keer beslis jij: bij het plannen en bij de review. Daartussen draait het autonoom tot klaar.</text>
 
-  <rect x="752" y="400" width="250" height="50" rx="10" fill="#ffffff" stroke="#c0392b" stroke-width="2" filter="url(#shn)"/>
-  <text x="877" y="421" text-anchor="middle" font-size="13.5" font-weight="700" fill="#a02c20">Tegencheck</text>
-  <text x="877" y="438" text-anchor="middle" font-size="11.5" fill="#a02c20">adversarial prober: zoekt een gat</text>
+  <!-- ============ SEPARATOR ============ -->
+  <line x1="48" y1="250" x2="1552" y2="250" stroke="#e0e0dd" stroke-width="1.5"/>
+  <text x="48" y="278" font-size="16" font-weight="700" fill="#3a3a42">Onder de motorkap</text>
+  <text x="48" y="296" font-size="11.5" fill="#8a8a8f">De drie kernonderdelen uit de flow hierboven, uitgelicht.</text>
 
-  <line x1="732" y1="425" x2="750" y2="425" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+  <!-- ====== CARD 1: CONTEXT ====== -->
+  <rect x="48" y="312" width="476" height="556" rx="14" fill="#ffffff" stroke="#e4e4ea" stroke-width="1.5" filter="url(#sh)"/>
+  <rect x="70" y="332" width="82" height="24" rx="12" fill="#D5E8D4" stroke="#82B366" stroke-width="1.2"/>
+  <text x="111" y="348" text-anchor="middle" font-size="11" font-weight="700" fill="#2f4a25">context</text>
+  <text x="70" y="386" font-size="16" font-weight="700" fill="#1b1b1f">Context verzamelen</text>
+  <text x="70" y="407" font-size="11.5" fill="#6b6b73">vier bronnen, dan twee checks die elkaar tegenspreken</text>
 
-  <path d="M 800 450 L 800 474 L 474 474 L 474 360 L 482 360" fill="none" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ar)"/>
-  <text x="556" y="469" font-size="11" font-weight="600" fill="#c0392b">gat gevonden, meer ophalen</text>
+  <rect x="74" y="424" width="204" height="42" rx="9" fill="#D5E8D4" stroke="#82B366" stroke-width="1.5"/>
+  <text x="176" y="450" text-anchor="middle" font-size="13" font-weight="600" fill="#28391f">Code</text>
+  <rect x="294" y="424" width="204" height="42" rx="9" fill="#D5E8D4" stroke="#82B366" stroke-width="1.5"/>
+  <text x="396" y="450" text-anchor="middle" font-size="13" font-weight="600" fill="#28391f">Docs</text>
+  <rect x="74" y="476" width="204" height="42" rx="9" fill="#D5E8D4" stroke="#82B366" stroke-width="1.5"/>
+  <text x="176" y="502" text-anchor="middle" font-size="13" font-weight="600" fill="#28391f">MCP's</text>
+  <rect x="294" y="476" width="204" height="42" rx="9" fill="#D5E8D4" stroke="#82B366" stroke-width="1.5"/>
+  <text x="396" y="502" text-anchor="middle" font-size="13" font-weight="600" fill="#28391f">Skills</text>
 
-  <line x1="740" y1="450" x2="740" y2="524" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="286" y1="518" x2="286" y2="540" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
 
-  <!-- 3. Plan-review -->
-  <rect x="560" y="526" width="360" height="62" rx="12" fill="#FFF2CC" stroke="#D6B656" stroke-width="2" filter="url(#shn)"/>
-  <text x="740" y="552" text-anchor="middle" font-size="16" font-weight="600" fill="#1b1b1f">3. Plan-review</text>
-  <text x="740" y="572" text-anchor="middle" font-size="12.5" fill="#5b5b63">jij keurt het plan goed (de enige stop)</text>
-  <line x1="740" y1="588" x2="740" y2="612" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="76" y="542" width="420" height="50" rx="10" fill="#D5E8D4" stroke="#5d8a3a" stroke-width="2"/>
+  <text x="286" y="564" text-anchor="middle" font-size="13.5" font-weight="700" fill="#28391f">Genoeg context?</text>
+  <text x="286" y="581" text-anchor="middle" font-size="11" fill="#41603a">sufficient-judge: is het compleet</text>
 
-  <!-- ====== DISPATCH HUB + /loop ====== -->
-  <rect x="590" y="614" width="300" height="54" rx="12" fill="#FFF2CC" stroke="#D6B656" stroke-width="2.5" filter="url(#sh)"/>
-  <text x="740" y="638" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1b1b1f">Dispatch</text>
-  <text x="740" y="656" text-anchor="middle" font-size="11.5" fill="#5b5b63">on the spot, op vraag x budget</text>
+  <line x1="286" y1="592" x2="286" y2="610" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
 
-  <line x1="890" y1="641" x2="928" y2="641" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
-  <rect x="930" y="618" width="184" height="48" rx="10" fill="#ffffff" stroke="#6C8EBF" stroke-width="2" filter="url(#shn)"/>
-  <text x="1022" y="638" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2c4870">/loop of scheduled task</text>
-  <text x="1022" y="654" text-anchor="middle" font-size="10.5" fill="#5b6b80">terugkerend, herhaalt de run</text>
-  <path d="M 1022 666 L 1022 682 L 1006 682 L 1006 692" fill="none" stroke="#8a8a93" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#a)"/>
-  <text x="1030" y="682" font-size="10.5" fill="#6b6b73">elke ronde</text>
+  <rect x="76" y="612" width="420" height="50" rx="10" fill="#ffffff" stroke="#c0392b" stroke-width="2"/>
+  <text x="286" y="634" text-anchor="middle" font-size="13.5" font-weight="700" fill="#a02c20">Tegencheck</text>
+  <text x="286" y="651" text-anchor="middle" font-size="11" fill="#a02c20">adversarial prober: zoekt een gat</text>
 
-  <line x1="740" y1="668" x2="740" y2="692" stroke="#8a8a93" stroke-width="2.5" marker-end="url(#a)"/>
-  <text x="752" y="686" font-size="12.5" font-weight="700" fill="#2c4870">/goal</text>
+  <path d="M 96 662 L 60 662 L 60 445 L 74 445" fill="none" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ar)"/>
 
-  <!-- ====== AUTONOMOUS RUN ====== -->
-  <rect x="460" y="694" width="560" height="422" rx="16" fill="#f1f1f4" stroke="#c9c9d1" stroke-width="2"/>
-  <text x="482" y="720" font-size="14" font-weight="700" fill="#3a3a42">Autonome run onder /goal</text>
-  <text x="482" y="738" font-size="12" fill="#6b6b73">fase voor fase, ook urenlang, zonder babysitten</text>
+  <text x="70" y="700" font-size="11" font-style="italic" fill="#7a7a82">De ene checkt of de context compleet is, de</text>
+  <text x="70" y="716" font-size="11" font-style="italic" fill="#7a7a82">andere zoekt juist een gat. Gat gevonden, dan</text>
+  <text x="70" y="732" font-size="11" font-style="italic" fill="#7a7a82">eerst meer ophalen voor het plannen begint.</text>
 
-  <text x="740" y="760" text-anchor="middle" font-size="11.5" fill="#6b6b73">per fase kiest hij <tspan font-weight="700" fill="#3a3a42">automatisch</tspan> een patroon (de vorm) en de zwaarte</text>
+  <!-- ====== CARD 2: KEUZE ====== -->
+  <rect x="562" y="312" width="476" height="556" rx="14" fill="#ffffff" stroke="#e4e4ea" stroke-width="1.5" filter="url(#sh)"/>
+  <rect x="584" y="332" width="70" height="24" rx="12" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="1.2"/>
+  <text x="619" y="348" text-anchor="middle" font-size="11" font-weight="700" fill="#2c4870">keuze</text>
+  <text x="584" y="386" font-size="16" font-weight="700" fill="#1b1b1f">Hoe het bouwt</text>
+  <text x="584" y="407" font-size="11.5" fill="#6b6b73">kiest automatisch, op vraag en budget</text>
 
-  <!-- pattern picker: 6 chips, 2 rows of 3 -->
-  <rect x="478" y="770" width="168" height="26" rx="7" fill="#ffffff" stroke="#8aa6cc" stroke-width="1.5"/>
-  <text x="562" y="787" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">classify-and-act</text>
-  <rect x="654" y="770" width="168" height="26" rx="7" fill="#ffffff" stroke="#8aa6cc" stroke-width="1.5"/>
-  <text x="738" y="787" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">fan-out</text>
-  <rect x="830" y="770" width="168" height="26" rx="7" fill="#ffffff" stroke="#8aa6cc" stroke-width="1.5"/>
-  <text x="914" y="787" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">adversarial verify</text>
-  <rect x="478" y="800" width="168" height="26" rx="7" fill="#ffffff" stroke="#8aa6cc" stroke-width="1.5"/>
-  <text x="562" y="817" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">generate-and-filter</text>
-  <rect x="654" y="800" width="168" height="26" rx="7" fill="#ffffff" stroke="#8aa6cc" stroke-width="1.5"/>
-  <text x="738" y="817" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">tournament</text>
-  <rect x="830" y="800" width="168" height="26" rx="7" fill="#ffffff" stroke="#8aa6cc" stroke-width="1.5"/>
-  <text x="914" y="817" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">loop-until-done</text>
+  <rect x="584" y="424" width="432" height="128" rx="10" fill="#f7f9fc" stroke="#d7ddea" stroke-width="1.2"/>
+  <text x="600" y="446" font-size="12.5" font-weight="700" fill="#3a3a42">patroon</text>
+  <text x="664" y="446" font-size="10.5" fill="#8a8a8f">kiest 1 van 6</text>
+  <text x="602" y="472" font-size="11" fill="#3a567a">classify-and-act</text>
+  <text x="812" y="472" font-size="11" fill="#3a567a">generate-and-filter</text>
+  <text x="602" y="496" font-size="11" fill="#3a567a">fan-out</text>
+  <text x="812" y="496" font-size="11" fill="#3a567a">tournament</text>
+  <text x="602" y="520" font-size="11" fill="#3a567a">adversarial verify</text>
+  <text x="812" y="520" font-size="11" fill="#3a567a">loop-until-done</text>
 
-  <!-- intensity dial -->
-  <rect x="515" y="836" width="140" height="28" rx="14" fill="#DAE8FC" stroke="#4f79b0" stroke-width="2"/>
-  <text x="585" y="854" text-anchor="middle" font-size="11" font-weight="700" fill="#1f3a5c">sequentieel</text>
-  <text x="662" y="855" font-size="13" font-weight="700" fill="#9aa0a8">&#8250;</text>
-  <rect x="676" y="836" width="118" height="28" rx="14" fill="#eaf1fb" stroke="#8aa6cc" stroke-width="1.5"/>
-  <text x="735" y="854" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">subagents</text>
-  <text x="800" y="855" font-size="13" font-weight="700" fill="#9aa0a8">&#8250;</text>
-  <rect x="814" y="836" width="152" height="28" rx="14" fill="#eaf1fb" stroke="#8aa6cc" stroke-width="1.5"/>
-  <text x="890" y="854" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">Workflow-swarm</text>
+  <rect x="584" y="566" width="432" height="66" rx="10" fill="#f7f9fc" stroke="#d7ddea" stroke-width="1.2"/>
+  <text x="600" y="588" font-size="12.5" font-weight="700" fill="#3a3a42">zwaarte</text>
+  <rect x="600" y="600" width="126" height="24" rx="12" fill="#DAE8FC" stroke="#4f79b0" stroke-width="1.5"/>
+  <text x="663" y="616" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1f3a5c">sequentieel</text>
+  <text x="731" y="617" font-size="12" font-weight="700" fill="#9aa0a8">&#8250;</text>
+  <rect x="740" y="600" width="104" height="24" rx="12" fill="#eaf1fb" stroke="#8aa6cc" stroke-width="1.2"/>
+  <text x="792" y="616" text-anchor="middle" font-size="10.5" font-weight="600" fill="#3a567a">subagents</text>
+  <text x="849" y="617" font-size="12" font-weight="700" fill="#9aa0a8">&#8250;</text>
+  <rect x="858" y="600" width="150" height="24" rx="12" fill="#eaf1fb" stroke="#8aa6cc" stroke-width="1.2"/>
+  <text x="933" y="616" text-anchor="middle" font-size="10.5" font-weight="600" fill="#3a567a">Workflow-swarm</text>
 
-  <!-- generator lead -->
-  <rect x="590" y="876" width="300" height="48" rx="12" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="2" filter="url(#shn)"/>
-  <text x="740" y="897" text-anchor="middle" font-size="15" font-weight="700" fill="#1b1b1f">Generator: lead bouwt de fase</text>
-  <text x="740" y="914" text-anchor="middle" font-size="11.5" fill="#5b5b63">levert ruw bewijs, geen oordeel</text>
+  <rect x="584" y="646" width="432" height="66" rx="10" fill="#f7f9fc" stroke="#d7ddea" stroke-width="1.2"/>
+  <text x="600" y="668" font-size="12.5" font-weight="700" fill="#3a3a42">modus</text>
+  <rect x="600" y="680" width="200" height="24" rx="12" fill="#ffffff" stroke="#6C8EBF" stroke-width="1.2"/>
+  <text x="700" y="696" text-anchor="middle" font-size="10.5" font-weight="600" fill="#2c4870">/goal, bouw tot klaar</text>
+  <rect x="812" y="680" width="196" height="24" rx="12" fill="#ffffff" stroke="#6C8EBF" stroke-width="1.2"/>
+  <text x="910" y="696" text-anchor="middle" font-size="10.5" font-weight="600" fill="#2c4870">/loop, terugkerend</text>
 
-  <text x="740" y="942" text-anchor="middle" font-size="11" fill="#6b6b73">skill-finder per specialist: eerst matchen, anders van skills.sh, anders zelf schrijven</text>
+  <text x="584" y="748" font-size="11" font-style="italic" fill="#7a7a82">Patroon is de vorm, zwaarte hoe groot, modus</text>
+  <text x="584" y="764" font-size="11" font-style="italic" fill="#7a7a82">eenmalig of terugkerend. Niet eenduidig? Dan</text>
+  <text x="584" y="780" font-size="11" font-style="italic" fill="#7a7a82">kiest een lichte classifier-agent het patroon.</text>
 
-  <rect x="491" y="950" width="150" height="44" rx="10" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="1.5" filter="url(#shn)"/>
-  <text x="566" y="970" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1b1b1f">specialist</text>
-  <text x="566" y="985" text-anchor="middle" font-size="10.5" fill="#4f6a8c">skill: installed</text>
-  <rect x="665" y="950" width="150" height="44" rx="10" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="1.5" filter="url(#shn)"/>
-  <text x="740" y="970" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1b1b1f">specialist</text>
-  <text x="740" y="985" text-anchor="middle" font-size="10.5" fill="#4f6a8c">skill: van skills.sh</text>
-  <rect x="839" y="950" width="150" height="44" rx="10" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="1.5" filter="url(#shn)"/>
-  <text x="914" y="970" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1b1b1f">specialist</text>
-  <text x="914" y="985" text-anchor="middle" font-size="10.5" fill="#4f6a8c">skill: zelf geschreven</text>
+  <!-- ====== CARD 3: DE KERN (moat) ====== -->
+  <rect x="1076" y="312" width="476" height="556" rx="14" fill="#ffffff" stroke="#4f79b0" stroke-width="2.5" filter="url(#sh)"/>
+  <rect x="1098" y="332" width="90" height="24" rx="12" fill="#C7DCF7" stroke="#4f79b0" stroke-width="1.2"/>
+  <text x="1143" y="348" text-anchor="middle" font-size="11" font-weight="700" fill="#16314f">de kern</text>
+  <text x="1098" y="386" font-size="16" font-weight="700" fill="#1b1b1f">Bouwen en bewijzen</text>
+  <text x="1098" y="407" font-size="11.5" fill="#6b6b73">de bouwer keurt nooit zijn eigen werk</text>
 
-  <line x1="566" y1="994" x2="722" y2="1018" stroke="#9aa0a8" stroke-width="1.5"/>
-  <line x1="914" y1="994" x2="758" y2="1018" stroke="#9aa0a8" stroke-width="1.5"/>
-  <line x1="740" y1="994" x2="740" y2="1020" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="1110" y="424" width="408" height="56" rx="10" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="2"/>
+  <text x="1314" y="447" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1b1b1f">Generator: lead bouwt de fase</text>
+  <text x="1314" y="465" text-anchor="middle" font-size="11" fill="#5b5b63">levert ruw bewijs, geen oordeel</text>
 
-  <rect x="560" y="1022" width="360" height="74" rx="12" fill="#C7DCF7" stroke="#4f79b0" stroke-width="2.5" filter="url(#sh)"/>
-  <text x="740" y="1049" text-anchor="middle" font-size="16" font-weight="700" fill="#16314f">Onafhankelijke evaluator</text>
-  <text x="740" y="1068" text-anchor="middle" font-size="12" fill="#314a66">herdraait elke check op de echte app</text>
-  <text x="740" y="1086" text-anchor="middle" font-size="12.5" font-weight="700" fill="#16314f">ACCEPT of REJECT</text>
+  <text x="1314" y="496" text-anchor="middle" font-size="10" fill="#8a8a8f">team van specialisten, skill via skill-finder</text>
+  <rect x="1110" y="502" width="128" height="36" rx="9" fill="#eaf1fb" stroke="#8aa6cc" stroke-width="1.2"/>
+  <text x="1174" y="524" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">installed</text>
+  <rect x="1250" y="502" width="128" height="36" rx="9" fill="#eaf1fb" stroke="#8aa6cc" stroke-width="1.2"/>
+  <text x="1314" y="524" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">skills.sh</text>
+  <rect x="1390" y="502" width="128" height="36" rx="9" fill="#eaf1fb" stroke="#8aa6cc" stroke-width="1.2"/>
+  <text x="1454" y="524" text-anchor="middle" font-size="11" font-weight="600" fill="#3a567a">zelf</text>
 
-  <path d="M 560 1060 L 536 1060 L 536 901 L 590 901" fill="none" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ar)"/>
-  <text x="512" y="928" font-size="11" font-weight="600" fill="#c0392b">REJECT</text>
+  <line x1="1314" y1="538" x2="1314" y2="556" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
 
-  <line x1="740" y1="1116" x2="740" y2="1150" stroke="#5d8a3a" stroke-width="2.5" marker-end="url(#ag)"/>
-  <text x="752" y="1138" font-size="12" font-weight="700" fill="#5d8a3a">ACCEPT</text>
+  <rect x="1098" y="558" width="432" height="88" rx="12" fill="#C7DCF7" stroke="#4f79b0" stroke-width="3" filter="url(#sh)"/>
+  <text x="1314" y="585" text-anchor="middle" font-size="16" font-weight="700" fill="#16314f">Onafhankelijke evaluator</text>
+  <text x="1314" y="605" text-anchor="middle" font-size="11.5" fill="#314a66">verse context, herdraait elke check</text>
+  <text x="1314" y="621" text-anchor="middle" font-size="11.5" fill="#314a66">op de echte app</text>
+  <text x="1314" y="639" text-anchor="middle" font-size="12.5" font-weight="700" fill="#16314f">ACCEPT of REJECT</text>
 
-  <rect x="560" y="1152" width="360" height="58" rx="12" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="2" filter="url(#shn)"/>
-  <text x="740" y="1177" text-anchor="middle" font-size="15" font-weight="600" fill="#1b1b1f">Eindaudit tegen het plan</text>
-  <text x="740" y="1196" text-anchor="middle" font-size="12" fill="#5b5b63">opnieuw, tegen de oorspronkelijke opdracht</text>
-  <line x1="740" y1="1210" x2="740" y2="1236" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M 1098 600 L 1086 600 L 1086 452 L 1110 452" fill="none" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ar)"/>
+  <text x="1080" y="530" text-anchor="middle" font-size="10" font-weight="600" fill="#c0392b" transform="rotate(-90 1080 530)">REJECT, max 3x</text>
 
-  <rect x="620" y="1238" width="240" height="54" rx="12" fill="#D5E8D4" stroke="#5d8a3a" stroke-width="2.5" filter="url(#shn)"/>
-  <text x="740" y="1272" text-anchor="middle" font-size="17" font-weight="700" fill="#1b1b1f">Klaar</text>
+  <line x1="1314" y1="646" x2="1314" y2="680" stroke="#5d8a3a" stroke-width="2.5" marker-end="url(#ag)"/>
+  <text x="1326" y="668" font-size="11" font-weight="700" fill="#5d8a3a">ACCEPT</text>
 
-  <!-- ============ STICKY NOTES ============ -->
-  <rect x="40" y="300" width="300" height="108" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
-  <text x="56" y="324" font-size="12.5" font-weight="700" fill="#5b4b00">Twee checks, niet een</text>
-  <text x="56" y="344" font-size="12" fill="#5b4b00">De ene agent vraagt of de context</text>
-  <text x="56" y="360" font-size="12" fill="#5b4b00">genoeg is. De andere zoekt juist een</text>
-  <text x="56" y="376" font-size="12" fill="#5b4b00">gat. Vinden ze er een, dan haalt hij</text>
-  <text x="56" y="392" font-size="12" fill="#5b4b00">eerst meer op voor het plannen begint.</text>
+  <rect x="1140" y="682" width="348" height="50" rx="10" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="2"/>
+  <text x="1314" y="704" text-anchor="middle" font-size="13" font-weight="600" fill="#1b1b1f">Eindaudit tegen het plan</text>
+  <text x="1314" y="720" text-anchor="middle" font-size="10.5" fill="#5b5b63">tegen de oorspronkelijke opdracht</text>
 
-  <rect x="40" y="724" width="300" height="72" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
-  <text x="56" y="748" font-size="12.5" font-weight="700" fill="#5b4b00">Overleeft lange runs</text>
-  <text x="56" y="768" font-size="12" fill="#5b4b00">Plan en voortgang staan op schijf,</text>
-  <text x="56" y="784" font-size="12" fill="#5b4b00">dus context-verlies gooit niks weg.</text>
+  <line x1="1314" y1="732" x2="1314" y2="750" stroke="#8a8a93" stroke-width="2" marker-end="url(#a)"/>
 
-  <rect x="40" y="812" width="300" height="72" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
-  <text x="56" y="836" font-size="12.5" font-weight="700" fill="#5b4b00">Stuk? Terugrollen</text>
-  <text x="56" y="856" font-size="12" fill="#5b4b00">Een regressie gaat terug naar de</text>
-  <text x="56" y="872" font-size="12" fill="#5b4b00">baseline van de vorige fase.</text>
+  <rect x="1224" y="752" width="180" height="48" rx="10" fill="#D5E8D4" stroke="#5d8a3a" stroke-width="2.5"/>
+  <text x="1314" y="782" text-anchor="middle" font-size="16" font-weight="700" fill="#1b1b1f">Klaar</text>
 
-  <rect x="40" y="940" width="300" height="112" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
-  <text x="56" y="964" font-size="12.5" font-weight="700" fill="#5b4b00">Per fase een team</text>
-  <text x="56" y="984" font-size="12" fill="#5b4b00">De lead tuigt een zwerm specialisten</text>
-  <text x="56" y="1000" font-size="12" fill="#5b4b00">op, elk met een eigen skill. Mist er</text>
-  <text x="56" y="1016" font-size="12" fill="#5b4b00">een, dan haalt hij die van skills.sh</text>
-  <text x="56" y="1032" font-size="12" fill="#5b4b00">of schrijft hij hem zelf.</text>
-
-  <rect x="1140" y="190" width="300" height="88" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
-  <text x="1156" y="214" font-size="12.5" font-weight="700" fill="#5b4b00">Jij blijft de architect</text>
-  <text x="1156" y="234" font-size="12" fill="#5b4b00">Hij praat je bij met artikelen en</text>
-  <text x="1156" y="250" font-size="12" fill="#5b4b00">scenario's, en vraagt een keuze</text>
-  <text x="1156" y="266" font-size="12" fill="#5b4b00">per keer met een aanbeveling.</text>
-
-  <rect x="1140" y="560" width="300" height="108" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
-  <text x="1156" y="584" font-size="12.5" font-weight="700" fill="#5b4b00">Een keuze, drie zwaartes</text>
-  <text x="1156" y="604" font-size="12" fill="#5b4b00">Op vraag en budget kiest hij on the</text>
-  <text x="1156" y="620" font-size="12" fill="#5b4b00">spot: /goal als standaard, subagents</text>
-  <text x="1156" y="636" font-size="12" fill="#5b4b00">of Workflow-swarms als het mag, en</text>
-  <text x="1156" y="652" font-size="12" fill="#5b4b00">/loop als de taak terugkeert.</text>
-
-  <rect x="1140" y="724" width="300" height="108" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
-  <text x="1156" y="748" font-size="12.5" font-weight="700" fill="#5b4b00">Kiest zelf het patroon</text>
-  <text x="1156" y="768" font-size="12" fill="#5b4b00">Hij leest de aard van de fase en</text>
-  <text x="1156" y="784" font-size="12" fill="#5b4b00">kiest het patroon dat past, of laat</text>
-  <text x="1156" y="800" font-size="12" fill="#5b4b00">een classifier-agent het bepalen.</text>
-  <text x="1156" y="816" font-size="12" fill="#5b4b00">Niks bijzonders? Dan gewoon bouwen.</text>
-
-  <rect x="1140" y="1000" width="300" height="108" rx="3" fill="#FEF3A3" stroke="#D9B40A" stroke-width="1.5" filter="url(#sh)"/>
-  <text x="1156" y="1024" font-size="12.5" font-weight="700" fill="#5b4b00">De kern van het verschil</text>
-  <text x="1156" y="1044" font-size="12" fill="#5b4b00">De bouwer keurt nooit zijn eigen</text>
-  <text x="1156" y="1060" font-size="12" fill="#5b4b00">werk. De evaluator draait de echte</text>
-  <text x="1156" y="1076" font-size="12" fill="#5b4b00">app en bewijst het gedrag, niet</text>
-  <text x="1156" y="1092" font-size="12" fill="#5b4b00">alleen "tests groen".</text>
-
-  <!-- ============ LEGEND ============ -->
-  <rect x="1140" y="1150" width="300" height="152" rx="10" fill="#ffffff" stroke="#e0e0e6" stroke-width="1.5"/>
-  <text x="1156" y="1176" font-size="12.5" font-weight="700" fill="#3a3a42">Legenda</text>
-  <rect x="1156" y="1188" width="14" height="14" rx="3" fill="#FFE6CC" stroke="#D79B00"/><text x="1178" y="1200" font-size="11.5" fill="#444">invoer</text>
-  <rect x="1156" y="1212" width="14" height="14" rx="3" fill="#E1D5E7" stroke="#9673A6"/><text x="1178" y="1224" font-size="11.5" fill="#444">plannen</text>
-  <rect x="1156" y="1236" width="14" height="14" rx="3" fill="#DAE8FC" stroke="#6C8EBF"/><text x="1178" y="1248" font-size="11.5" fill="#444">bouwen en bewijzen</text>
-  <rect x="1156" y="1260" width="14" height="14" rx="3" fill="#FFF2CC" stroke="#D6B656"/><text x="1178" y="1272" font-size="11.5" fill="#444">jij beslist</text>
-  <rect x="1306" y="1188" width="14" height="14" rx="3" fill="#ffffff" stroke="#8aa6cc"/><text x="1328" y="1200" font-size="11.5" fill="#444">patroon</text>
-  <rect x="1306" y="1212" width="14" height="14" rx="3" fill="#D5E8D4" stroke="#82B366"/><text x="1328" y="1224" font-size="11.5" fill="#444">klaar</text>
-  <rect x="1306" y="1236" width="14" height="14" rx="3" fill="#FEF3A3" stroke="#D9B40A"/><text x="1328" y="1248" font-size="11.5" fill="#444">uitleg</text>
-  <line x1="1306" y1="1267" x2="1322" y2="1267" stroke="#c0392b" stroke-width="2" stroke-dasharray="4 3"/><text x="1328" y="1272" font-size="11.5" fill="#444">herstel-lus, max 3x</text>
+  <text x="1098" y="826" font-size="11" font-style="italic" fill="#7a7a82">Bewijs is de echte app draaien, niet tests</text>
+  <text x="1098" y="842" font-size="11" font-style="italic" fill="#7a7a82">groen. Generator en evaluator zijn strikt</text>
+  <text x="1098" y="858" font-size="11" font-style="italic" fill="#7a7a82">gescheiden, dus meer agents kopen geen vertrouwen.</text>
 </svg>
