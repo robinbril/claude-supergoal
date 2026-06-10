@@ -33,12 +33,14 @@ Een fase is pas klaar bij het oordeel van de evaluator, niet bij het rapport van
 
 Een lange run valt niet om door kosten maar door rate limits en door een te zwakke judge. Route daarom op rol, waar de host model-keuze per subagent toelaat (Claude Code's Task tool). Is er maar een model beschikbaar, gebruik dat overal; routing is een optimalisatie, geen vereiste.
 
+**Plan zwaar, voer licht uit.** De planning (Stage 0-6) draait in de hoofdsessie op het zwaarste dat de host biedt: het sessiemodel op hoge effort, met brede recon-fan-outs waar nodig. Daar vallen de beslissingen die de hele run sturen, dus daar mag het kosten. De uitvoering schaalt af op spawn-moment: een spoor-specialist draait standaard een tier lager (worker-model), omdat de zware planfase de specs scherp genoeg maakte dat een worker ze kan uitvoeren, en de evaluator vangt wat alsnog misgaat. Alleen een kritiek of ambigue spoor erft het sessiemodel. Wat nooit afschaalt is de judge-kant: een goedkope evaluator maakt de hele moat waardeloos.
+
 | Rol | Tier | Waarom |
 |---|---|---|
+| Planning (Stage 0-6: intake, recon-synthese, decompose, specs) | het zwaarste beschikbaar, hoge effort | hier vallen de beslissingen die alles erna sturen |
 | Retrieval-workers, cleanliness-greps, mechanische recon | goedkoop en snel (haiku) | hoog volume en mechanisch; hier verbrand je anders je limiet |
-| Query rewriter, synthese, decompose, spec-schrijven | het sessiemodel | redeneerwerk op middenniveau |
 | Sufficient-context judge + adversarial prober | sterk | dit is de context-gate; een zwakke judge laat gaten door |
-| Generator (executor) | het sessiemodel | bouwt het echte werk |
+| Generator spoor-specialisten (uitvoering) | worker-tier (sonnet) voor afgebakende sporen; het sessiemodel alleen voor een kritiek of ambigue spoor | de scherpe specs uit de planfase dragen het oordeel al; de specialist hoeft alleen uit te voeren |
 | Evaluator | sterk, bij voorkeur opus | het hele voordeel hangt op een scherpe, onafhankelijke beoordelaar, dus nooit goedkoop |
 | Council (richtings-triage, en convocatie bij escalatie) | sessiemodel voor de triage, sterk voor een volle convocatie | de per-fase triage is een goedkope go/escaleer-call; een echte richtingskeuze verdient sterke onafhankelijke adviseurs |
 
@@ -509,7 +511,7 @@ Waard om op te slaan: een API-eigenaardigheid die niet in de docs stond, een bev
 - **State leeft op schijf.** Plan, voortgang en baselines overleven context-compaction en laten een run mid-loop hervatten.
 - **Plan door te grillen.** Een vraag per keer met aanbeveling, codebase-eerst, tot elke materiele beslissing is opgelost. Een plan op gedeeld begrip hoeft de evaluator later niet af te keuren.
 - **Maak de gebruiker architect, geen stempelaar.** Bij een zware keuze stuur je bronnen en scenario's mee, zodat hij snel het onderwerp snapt en op inhoud beslist in plaats van je voorstel af te stempelen.
-- **Route op rol, niet op kosten.** Goedkope modellen voor het mechanische volume, een sterk model voor de evaluator, zodat een lange run de limiet overleeft en de judge scherp blijft.
+- **Route op rol, niet op kosten.** Goedkope modellen voor het mechanische volume, een sterk model voor de evaluator, zodat een lange run de limiet overleeft en de judge scherp blijft. Plan zwaar, voer licht uit: de planfase draait op het zwaarste dat de host biedt, de uitvoer-sporen schalen af naar worker-tier, de evaluator nooit.
 - **Een scheidbare fase is een team, geen enkele agent.** Twee of meer onafhankelijke sporen krijgen twee of meer parallelle specialist-subagents, elk met een eigen skillset; ontbrekende skills haal je erbij (skills.sh) of schrijf je zelf. Een agent per fase is alleen correct bij een atomaire fase. Een sequentieel team bestaat niet, en een Workflow met een agent is verboden. De evaluator blijft er onafhankelijk overheen, dus meer agents kopen geen vertrouwen.
 - **Kies het patroon naar de aard van de fase.** Geen patroon als default, anders het beste van de zes (classify-and-act, fan-out-and-synthesize, adversarial verification, generate-and-filter, tournament, loop-until-done), automatisch gekozen op het signaal in de fase. Het patroon is de vorm aan de bouwkant en staat los van de evaluator-gate.
 - **Kies de uitvoeringsvorm naar vraag en budget.** `/goal` is de standaard, met parallelle subagents per scheidbaar spoor (gratis); de Workflow-tool alleen voor grote swarms bij genoeg credits; `/loop` of een scheduled task voor terugkerende taken. Zuinig betekent geen onnodige Workflow-credits verbranden, niet zo min mogelijk agents: parallelle subagents bij scheidbaar werk zijn het uitgangspunt.

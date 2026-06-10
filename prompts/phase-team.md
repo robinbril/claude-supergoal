@@ -78,6 +78,13 @@ Geef elke specialist mee: zijn spoor en deliverable, de skill(s) die hij gebruik
 van de acceptatiecriteria dat hij dekt, en de opdracht om werk plus ruw bewijs terug te geven
 (commando-output, gewijzigde bestanden, observaties), zonder eigen pass/fail-oordeel.
 
+**Model per spoor (plan zwaar, voer licht uit).** De planfase deed het zware denkwerk al; de
+specialist voert een scherpe spec uit. Route daarom standaard naar de worker-tier (sonnet) waar
+de host model-keuze per subagent toelaat. Het sessiemodel erft alleen een spoor dat kritiek of
+ambigue is (architectuur-rakend, security, of een spec met open einden); volledig gespecificeerd
+mechanisch werk zonder oordeel mag naar de goedkope tier (haiku). Biedt de host geen model-keuze,
+gebruik dan overal het sessiemodel. De evaluator valt buiten deze regel en schaalt nooit af.
+
 Zonder dispatch-tool (bijvoorbeeld Codex): val terug op sequentieel binnen de run. Dat is een
 fallback, geen default. Een specialist per spoor geeft skill-dekking en parallellisme die een
 enkele agent niet heeft, dat is waarom het team-pad bestaat.
@@ -100,7 +107,7 @@ Print voor het bouwen:
 SUPERGOAL_PHASE_TEAM phase=<N>
 Pattern: <geen | classify-and-act | fan-out-and-synthesize | adversarial-verification | generate-and-filter | tournament | loop-until-done>
 Tracks:
-- <spoor 1>: <deliverable> | skill: <installed|acquired|written|none + naam/bron> | criteria: <welke>
+- <spoor 1>: <deliverable> | skill: <installed|acquired|written|none + naam/bron> | criteria: <welke> | model: <worker|sessiemodel|goedkoop + reden bij afwijking van worker>
 - <spoor 2>: ...
 Specialisten parallel: <N, minimaal 2; bij 1 is het geen team, draai solo>
 Teams parallel: <1 of meer naast elkaar draaiende teams>
