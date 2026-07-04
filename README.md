@@ -40,7 +40,7 @@ Supergoal kiest zelf de uitvoeringsvorm: `/goal` voor een gewone build, met para
 
 ## Lichter nodig?
 
-Supergoal is gebouwd voor het werk van een dag: per fase een volledige evaluator, een adviesraad-gate en retry-met-rollback. Voor kleiner werk is die machinerie overkill. Daarvoor is er [claude-loops](https://github.com/robinbril/claude-loops): vijf gerichte loop-skills (bugfix, feature, quality, audit, monitor) plus `/chain-loop`, een orchestratie-chain met dezelfde kerngedachte (niks is klaar tot een onafhankelijke evaluator het bewijst) maar een fractie van de tokens. Vuistregel: supergoal voor een dag, chain-loop voor een middag, en anders de smalste losse loop die past.
+Supergoal is gebouwd voor het werk van een dag: per fase een volledige evaluator, een adviesraad-gate en retry-met-rollback. Voor kleiner werk is die machinerie overkill. Daarvoor is er [claude-loops](https://github.com/robinbril/claude-loops): vijf gerichte loop-skills (fix, bouw, polijst, speur, waak) plus `/keten-loop`, een orchestratie-chain met dezelfde kerngedachte (niks is klaar tot een onafhankelijke evaluator het bewijst) maar een fractie van de tokens. Vuistregel: supergoal voor een dag, keten-loop voor een middag, en anders de smalste losse loop die past.
 
 ## Installeren
 
