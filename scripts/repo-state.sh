@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# repo-state.sh — evaluate the COMPLETE working-tree state relative to a baseline commit.
+# repo-state.sh - evaluate the COMPLETE working-tree state relative to a baseline commit.
 #
 # Why this exists
 # ---------------
 # Supergoal's final audit and per-phase cleanliness checks must see every change an
-# autonomous run produced — whether it was committed or left sitting in the working
+# autonomous run produced - whether it was committed or left sitting in the working
 # tree. A plain `git diff <baseline>..HEAD` only compares two commits, so a run that
 # never commits looks completely empty: deliverables read as "missing" and cleanliness
 # greps read as "0 debug prints" no matter what was actually written. This helper is the
@@ -28,7 +28,7 @@
 #
 # Usage:
 #   repo-state.sh deliverable   <baseline> <path>
-#       -> "present — <evidence>" (exit 0) | "missing" (exit 1)
+#       -> "present - <evidence>" (exit 0) | "missing" (exit 1)
 #   repo-state.sh changed-files <baseline>
 #       -> newline-delimited paths changed since baseline (tracked + untracked + deleted)
 #   repo-state.sh added-lines   <baseline>
@@ -39,7 +39,7 @@ set -uo pipefail
 
 in_git_repo() { git rev-parse --is-inside-work-tree >/dev/null 2>&1; }
 
-# baseline_ok <ref> — true only when <ref> resolves to a real commit in this repo.
+# baseline_ok <ref> - true only when <ref> resolves to a real commit in this repo.
 baseline_ok() {
   local b="${1:-}"
   [ -n "$b" ] || return 1
@@ -55,7 +55,7 @@ cmd_deliverable() {
     local stat
     stat="$(git diff --stat "$baseline" -- "$path" 2>/dev/null || true)"
     if [ -n "$stat" ]; then
-      printf 'present — changed vs baseline (%s)\n' \
+      printf 'present - changed vs baseline (%s)\n' \
         "$(printf '%s' "$stat" | tail -1 | sed 's/^[[:space:]]*//')"
       return 0
     fi
@@ -63,25 +63,25 @@ cmd_deliverable() {
     local untracked
     untracked="$(git ls-files --others --exclude-standard -- "$path" 2>/dev/null | head -1 || true)"
     if [ -n "$untracked" ]; then
-      printf 'present — untracked new file (%s)\n' "$untracked"
+      printf 'present - untracked new file (%s)\n' "$untracked"
       return 0
     fi
     # 3) backward-compat net: the path exists / is tracked but is unchanged this run.
     if [ -e "$path" ] || [ -n "$(git ls-files -- "$path" 2>/dev/null | head -1 || true)" ]; then
-      printf 'present — exists, unchanged since baseline\n'
+      printf 'present - exists, unchanged since baseline\n'
       return 0
     fi
     printf 'missing\n'
     return 1
   fi
 
-  # Fallback: baseline missing/invalid or not a git repo — existence only.
+  # Fallback: baseline missing/invalid or not a git repo - existence only.
   if [ -e "$path" ]; then
-    printf 'present — exists on disk (baseline unavailable)\n'
+    printf 'present - exists on disk (baseline unavailable)\n'
     return 0
   fi
   if in_git_repo && [ -n "$(git ls-files -- "$path" 2>/dev/null | head -1 || true)" ]; then
-    printf 'present — tracked (baseline unavailable)\n'
+    printf 'present - tracked (baseline unavailable)\n'
     return 0
   fi
   printf 'missing\n'
@@ -104,7 +104,7 @@ cmd_added_lines() {
   if in_git_repo && baseline_ok "$baseline"; then
     # Added lines from tracked changes (strip the leading '+', skip the '+++' file header).
     git diff "$baseline" 2>/dev/null | grep '^+' | grep -v '^+++' | sed 's/^+//' || true
-    # Full body of every untracked file — each line counts as newly added.
+    # Full body of every untracked file - each line counts as newly added.
     # Skip binaries: added-lines feeds text greps, so binary bodies are only noise.
     git ls-files --others --exclude-standard -z 2>/dev/null | while IFS= read -r -d '' f; do
       [ -f "$f" ] && LC_ALL=C grep -Iq . "$f" 2>/dev/null && cat -- "$f"
@@ -130,14 +130,14 @@ case "$sub" in
     ;;
   ""|-h|--help|help)
     cat >&2 <<'EOF'
-repo-state.sh — evaluate the complete working-tree state vs a baseline commit.
+repo-state.sh - evaluate the complete working-tree state vs a baseline commit.
 
   repo-state.sh deliverable   <baseline> <path>   present|missing (+ evidence), exit 0|1
   repo-state.sh changed-files <baseline>          paths changed since baseline
   repo-state.sh added-lines   <baseline>          added/new lines since baseline
 
 <baseline> is a commit sha (or "no-git" / any invalid ref to force the filesystem
-fallback). Compares the working tree — not just HEAD — so uncommitted, staged, and
+fallback). Compares the working tree - not just HEAD - so uncommitted, staged, and
 untracked work is included. See references/repo-state-comparison.md.
 EOF
     exit 2

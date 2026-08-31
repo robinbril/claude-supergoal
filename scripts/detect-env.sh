@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# detect-env.sh — environment recon for new-project Supergoal runs
+# detect-env.sh - environment recon for new-project Supergoal runs
 # Writes markdown to stdout.
 
 set -uo pipefail
@@ -18,14 +18,14 @@ echo
 echo "## System"
 echo "- OS: $(uname -srm)"
 echo "- Shell: \`$SHELL\`"
-echo "- User: $USER"
+echo "- User: ${USER:-${USERNAME:-unknown}}"
 echo
 
 echo "## Toolchains available"
 for tool in node npm pnpm yarn bun deno python python3 uv poetry pip go cargo rustc swift xcrun docker make git gh; do
   if command -v "$tool" >/dev/null 2>&1; then
     version=$("$tool" --version 2>/dev/null | head -1)
-    echo "- \`$tool\` — $version"
+    echo "- \`$tool\` - $version"
   fi
 done
 echo

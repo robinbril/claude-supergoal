@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# detect-stack.sh — identify language, package manager, framework, build/test/lint commands
+# detect-stack.sh - identify language, package manager, framework, build/test/lint commands
 # Writes a compact markdown summary to stdout for the planning context.
 
 set -uo pipefail
@@ -13,7 +13,7 @@ echo
 echo "## Language signals"
 
 if [[ -f package.json ]]; then
-  echo "- **Node/JS/TS** — package.json present"
+  echo "- **Node/JS/TS** - package.json present"
   if command -v jq >/dev/null 2>&1; then
     name=$(jq -r '.name // "(unnamed)"' package.json)
     version=$(jq -r '.version // "?"' package.json)
@@ -32,26 +32,26 @@ if [[ -f package.json ]]; then
 fi
 
 if [[ -f pyproject.toml || -f requirements.txt || -f setup.py ]]; then
-  echo "- **Python** — pyproject.toml / requirements.txt / setup.py present"
+  echo "- **Python** - pyproject.toml / requirements.txt / setup.py present"
   if [[ -f pyproject.toml ]] && grep -qE '\[tool\.poetry\]|\[tool\.uv\]|\[tool\.hatch\]' pyproject.toml 2>/dev/null; then
     grep -oE '\[tool\.[a-z]+\]' pyproject.toml | sort -u | sed 's/^/  - Build system: /'
   fi
 fi
 
 if [[ -f Cargo.toml ]]; then
-  echo "- **Rust** — Cargo.toml present"
+  echo "- **Rust** - Cargo.toml present"
 fi
 
 if [[ -f go.mod ]]; then
-  echo "- **Go** — go.mod present ($(head -1 go.mod | awk '{print $2}'))"
+  echo "- **Go** - go.mod present ($(head -1 go.mod | awk '{print $2}'))"
 fi
 
 if [[ -d "ios" && -f "ios/Podfile" ]] || ls *.xcodeproj >/dev/null 2>&1 || ls *.xcworkspace >/dev/null 2>&1; then
-  echo "- **iOS/macOS (Swift)** — Xcode project present"
+  echo "- **iOS/macOS (Swift)** - Xcode project present"
 fi
 
 if [[ -f "build.gradle" || -f "build.gradle.kts" || -f "settings.gradle" ]]; then
-  echo "- **JVM / Android** — Gradle project"
+  echo "- **JVM / Android** - Gradle project"
 fi
 
 echo
@@ -119,8 +119,8 @@ if [[ -f package.json ]] && command -v jq >/dev/null 2>&1; then
     fi
   done
 fi
-if [[ -f .eslintrc.* || -f eslint.config.* ]]; then echo "- ESLint config present"; fi
-if [[ -f .prettierrc* ]]; then echo "- Prettier config present"; fi
+if compgen -G '.eslintrc.*' >/dev/null 2>&1 || compgen -G 'eslint.config.*' >/dev/null 2>&1; then echo "- ESLint config present"; fi
+if compgen -G '.prettierrc*' >/dev/null 2>&1; then echo "- Prettier config present"; fi
 if [[ -f tsconfig.json ]]; then echo "- TypeScript present (tsconfig.json)"; fi
 if [[ -f pytest.ini || -f conftest.py ]] || (grep -q 'pytest' pyproject.toml 2>/dev/null); then echo "- pytest detected"; fi
 if [[ -f .swiftlint.yml ]]; then echo "- SwiftLint config present"; fi

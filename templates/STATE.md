@@ -1,7 +1,7 @@
 # State: {{TASK_TITLE}}
 
 **Status:** PLANNING → IN_PROGRESS → COMPLETE
-**Current phase:** —
+**Current phase:** -
 **Dispatch:** {{DISPATCH}}    <!-- Stage 6.6: goal | loop, plus fase-intensiteit sequentieel | subagents | workflow -->
 **Started:** {{DATE}}
 **Last update:** {{DATE}}
@@ -18,25 +18,25 @@ Pre-execution snapshot ref per phase, appended by the generator at each phase bo
 
 | # | Phase | Status | Started | Completed | Notes |
 |---|-------|--------|---------|-----------|-------|
-| 1 | {{P1_NAME}} | pending | — | — | — |
-| 2 | {{P2_NAME}} | pending | — | — | — |
-| ... | ... | pending | — | — | — |
-| N | Polish & Harden | pending | — | — | — |
+| 1 | {{P1_NAME}} | pending | - | - | - |
+| 2 | {{P2_NAME}} | pending | - | - | - |
+| ... | ... | pending | - | - | - |
+| N | Polish & Harden | pending | - | - | - |
 
 ## Engineering check status
 
 Updated by each phase as it runs. Cleared at the start of the next phase, so this always reflects the **most recent** engineering check.
 
-- Build: —
-- Typecheck: —
-- Lint: —
-- Tests: —
+- Build: -
+- Typecheck: -
+- Lint: -
+- Tests: -
 
 ## Notable events
 
 Append-only log of anything noteworthy that happened during execution (assumption corrected mid-run, retry, manual intervention, etc.). Each phase writes a line here.
 
-- {{DATE}} — Plan locked, {{N}} phases.
+- {{DATE}} - Plan locked, {{N}} phases.
 - ...
 
 ## Council decisions
@@ -49,4 +49,4 @@ Append-only log of every council direction-gate outcome that needed a call: an e
 
 If a phase hits FAILURE_PROBE, record it here:
 
-- Phase {{N}} ({{NAME}}): {{WHAT_FAILED}} — {{WHAT_WAS_TRIED}} — {{NEXT_MOVE}}
+- Phase {{N}} ({{NAME}}): {{WHAT_FAILED}} - {{WHAT_WAS_TRIED}} - {{NEXT_MOVE}}

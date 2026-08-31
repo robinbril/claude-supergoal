@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# summarize-repo.sh — compressed repo map for planning context
+# summarize-repo.sh - compressed repo map for planning context
 # Writes markdown to stdout.
 
 set -uo pipefail

@@ -1,4 +1,4 @@
-# Phase spec template — write to .supergoal/phases/phase-N.md
+# Phase spec template - write to .supergoal/phases/phase-N.md
 #
 # This is a free-form work spec the executing agent reads from disk.
 # No char budget. The agent follows .supergoal/PROTOCOL.md for the
@@ -60,5 +60,6 @@ During execution the generator prints SUPERGOAL_PHASE_START (above),
 does the work, then prints SUPERGOAL_PHASE_EVIDENCE (raw output and
 observations, no verdict). The independent evaluator then prints
 SUPERGOAL_EVAL_VERDICT (ACCEPT or REJECT); only on ACCEPT come
-MEMORY_SAVED and SUPERGOAL_PHASE_DONE. On REJECT the agent follows the
-3-strike recovery in .supergoal/PROTOCOL.md.
+SUPERGOAL_COUNCIL_VERDICT (AUTO-APPROVE, or a resolved escalation per
+.supergoal/council-gate.md), then MEMORY_SAVED and SUPERGOAL_PHASE_DONE.
+On REJECT the agent follows the 3-strike recovery in .supergoal/PROTOCOL.md.

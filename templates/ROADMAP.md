@@ -22,15 +22,15 @@ Non-blocking decisions recorded here so we can proceed without round-trips. If a
 
 ## Risk top 3
 
-1. **{{RISK_1}}** — likelihood: {{L}}, mitigation: {{M}}
-2. **{{RISK_2}}** — likelihood: {{L}}, mitigation: {{M}}
-3. **{{RISK_3}}** — likelihood: {{L}}, mitigation: {{M}}
+1. **{{RISK_1}}** - likelihood: {{L}}, mitigation: {{M}}
+2. **{{RISK_2}}** - likelihood: {{L}}, mitigation: {{M}}
+3. **{{RISK_3}}** - likelihood: {{L}}, mitigation: {{M}}
 
 ## Phase map
 
 | # | Phase | Depends on | Deliverable |
 |---|-------|------------|-------------|
-| 1 | {{P1_NAME}} | — | {{P1_DELIVERABLE}} |
+| 1 | {{P1_NAME}} | - | {{P1_DELIVERABLE}} |
 | 2 | {{P2_NAME}} | 1 | {{P2_DELIVERABLE}} |
 | 3 | {{P3_NAME}} | 1, 2 | {{P3_DELIVERABLE}} |
 | ... | ... | ... | ... |
@@ -38,7 +38,7 @@ Non-blocking decisions recorded here so we can proceed without round-trips. If a
 
 ---
 
-## Phase 1 — {{P1_NAME}}
+## Phase 1 - {{P1_NAME}}
 
 **Why:** {{P1_WHY}}
 
@@ -63,7 +63,7 @@ Non-blocking decisions recorded here so we can proceed without round-trips. If a
 
 ---
 
-## Phase 2 — {{P2_NAME}}
+## Phase 2 - {{P2_NAME}}
 
 (same structure)
 
@@ -73,20 +73,20 @@ Non-blocking decisions recorded here so we can proceed without round-trips. If a
 
 ---
 
-## Phase N — Polish & Harden
+## Phase N - Polish & Harden
 
 **Why:** Catch what earlier phases missed because they were focused on shipping behavior. This is how "every aspect is perfect" gets enforced.
 
 **Sub-passes (each must produce evidence):**
 
-- [ ] **UX & copy** — every visible string reads well, no debug placeholders
-- [ ] **States** — empty, loading, error, unauthorized verified for every new surface
-- [ ] **Edges** — empty inputs, long inputs, special chars, slow network
-- [ ] **Security** — input validation, auth checks, no secrets in client bundle
-- [ ] **A11y** (if UI) — keyboard nav, focus, screen reader, contrast ≥ AA
-- [ ] **Perf** — no obvious N+1, no megabyte bundles, no blocking renders
-- [ ] **Diff review** — `git diff` reviewed for stray debug logs, TODOs from this run
-- [ ] **Regression sweep** — full test suite + manual check of one adjacent feature
+- [ ] **UX & copy** - every visible string reads well, no debug placeholders
+- [ ] **States** - empty, loading, error, unauthorized verified for every new surface
+- [ ] **Edges** - empty inputs, long inputs, special chars, slow network
+- [ ] **Security** - input validation, auth checks, no secrets in client bundle
+- [ ] **A11y** (if UI) - keyboard nav, focus, screen reader, contrast ≥ AA
+- [ ] **Perf** - no obvious N+1, no megabyte bundles, no blocking renders
+- [ ] **Diff review** - `git diff` reviewed for stray debug logs, TODOs from this run
+- [ ] **Regression sweep** - full test suite + manual check of one adjacent feature
 
 **Mandatory commands:**
 - All build/test/lint commands from earlier phases

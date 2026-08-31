@@ -25,7 +25,9 @@ Stel een vraag: legt deze fase een richting vast die de gebruiker zou willen bev
 
 1. **Moeilijk omkeerbaar** (one-way-door): stack, datamodel, architectuur, een vendor-binding, een
    publieke API-vorm. Duur of onmogelijk om later terug te draaien.
-2. **Meerdere geloofwaardige paden**: er is geen duidelijke winnaar.
+2. **Meerdere geloofwaardige paden**: minstens twee echt onderscheidende opties met reële
+   trade-offs (kosten, timing, vendor-lock, omkeerbaarheid), zonder duidelijke winnaar. Een
+   marginaal tweede alternatief telt niet: wint één pad bij eerlijke afweging, geen escalatie.
 3. **Buiten de bevestigde scope**: de gebruiker heeft deze keuze niet al in Stage 1 (intake) of
    Stage 6 (plan review) expliciet vastgelegd.
 

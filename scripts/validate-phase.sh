@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# validate-phase.sh — verify a phase spec has the required structure
+# validate-phase.sh - verify a phase spec has the required structure
 #
 # Usage: validate-phase.sh <path-to-phase-spec.md>
 #
@@ -59,7 +59,7 @@ fi
 # Sanity check: at least one criterion line
 crits=$(grep -cE '^[[:space:]]*-' "$f" || true)
 if [[ "$crits" -lt 3 ]]; then
-  echo "⚠️  $f: only $crits bullet lines — acceptance criteria look thin" >&2
+  echo "⚠️  $f: only $crits bullet lines - acceptance criteria look thin" >&2
 fi
 
 if (( errors > 0 )); then
