@@ -34,12 +34,15 @@ Een lange run valt niet om door kosten maar door rate limits en een te zwakke ju
 
 | Rol | Tier | Waarom |
 |---|---|---|
-| Planning (Stage 0-6) | het zwaarste beschikbaar, hoge effort | hier vallen de beslissingen die alles erna sturen |
+| Planning-synthese (Stage 0-6, de hoofdsessie) | het zwaarste beschikbaar, hoge effort | hier vallen de beslissingen die alles erna sturen |
 | Retrieval-workers, mechanische recon | goedkoop en snel (haiku) | hoog volume, geen oordeel |
+| Raad-leden (de brede deliberatie) | goedkoop, verse mini-context, single-shot (haiku/sonnet) | drie goedkope lenzen die ik synthetiseer verslaan mijn enkele oordeel, tegen bijna geen kosten |
 | Sufficient-context judge + adversarial prober | sterk | de context-gate; een zwakke judge laat gaten door |
-| Generator spoor-specialisten | worker-tier (sonnet); sessiemodel alleen voor een kritiek of ambigue spoor | de scherpe specs uit de planfase dragen het oordeel al |
-| Evaluator | sterk, bij voorkeur opus | de hele moat hangt op een scherpe onafhankelijke beoordelaar |
-| Council | sessiemodel voor de triage; sterk voor een volle convocatie | triage is een goedkope go/escaleer-call |
+| Generator spoor-specialisten (Ralph-workers) | worker-tier (sonnet); sessiemodel alleen voor een kritiek of ambigue spoor | de scherpe specs uit de planfase dragen het oordeel al; verse kleine agents houden de run wakker en goedkoop |
+| Evaluator | sterk, bij voorkeur opus | de hele moat hangt op een scherpe onafhankelijke beoordelaar, nooit afgeschaald |
+| Volle council (harde fork) | sterk voor een volle convocatie | zeldzaam; alleen wanneer een keuze onomkeerbaar is en buiten scope valt |
+
+**Token-economie (verlaagt de kost, raakt de moat niet).** Grote tool-output prune je head+tail zonder LLM-call vóór ze het transcript in gaan; nog grotere output spill je naar een bestand onder `.supergoal/` met alleen een pointer + head/tail in context; de todo-staat stuur je als hele lijst per update (last-write-wins), niet als groeiende diff. Raad-leden en Ralph-workers krijgen minimale context (alleen wat de beslissing of het spoor vereist), niet het hele transcript.
 
 ### Dispatch-tiers (canoniek; overal waar "dispatch" valt, geldt dit blok)
 
@@ -47,6 +50,17 @@ Een lange run valt niet om door kosten maar door rate limits en een te zwakke ju
 2. **Sequentieel** is alleen voor een atomaire fase of een host zonder subagent-tool.
 3. **De Workflow-tool** is een aparte, zwaardere tier voor ongewoon grote swarms, alleen bij genoeg credits. Geen Workflow-tool beschikbaar: behandel het budget als zuinig.
 4. **`/loop` of een scheduled task** vervangt de eenmalige run wanneer de taak terugkerend is ("elke dag", "blijf X doen") in plaats van bouw-tot-klaar.
+
+## Deliberatie: de raad (goedkoop, breed)
+
+Bijna elke richtingsbeslissing gaat langs een RAAD in plaats van langs mijn enkele oordeel. Een raad is **drie verse agents op een goedkoop tier**, elk met een distinct lens, elk met alleen de beslissing plus de minimale feiten in context, elk **single-shot**. Ik verzamel hun takes en synthetiseer. Drie goedkope lenzen die ik samenvoeg vangen blinde vlekken die één oordeel mist, tegen bijna geen kosten. Prompt: `prompts/deliberation-raad.md`.
+
+- **De lenzen** (default): een die de eenvoudigste werkende aanpak zoekt, een die de faalmodi en edge-cases zoekt, een die de tweede-orde-gevolgen en scope-drift zoekt. Pas ze aan de beslissing aan.
+- **De raad levert opties en blinde vlekken, nooit een dwingende meerderheidsstem.** Ik synthetiseer; op een onomkeerbare stap voert een raad-meerderheid nooit automatisch uit. Dat gaat naar de volle council (hieronder).
+- **Waar de raad draait** (en nergens anders): op elke **planning-frontier-beslissing** (Stage 1) en op elke **fase-grens-gate** (de run). Dat is "bijna alle beslissingen" die de richting bepalen. Micro-keuzes bínnen een spoor zijn van de generator; die krijgen geen raad.
+- **Anti-spin op de raad zelf.** Precies één ronde per beslissing, geen her-deliberatie. Hard plafond: hoogstens één raad per frontier-ronde en één per fase-gate. Blijven de lenzen botsen na één ronde, dan is dat het signaal om te escaleren, niet om nog een ronde te draaien.
+
+De **volle council-skill** (vijf stemmen + blinde peer-review, duur) blijft gereserveerd voor de zeldzame harde fork: onomkeerbaar én meerdere geloofwaardige paden én buiten de bevestigde scope. De goedkope raad dekt de breedte; de dure council alleen de scherpe punten.
 
 ## Wat "klaar" vereist
 
@@ -147,8 +161,8 @@ Draai de intake via de skill `batch-grill-me`: bouw een DESIGN-BOOM van beslissi
 - **Stress-test met een concreet scenario** dat de grens tussen twee concepten forceert ("wat als dezelfde gebruiker tijdens een verlenging dubbel betaalt?").
 - **Confronteer tegenspraken direct**: "je zei net X, maar de code doet Y, welke is het?"
 - **Leg beslissingen vast terwijl ze vallen**: opgeloste termen naar een glossarium (`CONTEXT.md` als het project die conventie voert, anders een sectie in THINKING.md); een zware trade-off-beslissing krijgt een ADR-achtige notitie in de fase-rationale of ROADMAP "Alternatives considered".
-- **Bij een zware of onbekende keuze**: vraag hem niet kaal. Haal 1-3 bronnen op (Docs-bron, Context7, WebSearch), vat ze samen met link, en leg 2-3 concrete scenario's voor met trade-offs plus jouw aanbeveling, als opties in `AskUserQuestion` (aanbevolen eerst). Zo beslist de gebruiker op inhoud in plaats van jouw voorstel af te stempelen.
-- **Bij een one-way-door met meerdere geloofwaardige paden** (stack, architectuur, build-vs-buy, een datamodel dat alles vastlegt): convoceer de `council`-skill en vouw het verdict in de keuze-briefing. Right-size: een goedkoop-omkeerbare keuze verdient geen council. Skill niet geïnstalleerd: val terug op de bronnen-en-scenario's-briefing.
+- **Bij een zware of onbekende keuze**: vraag hem niet kaal, en leun niet op je enkele oordeel. Draai eerst een **raad** (drie goedkope lenzen, zie Deliberatie): één ronde, elk met de beslissing plus 1-3 opgehaalde bronnen (Docs-bron, Context7, WebSearch). Synthetiseer hun opties en blinde vlekken tot 2-3 concrete scenario's met trade-offs plus jouw aanbeveling, en leg die voor in `AskUserQuestion` (aanbevolen eerst). Zo beslist de gebruiker op inhoud, gevoed door drie lenzen, in plaats van jouw voorstel af te stempelen. Eén raad per frontier-ronde, niet per losse vraag.
+- **Bij een one-way-door met meerdere geloofwaardige paden** (stack, architectuur, build-vs-buy, een datamodel dat alles vastlegt): dit is de harde fork; escaleer van de raad naar de volle `council`-skill en vouw het verdict in de keuze-briefing. Right-size: een goedkoop-omkeerbare keuze blijft bij de raad. Skill niet geïnstalleerd: val terug op de raad plus de bronnen-en-scenario's-briefing.
 
 Leg het gekozen scenario en de bronnen vast in ROADMAP "Alternatives considered".
 
@@ -365,8 +379,8 @@ Leg vast in `STATE.md` als `Dispatch: <in-session | loop> + <subagents | workflo
 
 Na akkoord op de HTML-pagina draait de keten meteen door in deze sessie; er is geen `/goal`-regel om te plakken. Na akkoord:
 
-1. Update `STATE.md`: `Status: IN_PROGRESS`, `Current phase: 1`, `Baseline ref:` op `git rev-parse HEAD 2>/dev/null || echo "no-git"`. Initialiseer `Phase baselines:` (leeg); de generator vult per fasegrens `phase <N> pre: <ref>` in, de rollback-ankers uit `phase-N-rationale.md`.
-2. Kopieer de runtime-bundel naar `.supergoal/` zodat verse subagents en een hervatting alles van schijf lezen: `templates/PROTOCOL.md`, `prompts/phase-judge.md` -> `evaluator.md`, `prompts/phase-team.md` -> `phase-team.md`, `references/workflow-patterns.md` -> `workflow-patterns.md`, `prompts/council-gate.md` -> `council-gate.md`, `scripts/repo-state.sh` -> `repo-state.sh`, en `references/repo-state-comparison.md` + `references/goal-format.md` -> `.supergoal/references/`.
+1. Update `STATE.md`: `Status: IN_PROGRESS`, `Current phase: 1`, `Baseline ref:` op `git rev-parse HEAD 2>/dev/null || echo "no-git"`. Initialiseer `Phase baselines:` (leeg); de generator vult per fasegrens `phase <N> pre: <ref>` in, de rollback-ankers uit `phase-N-rationale.md`. Maak `DECISIONS.md` aan met de frontier-keuzes uit Stage 1 als eerste regels (append-only vanaf hier).
+2. Kopieer de runtime-bundel naar `.supergoal/` zodat verse subagents en een hervatting alles van schijf lezen: `templates/PROTOCOL.md`, `prompts/phase-judge.md` -> `evaluator.md`, `prompts/phase-team.md` -> `phase-team.md`, `prompts/deliberation-raad.md` -> `deliberation-raad.md`, `references/workflow-patterns.md` -> `workflow-patterns.md`, `prompts/council-gate.md` -> `council-gate.md`, `scripts/repo-state.sh` -> `repo-state.sh`, en `references/repo-state-comparison.md` + `references/goal-format.md` -> `.supergoal/references/`.
 3. Verifieer elke `phase-N.md` met `validate-phase.sh`.
 4. Start de fase-loop uit "Uitvoering: de fase-loop" hieronder, gedreven door `.supergoal/PROTOCOL.md`, en draai tot `SUPERGOAL_RUN_COMPLETE`: generator bouwt, onafhankelijke evaluator (verse subagent-context) bewijst, council-richtingsgate op ACCEPT, rollback bij regressie, memory-writeback per fase, en de final audit tegen de oorspronkelijke `ROADMAP.md`. De evaluator-isolatie komt van de subagent-spawn, niet meer van een verse `/goal`-sessie. Pauzeer alleen op de harde stops en op een council-escalatie die alleen de gebruiker kan beslissen.
 
@@ -378,14 +392,14 @@ De done-conditie: `SUPERGOAL_RUN_COMPLETE` verschijnt met per fase één ACCEPT,
 
 ## Uitvoering: de fase-loop
 
-Draait in deze sessie, herhaald tot `SUPERGOAL_RUN_COMPLETE`. Volledige mechaniek in `.supergoal/PROTOCOL.md`; de kern:
+Draait in deze sessie, herhaald tot `SUPERGOAL_RUN_COMPLETE`. Elke fase is een **verse-agent-ronde** (Ralph): de generator-agent start met een schone context en leest zichzelf op vanaf schijf, niet vanuit een lange lopende conversatie. Dat houdt de run goedkoop en wakker. De schijf is het geheugen; de append-only `DECISIONS.md` (zie Keep-awake) is verplichte volledige leesstof voor elke verse agent, zodat continuiteit niet wegsijpelt in een samenvatting-van-een-samenvatting. Volledige mechaniek in `.supergoal/PROTOCOL.md`; de kern:
 
-1. Lees `STATE.md` -> fase N. Lees `phase-N.md`. Snapshot de pre-fase baseline naar `STATE.md`.
+1. Lees `STATE.md` -> fase N, en `DECISIONS.md` volledig. Lees `phase-N.md`. Snapshot de pre-fase baseline naar `STATE.md`.
 2. Print `SUPERGOAL_PHASE_START`.
-3. **Generator**: kies eerst het werkpatroon dat bij de fase past (`references/workflow-patterns.md`: default geen patroon, anders classify-and-act, fan-out-and-synthesize, adversarial verification, generate-and-filter, tournament of loop-until-done, naar het signaal in de spec). Knip de fase in onafhankelijke sporen (eigen deliverable, eigen verify-gate, geen gedeelde mutatie van dezelfde bestanden); spoor-detectie is de verplichte eerste stap. Dispatch per Dispatch-tiers (specialist-subagent per spoor bij 2+, zie `.supergoal/phase-team.md`), en los per spoor ontbrekende skills op via de skill-finder-passes. Print `SUPERGOAL_PHASE_TEAM` (patroon, sporen, specialisten, skills). Doe het werk, draai mandatory commands, stuur het artefact aan voor de empirische criteria, en print `SUPERGOAL_PHASE_EVIDENCE`: ruwe command-output + exit codes, gewijzigde bestanden, observaties. Geen oordeel.
-4. **Evaluator** (subagent met verse context, of fallback-pass): leest `phase-N.md` en `.supergoal/evaluator.md`, niet het generator-oordeel. Herdraait elke check per klasse (zie de criteria-tabel). Print `SUPERGOAL_EVAL_VERDICT phase=N` met per-criterium pass/fail + bewijs, en ACCEPT of REJECT.
-5. **REJECT** -> 3-strike recovery (onder). **ACCEPT** -> council-gate (rol-definitie bovenaan): print `SUPERGOAL_COUNCIL_VERDICT phase=N` met AUTO-APPROVE en ga door, of print bij escalatie `SUPERGOAL_COUNCIL_ESCALATE` (aanbeveling A, alternatieven B/C, bronnen) en leg voor via `AskUserQuestion` (A eerst); bij `B`/`C` herschrijf je de geraakte toekomstige fase-specs en ROADMAP-blokken in-place, herdraai `validate-phase.sh`, en log onder `STATE.md` Council decisions. De geraakte fasen worden later opnieuw door de evaluator bewezen.
-6. Memory writeback check, dan `SUPERGOAL_PHASE_DONE`, update `STATE.md`. User-interrupt check op de fasegrens. N < total: volgende fase. N == total: final audit, dan pas `SUPERGOAL_RUN_COMPLETE`.
+3. **Generator** (verse worker-tier agent per spoor): kies eerst het werkpatroon dat bij de fase past (`references/workflow-patterns.md`: default geen patroon, anders classify-and-act, fan-out-and-synthesize, adversarial verification, generate-and-filter, tournament of loop-until-done, naar het signaal in de spec). Knip de fase in onafhankelijke sporen (eigen deliverable, eigen verify-gate, geen gedeelde mutatie van dezelfde bestanden); spoor-detectie is de verplichte eerste stap. Dispatch per Dispatch-tiers (specialist-subagent per spoor bij 2+, zie `.supergoal/phase-team.md`), elk met minimale context (doel + fase-spec + `DECISIONS.md`), en los per spoor ontbrekende skills op via de skill-finder-passes. Print `SUPERGOAL_PHASE_TEAM` (patroon, sporen, specialisten, skills). Doe het werk, draai mandatory commands, stuur het artefact aan voor de empirische criteria, en print `SUPERGOAL_PHASE_EVIDENCE`: ruwe command-output + exit codes, gewijzigde bestanden, observaties. Geen oordeel.
+4. **Evaluator** (subagent met verse context, of fallback-pass): leest `phase-N.md` en `.supergoal/evaluator.md`, niet het generator-oordeel. Herdraait elke check per klasse (zie de criteria-tabel). Print `SUPERGOAL_EVAL_VERDICT phase=N` met per-criterium pass/fail + bewijs, en ACCEPT of REJECT. Dit is de moat en blijft op het sterke tier, ook al draait de generator goedkoop.
+5. **REJECT** -> 3-strike recovery (onder). **ACCEPT** -> **raad-gate** (Deliberatie): drie goedkope lenzen oordelen in één ronde of het fase-resultaat de juiste richting op stuurt. Meestal `AUTO-APPROVE`: print `SUPERGOAL_COUNCIL_VERDICT phase=N` en ga door. Zien de lenzen een harde fork (onomkeerbaar + meerdere paden + buiten scope), dan escaleer je van de raad naar de volle `council`-skill: print `SUPERGOAL_COUNCIL_ESCALATE` (aanbeveling A, alternatieven B/C, bronnen) en leg voor via `AskUserQuestion` (A eerst); zonder live input volg je A en logt `auto-A`. Bij `B`/`C` herschrijf je de geraakte toekomstige fase-specs en ROADMAP-blokken in-place, herdraai `validate-phase.sh`, en log onder `DECISIONS.md`. De geraakte fasen worden later opnieuw door de evaluator bewezen. De raad adviseert; op een onomkeerbare stap voert een raad-meerderheid nooit zelf uit.
+6. Schrijf de fase-beslissingen append-only naar `DECISIONS.md`. Memory writeback check, dan `SUPERGOAL_PHASE_DONE`, update `STATE.md`. User-interrupt check op de fasegrens. N < total: volgende fase. N == total: final audit, dan pas `SUPERGOAL_RUN_COMPLETE`.
 
 ### Failure recovery (3-strike, op REJECT)
 
@@ -410,6 +424,17 @@ Een latere fase kan een eerdere stilletjes breken; de audit hervalideert tegen d
 ### Mid-run onderbreking
 
 Bij een gebruikersbericht tijdens de run: pauzeer op de fasegrens (na `SUPERGOAL_PHASE_DONE`, vóór de volgende spec), adresseer het, vraag voor hervatting.
+
+### Keep-awake en anti-spin
+
+Een autonome run faalt zelden op een verkeerde fix en vaak op wegdrijven: rondjes draaien, zichzelf te vroeg klaar verklaren, of de opdracht stilletjes verkleinen tot iets dat makkelijk slaagt. Vier mechanismen houden hem wakker en eerlijk.
+
+- **Verse-agent-rondes (Ralph).** Elke fase (en elke retry) draait een verse agent die zichzelf opleest van schijf, niet een agent die een steeds langere conversatie meesleept. `DECISIONS.md` is append-only en wordt door elke verse agent volledig gelezen, nooit als samenvatting doorgegeven, zodat een keuze uit fase 1 in fase 6 nog exact klopt.
+- **Idle-guard.** Drie opeenvolgende voortzettingen zonder een echte tool-call (bouwen, draaien, lezen) betekenen dat er niets meer gebeurt: pauzeer met reden `anti_spin` en vraag om richting in plaats van door te blijven praten. De teller reset zodra er echt werk gebeurt. Dit geldt ook voor de **synthese-stap**: kom ik na raad-output niet binnen die grens tot een generator-actie, dan is dat spin, geen denken.
+- **Loop-detector.** Een herhaald (actie, argument)-patroon krijgt eerst een reminder ("je herhaalt X"); houdt het aan, dan een harde stop van die stap in plaats van het budget leeg te branden. `DECISIONS.md`-schrijfacties tellen niet mee.
+- **Evidence-based completion, geen scope-shrink.** Klaar betekent: elk afgeleid criterium heeft autoritatief bewijs (bestand, command-output, test, draaiend artefact). Onzeker is niet-af. Nooit succes herdefiniëren naar een kleinere taak, en geheugen telt niet als bewijs. Dit is dezelfde lat als de evaluator, hier als zelf-discipline vóór je een fase afsluit.
+
+`DECISIONS.md` (onder `.supergoal/`) is de append-only beslissingslog: per regel een datum, de beslissing, en waarom. Frontier-keuzes uit Stage 1, raad- en council-uitkomsten, en fase-beslissingen landen hier. Het is de bron van continuiteit tussen verse agents.
 
 ---
 
@@ -449,6 +474,7 @@ Op elke ACCEPT-gate: leerde deze fase iets niet-voor-de-hand-liggends dat een to
 - `prompts/phase-judge.md`: de onafhankelijke evaluator (bij dispatch -> `.supergoal/evaluator.md`)
 - `prompts/phase-team.md`: per-fase team-orchestratie + skill-resolutie (-> `.supergoal/phase-team.md`)
 - `prompts/council-gate.md`: de per-fase richtings-gate (-> `.supergoal/council-gate.md`)
+- `prompts/deliberation-raad.md`: het raad-lid (goedkope lens, Stage 1 + per-fase gate; -> `.supergoal/deliberation-raad.md`)
 
 ## Templates
 
