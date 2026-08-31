@@ -76,6 +76,16 @@ Geen vibes. Vertaal de lat naar criteria die een onafhankelijke partij kan natre
 
 Markeer elk criterium met zijn klasse, bijv. `- [tool-output] Alle tests slagen.` `- [empirical] /login rendert en accepteert een geldige inlog (screenshot).`
 
+### Frontend-fasen: mega-kritisch
+
+Levert een fase UI (een component, pagina, scherm, chart, redesign), dan geldt de verscherpte lat uit `references/frontend-craft.md`, het distillaat van de beste generieke frontend-onderdelen. Dat bestand is geen suggestie maar de keuringslat.
+
+- **De generator** leest `frontend-craft.md` voor hij bouwt: de generieke componenten die je standaard goed doet, de vormfactor- en overflow-regels, typografie/kleur/spacing, motion, data-viz, en de harde anti-AI-slop-tells. Geen standaard AI-design-language.
+- **Elke frontend-fase draagt verplicht**: minstens één `empirical` criterium met een VOORAF opgeschreven visuele verwachting (een getal, een label, een positie), en één `llm-judge` criterium tegen de mega-kritische checklist in `frontend-craft.md`. "Ziet er goed uit" is geen bewijs.
+- **De evaluator** vinkt die checklist af tegen een verse render: verwachting eerst, dan de zoom-screenshot, console leeg, meerdere viewports (herflow, geen clipping, geen verborgen controls), dark en light, keyboard-focus zichtbaar, geen betekenisdragende tekst afgekapt, WCAG AA, geen nep-skeleton zonder async, en nul anti-slop-tells. Eén punt onbewezen is REJECT.
+
+Voor hover, tooltip, ingelogde of interactie-state is een DOM-read of een screenshot waarop de state zichtbaar is verplicht; anders telt de claim niet.
+
 ## Hoe de run verloopt
 
 0. **Context**: memory inladen, tools detecteren, lopende run hervatten.
@@ -282,6 +292,8 @@ Rollback target: phase <N-k> baseline ref (see phase-N-rationale.md)
 [De generator print hier SUPERGOAL_PHASE_EVIDENCE; de evaluator print SUPERGOAL_EVAL_VERDICT; op ACCEPT volgt SUPERGOAL_COUNCIL_VERDICT en daarna SUPERGOAL_PHASE_DONE]
 ```
 
+Levert de fase UI, voeg dan de frontend-lat uit `references/frontend-craft.md` toe aan de criteria: minstens één `empirical` criterium met een vooraf opgeschreven visuele verwachting, en één `llm-judge` criterium tegen de mega-kritische checklist. Zie "Frontend-fasen: mega-kritisch".
+
 Valideer elke spec met `bash $SUPERGOAL_DIR/scripts/validate-phase.sh .supergoal/phases/phase-N.md`.
 
 ---
@@ -380,7 +392,7 @@ Leg vast in `STATE.md` als `Dispatch: <in-session | loop> + <subagents | workflo
 Na akkoord op de HTML-pagina draait de keten meteen door in deze sessie; er is geen `/goal`-regel om te plakken. Na akkoord:
 
 1. Update `STATE.md`: `Status: IN_PROGRESS`, `Current phase: 1`, `Baseline ref:` op `git rev-parse HEAD 2>/dev/null || echo "no-git"`. Initialiseer `Phase baselines:` (leeg); de generator vult per fasegrens `phase <N> pre: <ref>` in, de rollback-ankers uit `phase-N-rationale.md`. Maak `DECISIONS.md` aan met de frontier-keuzes uit Stage 1 als eerste regels (append-only vanaf hier).
-2. Kopieer de runtime-bundel naar `.supergoal/` zodat verse subagents en een hervatting alles van schijf lezen: `templates/PROTOCOL.md`, `prompts/phase-judge.md` -> `evaluator.md`, `prompts/phase-team.md` -> `phase-team.md`, `prompts/deliberation-raad.md` -> `deliberation-raad.md`, `references/workflow-patterns.md` -> `workflow-patterns.md`, `prompts/council-gate.md` -> `council-gate.md`, `scripts/repo-state.sh` -> `repo-state.sh`, en `references/repo-state-comparison.md` + `references/goal-format.md` -> `.supergoal/references/`.
+2. Kopieer de runtime-bundel naar `.supergoal/` zodat verse subagents en een hervatting alles van schijf lezen: `templates/PROTOCOL.md`, `prompts/phase-judge.md` -> `evaluator.md`, `prompts/phase-team.md` -> `phase-team.md`, `prompts/deliberation-raad.md` -> `deliberation-raad.md`, `references/workflow-patterns.md` -> `workflow-patterns.md`, `prompts/council-gate.md` -> `council-gate.md`, `scripts/repo-state.sh` -> `repo-state.sh`, en `references/repo-state-comparison.md` + `references/goal-format.md` + `references/frontend-craft.md` -> `.supergoal/references/`.
 3. Verifieer elke `phase-N.md` met `validate-phase.sh`.
 4. Start de fase-loop uit "Uitvoering: de fase-loop" hieronder, gedreven door `.supergoal/PROTOCOL.md`, en draai tot `SUPERGOAL_RUN_COMPLETE`: generator bouwt, onafhankelijke evaluator (verse subagent-context) bewijst, council-richtingsgate op ACCEPT, rollback bij regressie, memory-writeback per fase, en de final audit tegen de oorspronkelijke `ROADMAP.md`. De evaluator-isolatie komt van de subagent-spawn, niet meer van een verse `/goal`-sessie. Pauzeer alleen op de harde stops en op een council-escalatie die alleen de gebruiker kan beslissen.
 
@@ -459,6 +471,7 @@ Op elke ACCEPT-gate: leerde deze fase iets niet-voor-de-hand-liggends dat een to
 - `references/workflow-patterns.md`: de zes werkpatronen en de keuze per fase
 - `references/goal-format.md`: `/goal` op Claude Code + Codex, de vereiste transcript-blokken
 - `references/repo-state-comparison.md`: hoe de working-tree vergelijking werkt
+- `references/frontend-craft.md`: het frontend-distillaat en de mega-kritische keuringslat voor UI-fasen
 
 ## Scripts
 
