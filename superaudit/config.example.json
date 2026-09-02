@@ -1,0 +1,13 @@
+{
+  "_comment": "Copy to $SUPERAUDIT_ROOT/config.json (default .claude/superaudit/config.json) and fill in your project's commands. Leave a key out if the step does not exist; fastcheck.sh then reports it as SKIPPED (not configured). Placeholders {modules} {files} {app} are filled from the diff scope. This example is a Django + Vue project; adapt for your stack.",
+  "runner_prefix": "docker exec my_web_container",
+  "lint": "ruff check --output-format concise --quiet",
+  "typecheck": "cd frontend && npx vue-tsc --noEmit",
+  "test": "python manage.py test {modules} --settings=myproject.settings.test",
+  "test_all": "python manage.py test --settings=myproject.settings.test",
+  "test_module_for": {"pattern": "^myproject/(modules/[^/]+|api)/", "template": "myproject.{1}", "dotted": true},
+  "always_test": ["myproject.core.tests_invariants"],
+  "frontend_test": "cd frontend && npx vitest run {files}",
+  "migration_check": "python manage.py makemigrations {app} --check --dry-run --settings=myproject.settings.test",
+  "app_for": {"pattern": "^myproject/modules/([^/]+)/", "template": "{1}"}
+}
