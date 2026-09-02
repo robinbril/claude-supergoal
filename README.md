@@ -40,6 +40,32 @@ Twee vaste momenten vragen jouw input: de planfase (het grillen) en de plan-revi
 
 Supergoal kiest zelf de uitvoeringsvorm: de in-sessie fase-loop voor een gewone build, met parallelle subagents per scheidbaar spoor (gratis), grote Workflow-swarms alleen bij ruim budget en een echte swarm van meer dan drie agents, of `/loop` (of een scheduled task) als de taak terugkerend is.
 
+## Ook in deze repo: /superaudit
+
+De onafhankelijke controleur van Supergoal bewijst dat een fase klopt. `/superaudit` is de
+review-kant daarvan als losse skill: een productie-review en bug hunt op een PR, branch,
+range of map. Zeven parallelle lenzen (bugs, data en migraties, domein, security en
+privacy, kwaliteit/AI-slop/dode code, tests, contracten), elk finding adversarieel
+geverifieerd (ZEKER / PLAUSIBEL / WEERLEGD) voordat het gerapporteerd wordt, een gap sweep,
+en een oordeel MERGEN / MERGEN NA FIXES / NIET MERGEN. Bij de eerste run in een project
+bouwt hij een projectkaart (invarianten, schrijfgrenzen, waar test en prod uit elkaar
+lopen) zodat elke volgende review specifiek is in plaats van generiek. Een rapport zonder
+faalscenario per finding bestaat niet; wat niet gedraaid kon worden staat bovenaan.
+
+```bash
+mkdir -p ~/.claude/skills/superaudit
+cp -r claude-supergoal/superaudit/. ~/.claude/skills/superaudit/
+```
+
+```
+/superaudit                 # je branch tegen de default branch
+/superaudit #123 --comment  # een PR, met inline-comments
+/superaudit src/billing     # codebase-audit van een map
+```
+
+Past goed als eindaudit na een Supergoal-run, of als merge-gate voor elke PR. Zie
+`superaudit/SKILL.md`.
+
 ## Lichter nodig?
 
 Supergoal is gebouwd voor het werk van een dag: per fase een volledige evaluator, een adviesraad-gate en retry-met-rollback. Voor kleiner werk is die machinerie overkill. Daarvoor is er [claude-loops](https://github.com/robinbril/claude-loops): vijf gerichte loop-skills (fix, bouw, polijst, speur, waak) plus `/keten-loop`, een orchestratie-chain met dezelfde kerngedachte (niks is klaar tot een onafhankelijke evaluator het bewijst) maar een fractie van de tokens. Vuistregel: supergoal voor een dag, keten-loop voor een middag, en anders de smalste losse loop die past.
@@ -79,6 +105,7 @@ references/             planning, fase-opdeling, /goal-formaat, repo-vergelijkin
 scripts/                recon en de working-tree vergelijking
 templates/              ROADMAP, STATE, PROTOCOL, fase-spec, review.html
 docs/architecture.svg   de procesflow, stage voor stage (dark theme)
+superaudit/             de losse review-skill /superaudit (SKILL.md, references, scripts)
 ```
 
 ## Credits
