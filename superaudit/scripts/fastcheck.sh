@@ -89,8 +89,12 @@ fi
 
 # ---------- typecheck ----------
 TC="$(cfg typecheck)"
-step "typecheck"
-if [ -n "$TC" ]; then bash -c "$TC" || status=1
+step "typecheck (alleen als er frontend-bestanden in scope zijn)"
+if [ -z "$JSFILES" ]; then
+  echo "   niet geraakt"
+elif [ -n "$TC" ]; then
+  if [ "$(jq_py 'print("1" if d["preflight"]["node_modules"] else "0")')" = 1 ]; then bash -c "$TC" || status=1
+  else skip "typecheck geconfigureerd maar node_modules ontbreekt; typecheck NIET gedraaid"; fi
 elif [ -f tsconfig.json ] && [ -d node_modules ]; then npx tsc --noEmit || status=1
 else skip "geen typecheck geconfigureerd of mogelijk"; fi
 
