@@ -53,8 +53,7 @@ lopen) zodat elke volgende review specifiek is in plaats van generiek. Een rappo
 faalscenario per finding bestaat niet; wat niet gedraaid kon worden staat bovenaan.
 
 ```bash
-mkdir -p ~/.claude/skills/superaudit
-cp -r claude-supergoal/superaudit/. ~/.claude/skills/superaudit/
+./install.sh --only superaudit
 ```
 
 ```
@@ -74,13 +73,12 @@ Supergoal is gebouwd voor het werk van een dag: per fase een volledige evaluator
 
 ```bash
 git clone https://github.com/robinbril/claude-supergoal.git
-mkdir -p ~/.claude/skills/supergoal
-cp -r claude-supergoal/SKILL.md claude-supergoal/prompts claude-supergoal/references \
-      claude-supergoal/scripts claude-supergoal/templates claude-supergoal/docs \
-      ~/.claude/skills/supergoal/
+cd claude-supergoal && ./install.sh
 ```
 
-Voor een project in plaats van globaal: zet dezelfde mappen onder `.claude/skills/supergoal/` in je projectroot.
+Dat zet `/supergoal` en `/superaudit` in `~/.claude/skills/`. Alleen voor dit project: `./install.sh --project` (naar `./.claude/skills/`). Eén van de twee: `./install.sh --only superaudit`. Daarna een nieuwe sessie starten.
+
+Met de hand kan ook: kopieer `SKILL.md`, `prompts`, `references`, `scripts`, `templates` en `docs` naar `~/.claude/skills/supergoal/`, en de map `superaudit/` naar `~/.claude/skills/superaudit/`.
 
 ## Gebruiken
 
