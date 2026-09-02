@@ -103,9 +103,13 @@ review van dít project.
 
 Start met de Agent-tool **zeven review-agents in één bericht**, elk met de volledige diff
 (of het pad), de context-alinea uit fase 0, hun lenssectie uit `references/lenzen.md`, de
-projectkaart en de stack-appendix die van toepassing is (`references/stack-*.md`). Elke
-agent leest ook de omliggende code (aanroepers, tests, migraties), niet alleen de diff, en
-levert findings in dit formaat:
+projectkaart en de stack-appendix die van toepassing is (`references/stack-*.md`). Gebruik
+het sjabloon in `references/lens-prompt.md`: het vraagt per lens om vijf tot tien concrete
+onderzoeksvragen voor déze diff (welke functie, welk veld, welke test), en dat is wat een
+agent van generiek zoeken naar gericht zoeken brengt. Schrijf de diff naar een bestand in
+de scratchpad en geef het pad; plak hem niet zeven keer in prompts. Elke agent leest ook de
+omliggende code (aanroepers, tests, migraties), niet alleen de diff, en levert findings in
+dit formaat:
 
 ```json
 {"lens": "data", "file": "pad", "line": 42, "severity": "P1",
@@ -251,6 +255,9 @@ Lees niet alles vooraf; kies op wat de diff raakt:
 | eerste run in een project | `projectkaart-template.md` |
 
 - `references/lenzen.md`: per lens de concrete checks, stack-neutraal.
+- `references/lens-prompt.md`: het sjabloon voor de lens-agents, met per lens de vraag die
+  het verschil maakt, en wat een volledige run kost (ongeveer 800k tokens voor 250 regels
+  diff) zodat je bewust kiest tussen de volledige run en `--snel`.
 - `references/stack-django.md`, `references/stack-frontend.md`: valkuilen per stack. Een
   andere stack? Schrijf een `stack-<naam>.md` in dezelfde vorm en verwijs ernaar vanuit de
   projectkaart.
