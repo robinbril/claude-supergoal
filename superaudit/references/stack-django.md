@@ -1,84 +1,84 @@
-# Stack-appendix: Django, Postgres, Celery, DRF
+# Stack appendix: Django, Postgres, Celery, DRF
 
-Valkuilen die in een Django-backend telkens terugkomen. De lens noemt het mechanisme; de
-projectkaart zegt waar het in dit project zit.
+Pitfalls that recur in a Django backend. The lens names the mechanism; the project map says
+where it lives in this project.
 
-## Transacties en side-effects
+## Transactions and side effects
 
-- Geen exception vangen bínnen `transaction.atomic()` zonder een geneste `atomic`: de
-  transactie is daarna kapot (`TransactionManagementError`).
-- Netwerk, mail, Celery-`delay()` en bestandsoperaties horen buiten de transactie of in
-  `transaction.on_commit`; `on_commit` wordt bij rollback weggegooid en vuurt in `TestCase`
-  alleen met `captureOnCommitCallbacks`.
-- `select_for_update()` alleen binnen `atomic`; niet op nullable joins zonder `of=`.
-- `get_or_create`/`update_or_create` zijn alleen atomair met een unique constraint in de
+- Do not catch an exception *inside* `transaction.atomic()` without a nested `atomic`: the
+  transaction is broken afterwards (`TransactionManagementError`).
+- Network, mail, Celery `delay()`, and file operations belong outside the transaction or in
+  `transaction.on_commit`; `on_commit` is discarded on rollback and, in `TestCase`, only
+  fires with `captureOnCommitCallbacks`.
+- `select_for_update()` only inside `atomic`; not on nullable joins without `of=`.
+- `get_or_create`/`update_or_create` are atomic only with a unique constraint in the
   database.
-- `update()`, `bulk_create()`, `bulk_update()` omzeilen `save()`, signals en `auto_now`.
+- `update()`, `bulk_create()`, `bulk_update()` bypass `save()`, signals, and `auto_now`.
 
 ## Signals
 
-- Netwerk of externe writes in `pre_save`/`post_save` blokkeren de lokale save en laten bij
-  rollback externe effecten achter. Nieuwe logica hoort in een service, niet in een signal.
-- Tests die receivers wissen moeten ze herstellen (`setUpClass`/`tearDownClass` of
-  `addClassCleanup`), anders is de suite volgorde-afhankelijk en bewijst een groene test
-  niets over het gedrag met receivers.
+- Network or external writes in `pre_save`/`post_save` block the local save and leave
+  external effects behind on rollback. New logic belongs in a service, not in a signal.
+- Tests that disconnect receivers must restore them (`setUpClass`/`tearDownClass` or
+  `addClassCleanup`), otherwise the suite is order-dependent and a green test proves nothing
+  about the behavior with receivers.
 
 ## Querysets
 
 - `obj.fk.id` -> `obj.fk_id`; `len(qs)`/`bool(qs)` -> `count()`/`exists()`.
-- `SerializerMethodField` met `.all()` op een relatie is een N+1 tenzij de viewset precies
-  die relatie prefetcht.
-- `distinct()` + `order_by()` op een gerelateerd veld levert duplicaten; `values()` +
-  `annotate()`: volgorde bepaalt de groepering.
-- `iterator()` negeert `prefetch_related` zonder `chunk_size`.
-- Guarded querysets (scoping op tenant/divisie, boekhoudkundige grenzen): een test die de
-  service-laag bewaakt ziet een rechtstreekse `Model.objects` in een view of viewset niet.
+- `SerializerMethodField` with `.all()` on a relation is an N+1 unless the viewset prefetches
+  exactly that relation.
+- `distinct()` + `order_by()` on a related field yields duplicates; `values()` +
+  `annotate()`: the ordering determines the grouping.
+- `iterator()` ignores `prefetch_related` without `chunk_size`.
+- Guarded querysets (scoping on tenant/division, accounting boundaries): a test that guards
+  the service layer does not see a direct `Model.objects` in a view or viewset.
 
-## Migraties
+## Migrations
 
-- `makemigrations --check` per app als een vendored pakket globaal ruis geeft.
-- `RunPython` met `apps.get_model` en `reverse_code`; schema en data gescheiden;
-  `atomic=False` plus batches voor grote backfills.
-- Not-null op een gevulde tabel in drie stappen; `AddIndexConcurrently` op grote tabellen;
-  constraints eerst `NOT VALID` dan valideren; rename/drop in twee releases.
-- `sqlmigrate` is de grondwaarheid; een gegenereerde migratie kan `AlterField`s meeliften
-  die iets echts veranderen.
-- Postgres-triggers (append-only, audit) bestaan in prod maar niet in een testsuite die
-  migraties overslaat.
+- `makemigrations --check` per app when a vendored package produces global noise.
+- `RunPython` with `apps.get_model` and `reverse_code`; schema and data separated;
+  `atomic=False` plus batches for large backfills.
+- Not-null on a populated table in three steps; `AddIndexConcurrently` on large tables;
+  constraints first `NOT VALID` then validate; rename/drop across two releases.
+- `sqlmigrate` is the ground truth; a generated migration can carry along `AlterField`s that
+  change something real.
+- Postgres triggers (append-only, audit) exist in prod but not in a test suite that skips
+  migrations.
 
-## Geld en tijd
+## Money and time
 
-- `DecimalField`, `Decimal(str(x))` aan de grens, `quantize` op de precisie van het domein;
-  `float()` alleen op de laatste regel voor een JSON- of chart-respons.
-- `USE_TZ=True` met `date.today()`/`datetime.now()` is server-lokaal (container draait
-  meestal UTC): gebruik `timezone.now()`/`timezone.localdate()` voor opslag en daggrenzen.
-- Factuurdatum is geen boekperiode; gebruik de periode-helpers van het project.
+- `DecimalField`, `Decimal(str(x))` at the boundary, `quantize` to the precision of the
+  domain; `float()` only on the last line before a JSON or chart response.
+- `USE_TZ=True` with `date.today()`/`datetime.now()` is server-local (the container usually
+  runs UTC): use `timezone.now()`/`timezone.localdate()` for storage and day boundaries.
+- Invoice date is not an accounting period; use the project's period helpers.
 
 ## Celery
 
-- Ids doorgeven, geen objecten; enqueue via `on_commit`; taken idempotent (zeker met
-  `acks_late`); nooit `.get()` in een taak; `autoretry_for` met backoff maar nooit op een
-  auth-fout die een retry niet oplost; time limits.
-- Beat-wijzigingen zijn beleidswijzigingen: de aan/uit-schakelaar hoort in de taak zelf
-  (leest een setting, no-op't met logregel), niet in een UI die de beat niet raakt.
-- Overlappende runs zonder lock: een beat die schrijft heeft een lock of idempotente upsert.
+- Pass ids, not objects; enqueue via `on_commit`; tasks idempotent (especially with
+  `acks_late`); never `.get()` inside a task; `autoretry_for` with backoff but never on an
+  auth error that a retry cannot resolve; time limits.
+- Beat changes are policy changes: the on/off switch belongs in the task itself (reads a
+  setting, no-ops with a log line), not in a UI that never touches the beat.
+- Overlapping runs without a lock: a beat that writes needs a lock or an idempotent upsert.
 
-## DRF en toegang
+## DRF and access
 
-- Default permission-classes plus een fail-closed endpoint-registry als het project dat
-  heeft; een endpoint dat niet geregistreerd is, is uit (meld het als de auteur hem aan
-  verwachtte).
-- Bewust open endpoints (`AllowAny`, `authentication_classes = []`): elk met docstring en
-  reden; wijzigingen daar zijn P0-gebied.
-- `ReadOnlyModelViewSet` is hard read-only ongeacht de router; writes via de service-laag.
-- Template-views: het huispatroon (`LoginRequiredMixin` + `UserPassesTestMixin`, of
-  `admin_site.admin_view`) op elke nieuwe view; `admin.site.each_context()` authenticeert
-  niet.
-- Schemathesis/OpenAPI-fuzz vangt schema-drift; een serializer-wijziging die schema en
-  respons uit elkaar trekt valt daar om.
+- Default permission classes plus a fail-closed endpoint registry if the project has one; an
+  endpoint that is not registered is off (report it if the author expected it to be on).
+- Deliberately open endpoints (`AllowAny`, `authentication_classes = []`): each with a
+  docstring and a reason; changes there are P0 territory.
+- `ReadOnlyModelViewSet` is hard read-only regardless of the router; writes go through the
+  service layer.
+- Template views: the house pattern (`LoginRequiredMixin` + `UserPassesTestMixin`, or
+  `admin_site.admin_view`) on every new view; `admin.site.each_context()` does not
+  authenticate.
+- Schemathesis/OpenAPI fuzzing catches schema drift; a serializer change that pulls the
+  schema and the response apart fails there.
 
-## Testsettings
+## Test settings
 
-Typische afwijkingen om in de projectkaart te zetten: `MIGRATION_MODULES` uit, `DEBUG=1`
-in CI, axes/lockout uit, MD5-hasher, mock-provider voor externe AI/extractie, vaste Fernet-
-sleutel, feature-flags altijd aan, receivers gewist.
+Typical deviations to record in the project map: `MIGRATION_MODULES` off, `DEBUG=1` in CI,
+axes/lockout off, MD5 hasher, mock provider for external AI/extraction, fixed Fernet key,
+feature flags always on, receivers disconnected.

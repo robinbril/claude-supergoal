@@ -1,54 +1,52 @@
-# Stack-appendix: SPA-frontends (Vue/React + TypeScript)
+# Stack appendix: SPA frontends (Vue/React + TypeScript)
 
-## Contract met de backend
+## Contract with the backend
 
-- Eén getypte `Api`-interface; de HTTP-laag doet alleen I/O en fouttranslatie; adapters
-  zijn pure, unit-geteste vormvertaling; de mock-implementatie blijft de interface
-  satisfyen (typecheck vangt dat, als hij draait).
-- Enum-waarden (statussen, rollen) komen uit de backend of een gedeeld type, nooit
-  hardcoded strings in componenten.
-- Foutstaat is zichtbaar; geen automatische retry op 4xx; auth-guard via een `me`-endpoint;
-  CSRF-token meegestuurd op writes bij session-auth.
-- Proxy-prefixen (`/api`, `/admin`, ...) en `base` kloppen met de reverse proxy in prod;
-  een route buiten die prefixen komt niet aan.
+- One typed `Api` interface; the HTTP layer does only I/O and error translation; adapters
+  are pure, unit-tested shape translation; the mock implementation keeps satisfying the
+  interface (the typecheck catches it, if it runs).
+- Enum values (statuses, roles) come from the backend or a shared type, never hardcoded
+  strings in components.
+- Error state is visible; no automatic retry on 4xx; auth guard via a `me` endpoint; CSRF
+  token sent on writes with session auth.
+- Proxy prefixes (`/api`, `/admin`, ...) and `base` match the reverse proxy in prod; a
+  route outside those prefixes never arrives.
 
-## Reactiviteit en state
+## Reactivity and state
 
-- `computed` zonder side effects; `watch` met `immediate` waar de eerste waarde telt;
-  `v-if` op een veld dat pas na een fetch bestaat; optionele ketens (`?.`) die `undefined`
-  in een berekening laten lopen.
-- Query-caches (TanStack) met de juiste keys en invalidatie na een mutatie; stale data na
-  een write is een finding.
-- Persistente state (`localStorage`, `sessionStorage`): geen tokens, geen persoonsgegevens;
-  wrap in try/catch; correct renderen zonder opgeslagen waarde.
+- `computed` without side effects; `watch` with `immediate` where the first value matters;
+  `v-if` on a field that only exists after a fetch; optional chains (`?.`) that let
+  `undefined` flow into a calculation.
+- Query caches (TanStack) with the correct keys and invalidation after a mutation; stale
+  data after a write is a finding.
+- Persistent state (`localStorage`, `sessionStorage`): no tokens, no personal data; wrap in
+  try/catch; render correctly with no stored value.
 
-## UX-contract
+## UX contract
 
-- Tellingen in koppen komen overeen met wat bereikbaar is; een `slice`/cap zonder
-  overloop-route terwijl de kop het totaal toont is een P2.
-- Bulk-acties werken op de getoonde set; drempels ("minstens 3 gelijke acties") tegen de
-  zichtbare rijen, en dat is bewust of niet.
-- Een verwijderd veld/knop/endpoint laat geen instelling achter die nergens meer gezet
-  kan worden; docstrings en help-teksten die naar het oude pad verwijzen mee.
+- Counts in headings match what is reachable; a `slice`/cap with no overflow route while
+  the heading shows the total is a P2.
+- Bulk actions operate on the displayed set; thresholds ("at least 3 identical actions")
+  against the visible rows, and that is either deliberate or not.
+- A removed field/button/endpoint leaves behind no setting that can no longer be set
+  anywhere; docstrings and help texts that point at the old path come along too.
 
-## Veiligheid
+## Security
 
-- Alleen `v-html`/`innerHTML`/`dangerouslySetInnerHTML` op gesanitiseerde inhoud
-  (DOMPurify met expliciete config).
-- Geen backend-permissielogica in de client als bewijs van security; de backend beslist.
+- `v-html`/`innerHTML`/`dangerouslySetInnerHTML` only on sanitized content (DOMPurify with
+  an explicit config).
+- No backend permission logic in the client as proof of security; the backend decides.
 
-## Tests en tooling
+## Tests and tooling
 
-- Typecheck (`vue-tsc`/`tsc`) en unit-tests (vitest/jest) draaien vaak niet in CI; dan
-  lokaal draaien en dat in "Bewijs" zetten.
-- Nieuwe adapter, nieuwe berekening in een component, nieuwe cap: elk een test met de
-  concrete verwachting (aantal rijen, label, link).
+- Typecheck (`vue-tsc`/`tsc`) and unit tests (vitest/jest) often do not run in CI; then run
+  them locally and put that in "Evidence".
+- New adapter, new calculation in a component, new cap: each gets a test with the concrete
+  expectation (row count, label, link).
 
-## CSS-specificiteit (veel gemiste "bugs")
+## CSS specificity (many missed "bugs")
 
-- Een nieuwe `:hover`/`:focus-within`-regel met hogere specificiteit overschrijft een
-  state-klasse (`--busy`, `--active`) die later in de cascade minder specifiek is: de
-  state verdwijnt zodra de muis erover staat. Check de specificiteit, niet alleen de
-  volgorde.
-- `transition` op een property die nergens gezet wordt is dood; `!important` is een
-  symptoom.
+- A new `:hover`/`:focus-within` rule with higher specificity overrides a state class
+  (`--busy`, `--active`) that is less specific later in the cascade: the state disappears
+  the moment the mouse is over it. Check the specificity, not just the order.
+- A `transition` on a property that is never set is dead; `!important` is a symptom.

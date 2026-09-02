@@ -12,3 +12,8 @@ Thumbs.db
 # Node
 node_modules/
 *.log
+
+# Python / lint caches (created when superaudit scripts run)
+__pycache__/
+*.pyc
+.ruff_cache/

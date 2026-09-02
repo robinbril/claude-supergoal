@@ -46,8 +46,8 @@ De onafhankelijke controleur van Supergoal bewijst dat een fase klopt. `/superau
 review-kant daarvan als losse skill: een productie-review en bug hunt op een PR, branch,
 range of map. Zeven parallelle lenzen (bugs, data en migraties, domein, security en
 privacy, kwaliteit/AI-slop/dode code, tests, contracten), elk finding adversarieel
-geverifieerd (ZEKER / PLAUSIBEL / WEERLEGD) voordat het gerapporteerd wordt, een gap sweep,
-en een oordeel MERGEN / MERGEN NA FIXES / NIET MERGEN. Bij de eerste run in een project
+geverifieerd (CONFIRMED / PLAUSIBLE / REFUTED) voordat het gerapporteerd wordt, een gap sweep,
+en een oordeel MERGE / MERGE AFTER FIXES / DO NOT MERGE. Bij de eerste run in een project
 bouwt hij een projectkaart (invarianten, schrijfgrenzen, waar test en prod uit elkaar
 lopen) zodat elke volgende review specifiek is in plaats van generiek. Een rapport zonder
 faalscenario per finding bestaat niet; wat niet gedraaid kon worden staat bovenaan.

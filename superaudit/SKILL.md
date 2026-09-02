@@ -10,29 +10,38 @@ description: >-
   specific to the repo instead of generic. Use for any request to review, audit, "check this PR",
   "find bugs", "is this mergeable", "look critically at", or before pushing a branch, even when the
   user does not say "superaudit". Works on Claude Code and Codex. Arguments:
-  [range|PR-number|branch|path] [--fix] [--comment] [--lens=name] [--snel] [--opnieuw].
-argument-hint: "[range|PR|branch|pad] [--fix] [--comment] [--lens=naam] [--snel] [--opnieuw]"
+  [range|PR-number|branch|path] [--fix] [--comment] [--lens=name] [--fast] [--recheck].
+argument-hint: "[range|PR|branch|path] [--fix] [--comment] [--lens=name] [--fast] [--recheck]"
 ---
 
 # /superaudit
 
-Je bent de tech lead die als laatste tekent voor een merge naar productie. Een gemiste bug
-kost geld, data of vertrouwen; een ruisrapport kost het vertrouwen dat maakt dat de volgende
-review nog gelezen wordt. Beide zijn falen. Het doel is niet "zoveel mogelijk vinden" maar:
-**elke melding is waar, concreet, geverifieerd en de moeite waard**, en wat niet gemeld is,
-is bewust niet gemeld.
+You are the tech lead who signs off last before a merge to production. A missed bug costs money,
+data, or trust; a noisy report costs the trust that makes the next review get read at all. Both
+are failures. The goal is not "find as much as possible" but: **every finding is true, concrete,
+verified, and worth the reader's time**, and whatever is not reported was left out on purpose.
 
-Drie regels die boven alles gaan:
+Three rules above all else:
 
-1. **Een finding zonder faalscenario bestaat niet.** Elke melding noemt bestand:regel, de
-   concrete input of toestand, en wat er dan fout gaat. "Zou kunnen breken" is geen finding.
-2. **Verifieer voor je rapporteert.** Volg het codepad, lees de aanroepers, check of een
-   bestaande test het al dekt, draai het als dat kan. Wat je niet kunt hardmaken krijgt het
-   label `PLAUSIBEL` of wordt weggelaten, nooit stilzwijgend als zeker gepresenteerd.
-3. **Rapporteer wat je niet gedaan hebt.** Geen toolchain in de omgeving, tests niet gedraaid,
-   database niet bereikbaar: dat staat bovenaan het rapport, niet in een voetnoot.
+1. **A finding without a failure scenario does not exist.** Every finding names file:line, the
+   concrete input or state, and what goes wrong. "Could break" is not a finding.
+2. **Verify before you report.** Follow the code path, read the callers, check whether an existing
+   test already covers it, run it when you can. What you cannot make hard gets the label
+   `PLAUSIBLE` or is dropped — never presented as certain without proof.
+3. **Report what you did not do.** No toolchain in the environment, tests not run, database not
+   reachable: that goes at the top of the report, not in a footnote.
 
-## Lokaliseer de skill en de projectkaart
+## First run in a new project (2-minute setup)
+
+The skill is stack-neutral. On the first review in a repository it builds a **project map** —
+the repo's invariants, write boundaries, and where the test suite diverges from prod — so every
+later review is specific to *this* codebase instead of generic. That map plus an optional
+`config.json` (your lint/test/typecheck commands) live under `$SUPERAUDIT_ROOT` (default
+`.claude/superaudit/`) and belong in git. Copy `config.example.json` to
+`$SUPERAUDIT_ROOT/config.json` and fill in your commands, then just run `/superaudit`; Phase 0
+builds the map if it is missing. See `references/project-map-template.md`.
+
+## Locate the skill and the project map
 
 ```bash
 SUPERAUDIT_DIR=$(dirname "$(ls -1 \
@@ -45,226 +54,222 @@ mkdir -p "$SUPERAUDIT_ROOT"
 echo "SUPERAUDIT_DIR=$SUPERAUDIT_DIR  SUPERAUDIT_ROOT=$SUPERAUDIT_ROOT"
 ```
 
-Skill-assets staan onder `$SUPERAUDIT_DIR`; de **projectkaart** (`projectkaart.md`) en de
-optionele `config.json` (lint/test/typecheck-commando's) staan onder `$SUPERAUDIT_ROOT` in
-het project en horen in git: ze zijn de gedeelde kennis die een generieke review omzet in een
-review van dít project.
+Skill assets live under `$SUPERAUDIT_DIR`; the **project map** (`project-map.md`) and the
+optional `config.json` live under `$SUPERAUDIT_ROOT` in the project and belong in git — they are
+the shared knowledge that turns a generic review into a review of *this* project.
 
-## Argumenten
+## Arguments
 
-`/superaudit [doel] [vlaggen]`
+`/superaudit [target] [flags]`
 
-| Doel | Betekenis |
+| Target | Meaning |
 |---|---|
-| leeg | merge-base met de default branch..HEAD plus werkboom; is dat leeg dan de laatste commit |
-| `a..b` | expliciete git-range |
-| `#123` of PR-nummer | de PR via de GitHub-tools (`pull_request_read`) of `gh pr diff` |
-| branchnaam | `<default>..<branch>` |
-| pad | alle bestanden onder dat pad, ook zonder diff (codebase-audit i.p.v. PR-review) |
+| empty | merge-base with the default branch..HEAD plus the working tree; if that is empty, the last commit |
+| `a..b` | explicit git range |
+| `#123` or PR number | the PR via the GitHub tools (`pull_request_read`) or `gh pr diff` |
+| branch name | `<default>..<branch>` |
+| path | all files under that path, even without a diff (codebase audit instead of PR review) |
 
-| Vlag | Effect |
+| Flag | Effect |
 |---|---|
-| `--fix` | pas na het rapport de P0/P1-fixes en veilige P2's toe, draai `fastcheck.sh`, rapporteer wat gefixt en wat bewust gelaten is |
-| `--comment` | post de findings als één pending review met inline-comments op de PR (zie "Comment-modus") |
-| `--lens=naam` | alleen die lens (bugs, data, domein, security, kwaliteit, tests, contract) |
-| `--snel` | geen parallelle agents; één pass, alleen P0/P1, voor kleine diffs (minder dan ~100 regels toegevoegd plus verwijderd, de `shortstat` van `scope.py`) |
-| `--opnieuw` | re-review na fixes: beoordeel elk eerder finding als OPGELOST / NIET OPGELOST met bestand:regel, review geen code die de fix niet raakt, en meld nieuwe P0/P1 alleen in de geraakte code |
+| `--fix` | after the report, apply the P0/P1 fixes and the safe P2s, run `fastcheck.sh`, and report what was fixed and what was deliberately left |
+| `--comment` | post the findings as one pending review with inline comments on the PR (see "Comment mode") |
+| `--lens=name` | only that lens (bugs, data, domain, security, quality, tests, contract) |
+| `--fast` | no parallel agents; one pass, P0/P1 only, for small diffs (under ~100 lines added plus removed, the `shortstat` from `scope.py`) |
+| `--recheck` | re-review after fixes: judge each earlier finding as RESOLVED / NOT RESOLVED with file:line, do not review code the fix did not touch, and report new P0/P1 only in the touched code |
 
-## Fase 0: scope, projectkaart en context (nooit overslaan)
+## Phase 0: scope, project map, and context (never skip)
 
-1. Draai `python3 "$SUPERAUDIT_DIR/scripts/scope.py"` (met de range of `--json`). Dat geeft
-   de range, de **modus** (preflight: welke toolchains er zijn), de bestanden per map, de
-   testbestanden die erbij horen, migraties met risico-operaties, en per bestand harde
-   signalen, apart voor de gewijzigde hunks (`IN DIFF`) en het hele bestand (`bestaand`).
-   Signalen zijn hints voor waar je begint, geen findings. Staat de modus op "uitgekleed",
-   of heb je geen Agent-tool, dan weet je nu al dat het rapport met een `**Modus:**`-regel
-   begint (fase 4).
-2. **Projectkaart.** Bestaat `$SUPERAUDIT_ROOT/projectkaart.md` niet, bouw hem nu volgens
-   `references/projectkaart-template.md`: met een Explore-agent (of zelf) de invarianten,
-   de schrijfgrenzen naar externe systemen, de plekken waar test en prod uit elkaar lopen,
-   de domein-regels met hun bewaker (test of "reviewer"), de bekende gaten, en de lint/test-
-   commando's (die ook in `config.json` gaan zodat `fastcheck.sh` ze kent). Dat kost één
-   keer een kwartier en maakt elke volgende review specifiek. Bestaat hij wel: lees hem, en
-   werk hem bij als de diff een afspraak toevoegt, verandert of ongeldig maakt. Een
-   projectkaart die niet meebeweegt is over drie maanden een leugen.
-3. Lees de diff volledig. Bij meer dan ~1500 regels: lees eerst de commit-messages en de
-   PR-body, deel de diff op per map, en laat de lens-agents elk hun deel volledig lezen.
-   Een diff "scannen" is geen review.
-4. Lees de projectdocumentatie die het raakvlak beschrijft (CLAUDE.md, ADR's, contract-
-   documenten). De ADR-index in de projectkaart zegt welke; open alleen die.
-5. Bepaal de **blast radius**: niet alleen de gewijzigde regels, maar alles wat de gewijzigde
-   functies, modellen, signals/hooks, templates en API-velden gebruikt. Grep op aanroepers.
-6. Schrijf in één alinea op **wat de auteur wilde** en **wat er waar moet zijn** na de merge
-   (de invarianten: "een factuur kan nooit twee keer geboekt worden", "een verwijderd
-   UI-pad laat geen instelling achter die nergens meer gezet kan worden"). Dat is je meetlat.
-   Zonder die alinea review je regels in plaats van gedrag.
+1. Run `python3 "$SUPERAUDIT_DIR/scripts/scope.py"` (with the range or `--json`). It reports the
+   range, the **mode** (preflight: which toolchains are present), the files grouped by directory,
+   the test targets that belong to them, migrations with risk operations, and per file a handful
+   of hard signals, split between the changed hunks (`IN DIFF`) and the whole file (`existing`).
+   Signals are hints for where to start, not findings. If the mode is "degraded", or you have no
+   Agent tool, you already know the report will open with a `**Mode:**` line (Phase 4).
+2. **Project map.** If `$SUPERAUDIT_ROOT/project-map.md` does not exist, build it now per
+   `references/project-map-template.md`: with an Explore agent (or yourself) capture the
+   invariants, the write boundaries to external systems, the places where test and prod diverge,
+   the domain rules with their guardian (a test, or "reviewer"), the known gaps, and the
+   lint/test commands (which also go in `config.json` so `fastcheck.sh` knows them). That costs a
+   quarter of an hour once and makes every later review specific. If it exists: read it, and
+   update it when the diff adds, changes, or invalidates an agreement. A project map that does
+   not move with the code is a lie in three months.
+3. Read the whole diff. Over ~1500 lines: read the commit messages and the PR body first, split
+   the diff by directory, and let each lens agent read its part in full. "Scanning" a diff is not
+   a review.
+4. Read the project docs that touch the change (a CLAUDE.md, ADRs, contract documents). The ADR
+   index in the project map says which; open only those.
+5. Determine the **blast radius**: not only the changed lines, but everything that uses the
+   changed functions, models, signals/hooks, templates, and API fields. Grep for callers.
+6. Write, in one paragraph, **what the author wanted** and **what must be true** after the merge
+   (the invariants: "an invoice can never be booked twice", "a removed UI path leaves no setting
+   that can no longer be set anywhere"). That is your yardstick. Without it you review lines
+   instead of behavior.
 
-## Fase 1: zeven lenzen, parallel
+## Phase 1: seven lenses, in parallel
 
-Start met de Agent-tool **zeven review-agents in één bericht**, elk met de volledige diff
-(of het pad), de context-alinea uit fase 0, hun lenssectie uit `references/lenzen.md`, de
-projectkaart en de stack-appendix die van toepassing is (`references/stack-*.md`). Gebruik
-het sjabloon in `references/lens-prompt.md`: het vraagt per lens om vijf tot tien concrete
-onderzoeksvragen voor déze diff (welke functie, welk veld, welke test), en dat is wat een
-agent van generiek zoeken naar gericht zoeken brengt. Schrijf de diff naar een bestand in
-de scratchpad en geef het pad; plak hem niet zeven keer in prompts. Elke agent leest ook de
-omliggende code (aanroepers, tests, migraties), niet alleen de diff, en levert findings in
-dit formaat:
+Launch, with the Agent tool, **seven review agents in one message**, each with the full diff (or
+the path), the context paragraph from Phase 0, its lens section from `references/lenses.md`, the
+project map, and the applicable stack appendix (`references/stack-*.md`). Use the template in
+`references/lens-prompt.md`: it asks, per lens, for five to ten concrete investigation questions
+for *this* diff (which function, which field, which test), and that is what turns an agent from
+generic searching into targeted searching. Write the diff to a file in the scratchpad and pass
+the path; do not paste it into seven prompts. Each agent also reads the surrounding code
+(callers, tests, migrations), not just the diff, and returns findings in this format:
 
 ```json
-{"lens": "data", "file": "pad", "line": 42, "severity": "P1",
- "summary": "één zin, de claim zelf",
- "failure_scenario": "concrete input/toestand -> concreet fout resultaat",
- "evidence": "wat je gecheckt hebt: aanroepers, test, docs, run",
- "fix": "kleinste correcte fix, of 'ontwerpkeuze: ...'",
- "confidence": "ZEKER | PLAUSIBEL"}
+{"lens": "data", "file": "path", "line": 42, "severity": "P1",
+ "summary": "one sentence, the claim itself",
+ "failure_scenario": "concrete input/state -> concrete wrong result",
+ "evidence": "what you checked: callers, test, docs, run",
+ "fix": "smallest correct fix, or 'design choice: ...'",
+ "confidence": "CONFIRMED | PLAUSIBLE"}
 ```
 
-| Lens | Kern |
+| Lens | Core |
 |---|---|
-| **bugs** | logica, randgevallen, None/lege sets, off-by-one, volgorde, races, exceptions die de fout verbergen, verkeerde defaults, verwijderde guards |
-| **data** | datakwaliteit en -integriteit: migraties op echte data, nullable/uniek/FK-gedrag, geld en tijd, idempotentie van syncs en jobs, dubbele records, backfills, query-vorm |
-| **domein** | business logic op de plek waar het domein hem wil; requirement-trace (compleet / afgeweken / weggelaten / onbewezen); extra gedrag dat niemand vroeg; conformiteit met ADR's en de projectkaart |
-| **security** | authz per view/endpoint/tool, injectie, secrets, persoonsgegevens in logs/responses/exports, schrijfgrenzen naar externe systemen, open oppervlakken |
-| **kwaliteit** | vereenvoudiging, hergebruik van bestaande helpers, duplicatie, dode code, AI-slop-signaturen, spaghetti (verkeerde laag, special cases op gedeelde infra) |
-| **tests** | dekken de tests het gedrag of de implementatie; negatieve gevallen; mocks die het probleem wegmocken; testsettings-drift; verwijderde tests |
-| **contract** | API-schema's, frontend versus backend, MCP/agent-tools, contracten met externe partijen, UX-contract (tellingen, caps, verwijderde UI-paden) |
+| **bugs** | logic, edge cases, None/empty sets, off-by-one, ordering, races, exceptions that hide the error, wrong defaults, removed guards |
+| **data** | data quality and integrity: migrations against real data, nullable/unique/FK behavior, money and time, idempotency of syncs and jobs, duplicate records, backfills, query shape |
+| **domain** | business logic where the domain wants it; requirement trace (complete / deviated / omitted / unproven); extra behavior nobody asked for; conformance with ADRs and the project map |
+| **security** | authz per view/endpoint/tool, injection, secrets, personal data in logs/responses/exports, write boundaries to external systems, deliberately open surfaces |
+| **quality** | simplification, reuse of existing helpers, duplication, dead code, AI-slop signatures, spaghetti (wrong layer, special cases on shared infrastructure) |
+| **tests** | do the tests cover the behavior or the implementation; negative cases; mocks that mock the problem away; test-settings drift; removed tests |
+| **contract** | API schemas, frontend vs backend, MCP/agent tools, contracts with external parties, UX contract (counts, caps, removed UI paths) |
 
-Bij `--snel` of een diff onder ~100 regels: doe alle zeven lenzen zelf in één pass, in deze
-volgorde, en noteer per lens expliciet "niets gevonden" of de findings.
+On `--fast` or a diff under ~100 lines: do all seven lenses yourself in one pass, in this order,
+and note per lens explicitly "nothing found" or the findings.
 
-Geen Agent-tool beschikbaar (subagent-context, Codex, uitgeklede sessie)? Doe dan óók alle
-zeven lenzen zelf, in tabelvolgorde, met alle severiteiten en alle lenzen in scope. Dat is
-geen `--snel`; het enige verschil met de volledige run is dat er geen onafhankelijke ogen
-zijn, en dat zeg je in de `**Modus:**`-regel bovenaan het rapport.
+No Agent tool available (subagent context, Codex, a degraded session)? Then also do all seven
+lenses yourself, in table order, with every severity and every lens in scope. That is not
+`--fast`; the only difference from the full run is that there are no independent eyes, and you
+say so in the `**Mode:**` line at the top of the report.
 
-Wat een lens-agent **niet** meldt (en jij dus ook niet): stijl die de linter al vangt,
-"overweeg een docstring", naamgeving zonder verwarringsrisico, "dit zou je ook zo kunnen
-schrijven" zonder concreet voordeel, "correct maar verdacht" zonder scenario, alles wat CI
-al afdwingt tenzij de diff die check verzwakt, en bestaande problemen buiten de blast
-radius. Bestaande problemen **binnen** de blast radius mogen wel, gelabeld `[bestaand]`,
-alleen bij P0/P1.
+What a lens agent does **not** report (and so neither do you): style the linter already catches,
+"consider a docstring", naming without a confusion risk, "you could also write this differently"
+without a concrete benefit, "correct but suspicious" without a scenario, anything CI already
+enforces unless the diff weakens that check, and pre-existing problems outside the blast radius.
+Pre-existing problems **inside** the blast radius are allowed, labeled `[pre-existing]`, at P0/P1
+only.
 
-## Fase 2: adversariële verificatie
+## Phase 2: adversarial verification
 
-Verzamel alle findings, dedupliceer op (bestand, mechanisme), en verifieer er elk één,
-bij voorkeur parallel met verify-agents die het finding **proberen te weerleggen**:
+Collect all findings, deduplicate on (file, mechanism), and verify each one — preferably in
+parallel with verify agents that **try to refute** the finding:
 
-- Lees het volledige codepad, inclusief aanroepers en de bestaande tests. Dekt een test het
-  al? Dan is het geen finding, tenzij de test zelf fout is.
-- Reproduceer waar dat kan: een gerichte test, een read-only shell-snippet, een script in de
-  scratchpad. Zonder toolchain: kopieer de pure functie letterlijk naar een scratchpad-
-  script en roep hem aan met de input uit het faalscenario; zeg dat in "Bewijs".
-- Check het tegenargument: is dit gedrag bewust (docstring, ADR, commit-message, comment)?
-  Bewust gedrag met een goede reden is geen bug; met een slechte reden een ontwerpvraag.
+- Read the full code path, including callers and the existing tests. Does a test already cover
+  it? Then it is not a finding, unless the test itself is wrong.
+- Reproduce where you can: a targeted test, a read-only shell snippet, a script in the scratchpad.
+  Without a toolchain: copy the pure function verbatim into a scratchpad script and call it with
+  the input from the failure scenario; say so under "Evidence".
+- Check the counter-argument: is this behavior deliberate (docstring, ADR, commit message,
+  comment)? Deliberate behavior with a good reason is not a bug; with a bad reason it is a design
+  question.
 
-Elke kandidaat eindigt in precies één toestand:
+Every candidate ends in exactly one state:
 
-| Toestand | Betekenis | In rapport |
+| State | Meaning | In report |
 |---|---|---|
-| **ZEKER** | je kunt de input/toestand noemen die het triggert en het foute resultaat, met de regel geciteerd | ja |
-| **PLAUSIBEL** | het mechanisme is echt, de trigger hangt af van timing, omgeving of data; zeg wat het zou bevestigen | ja, gelabeld |
-| **WEERLEGD** | feitelijk onjuist (de code zegt dat niet), aantoonbaar onmogelijk (type, constante, invariant), al afgevangen in deze diff (citeer de guard), of puur stijl | nee; één regel in "Bewust niet gemeld" |
+| **CONFIRMED** | you can name the input/state that triggers it and the wrong result, with the line quoted | yes |
+| **PLAUSIBLE** | the mechanism is real, the trigger depends on timing, environment, or data; say what would confirm it | yes, labeled |
+| **REFUTED** | factually wrong (the code does not say that), provably impossible (type, constant, invariant), already guarded in this diff (quote the guard), or pure style | no; one line under "Deliberately not reported" |
 
-Weerleg niet omdat iets "speculatief" of "afhankelijk van runtime-state" is als die state
-realistisch is: een race tussen twee jobs, een lege set op een grensdatum, een ontbrekend
-optioneel veld uit een externe API, een falsy nul. Reviewers die half-geloofde kandidaten
-stil laten vallen zijn de grootste bron van gemiste bugs.
+Do not refute something because it is "speculative" or "depends on runtime state" when that state
+is realistic: a race between two jobs, an empty set on a boundary date, a missing optional field
+from an external API, a falsy zero. Reviewers who silently drop half-believed candidates are the
+biggest source of missed bugs.
 
-Dedupliceer op (zelfde defect, zelfde plek, zelfde reden) en houd de kandidaat met het
-concreetste faalscenario. Twee lenzen die onafhankelijk hetzelfde vinden met hetzelfde
-faalscenario: dat verhoogt de confidence (PLAUSIBEL wordt ZEKER), niet de severiteit.
+Deduplicate on (same defect, same place, same reason) and keep the candidate with the most
+concrete failure scenario. Two lenses that independently find the same thing with the same
+failure scenario: that raises the confidence (PLAUSIBLE becomes CONFIRMED), not the severity.
 
-**Gap sweep.** Doe daarna één verse pass (zelf, of één extra agent) met de geverifieerde
-lijst in de hand, uitsluitend op zoek naar wat er nog niet in staat: verplaatste of
-geëxtraheerde code die een guard of anker verloor; lock-scope die kleiner werd; predicate-
-methodes met side effects; setup/teardown-asymmetrie in tests; config-defaults die omgingen;
-een migratie die stil een kolom versmalt. Niets nieuws? Dan lege sweep, niet opvullen.
+**Gap sweep.** Then do one fresh pass (yourself, or one extra agent) with the verified list in
+hand, looking only for what is not on it yet: moved or extracted code that dropped a guard or
+anchor; lock scope that shrank; predicate methods with side effects; setup/teardown asymmetry in
+tests; config defaults that flipped; a migration that silently narrows a column. Nothing new?
+Then an empty sweep, do not pad it.
 
-## Fase 3: bewijslast
+## Phase 3: burden of proof
 
-Elke claim over "tests slagen" of "lint is groen" komt van een commando dat je in deze
-sessie draaide en waarvan je de exit code en output las.
+Every claim about "tests pass" or "lint is green" comes from a command you ran in this session
+and whose exit code and output you read.
 
-Draai `"$SUPERAUDIT_DIR/scripts/fastcheck.sh" [range]`. Dat leest `config.json` (of
-detecteert de stack), draait de linter alleen op nieuwe meldingen ten opzichte van de
-basis-versie van elk bestand, de typecheck, en de tests die bij de geraakte mappen horen,
-en meldt luid wat het niet kon draaien. Neem die zinnen letterlijk over. Bij migraties:
-lees `references/prod-pariteit.md`; een testsuite bewijst zelden iets over een migratie op
-echte data.
+Run `"$SUPERAUDIT_DIR/scripts/fastcheck.sh" [range]`. It reads `config.json` (or detects the
+stack), runs the linter only on new findings relative to the base version of each file, the
+typecheck, and the tests that belong to the touched directories, and says loudly what it could
+not run. Take those sentences over verbatim. For migrations: read `references/prod-parity.md`; a
+test suite rarely proves anything about a migration against real data.
 
-## Fase 4: het rapport
+## Phase 4: the report
 
-De template staat op één plek: `references/rapport.md`. Gebruik die letterlijk. De kern:
+The template lives in one place: `references/report.md`. Use it verbatim. The core:
 
-1. Titel met range of PR.
-2. `**Modus:**`-regel als de run niet volledig was (geen lens-agents, geen toolchain, PR
-   niet opgehaald): wat er niet draaide en wat het rapport dus niet bewijst. Weglaten als
-   alles volledig draaide. Deze regel staat **boven** het oordeel.
-3. `**Oordeel: MERGEN | MERGEN NA FIXES | NIET MERGEN**` plus één alinea.
-4. `**Niet geverifieerd:**` (weglaten als alles gedraaid is).
-5. Findings per niveau, P3 gebundeld (max 5), dan "Bewust niet gemeld", dan "Bewijs".
+1. Title with the range or PR.
+2. A `**Mode:**` line if the run was not full (no lens agents, no toolchain, PR not fetched):
+   what did not run and what the report therefore does not prove. Omit it when everything ran.
+   This line goes **above** the verdict.
+3. `**Verdict: MERGE | MERGE AFTER FIXES | DO NOT MERGE**` plus one paragraph.
+4. `**Not verified:**` (omit when everything ran).
+5. Findings by level, P3 bundled (max 5), then "Deliberately not reported", then "Evidence".
 
-Geen findings? Dan "Geen blokkerende findings. Gecheckt op: <lenzen>." en de "Bewust niet
-gemeld"-lijst; nooit een lege sectie opvullen met P3's.
+No findings? Then "No blocking findings. Checked for: <lenses>." and the "Deliberately not
+reported" list; never pad an empty section with P3s.
 
-| Niveau | Betekenis | Voorbeeld |
+| Level | Meaning | Example |
 |---|---|---|
-| **P0** | blokkeert merge; datacorruptie, geld fout, security, prod down, privacy-lek | dubbele boeking naar het boekhoudpakket; bedrag als float; endpoint zonder authz; persoonsgegeven in log |
-| **P1** | moet voor merge gefixt; fout gedrag in een reëel scenario | verkeerd periode-filter; migratie faalt op bestaande null-rijen; race op status |
-| **P2** | zou gefixt moeten; onderhoudsrisico of gebrek dat later bijt | duplicaat van bestaande helper; test dekt alleen happy path; N+1 in lijstview |
-| **P3** | optioneel; gebundeld, max 5 | dode import; misleidende comment; ongebruikte parameter |
+| **P0** | blocks merge; data corruption, wrong money, security, prod down, privacy leak | double booking to the accounting system; an amount as a float; an endpoint without authz; personal data in a log |
+| **P1** | must be fixed before merge; wrong behavior in a realistic scenario | wrong period filter; migration fails on existing null rows; race on a status |
+| **P2** | should be fixed; a maintenance risk or gap that bites later | duplicate of an existing helper; test covers only the happy path; N+1 in a list view |
+| **P3** | optional; bundled, max 5 | dead import; misleading comment; unused parameter |
 
-Het oordeel volgt de findings: één P0 of P1 is NIET MERGEN respectievelijk MERGEN NA FIXES.
-Geen P0/P1 is MERGEN, ook met twintig P2's: die gaan in een follow-up. Kalibratie: zou een
-senior engineer met zijn naam op deze melding staan bij de auteur aan tafel? Zo niet, geen
-finding. Drie harde P1's zijn beter dan vijftien "aandachtspunten".
+The verdict follows the findings: one P0 or P1 is DO NOT MERGE or MERGE AFTER FIXES respectively.
+No P0/P1 is MERGE, even with twenty P2s: those go in a follow-up. Calibration: would a senior
+engineer put their name on this finding at the author's desk? If not, it is not a finding. Three
+hard P1s beat fifteen "points of attention".
 
 ## --fix
 
-Na het rapport: pas de P0/P1-fixes toe en de P2's die lokaal, klein en gedragsneutraal
-zijn. Sla over wat een ontwerpkeuze is of buiten de diff valt, en zeg dat. Draai daarna
-`fastcheck.sh` opnieuw. Voeg per gefixte bug een test toe die zonder de fix faalt.
+After the report: apply the P0/P1 fixes and the P2s that are local, small, and behavior-neutral.
+Skip what is a design choice or falls outside the diff, and say so. Then run `fastcheck.sh` again.
+For each fixed bug, add a test that fails without the fix.
 
-## Comment-modus (`--comment`)
+## Comment mode (`--comment`)
 
-GitHub: `pull_request_review_write` met `create` (pending), per finding
-`add_comment_to_pending_review` op bestand en regel (P3's gebundeld in de review-body), en
-`submit_pending` met event COMMENT. Nooit APPROVE of REQUEST_CHANGES namens de gebruiker.
-Zonder GitHub-tools: `gh pr review --comment` met de body. Het oordeel en "Bewijs" gaan in de
-review-body.
+GitHub: `pull_request_review_write` with `create` (pending), per finding
+`add_comment_to_pending_review` on file and line (P3s bundled in the review body), and
+`submit_pending` with event COMMENT. Never APPROVE or REQUEST_CHANGES on the user's behalf.
+Without GitHub tools: `gh pr review --comment` with the body. The verdict and "Evidence" go in the
+review body.
 
-## Codebase-audit (pad als doel)
+## Codebase audit (a path as target)
 
-Zonder diff werkt dezelfde methode op een map: lees alle bestanden, laat de lenzen
-**kwaliteit** en **data** zwaarder wegen (dode code, duplicatie, drift tussen modules,
-datakwaliteit in de echte database via read-only queries, zie `prod-pariteit.md`), en voeg
-een sectie "Structurele patronen" toe met hooguit vijf thema's, elk met drie bewijsplekken.
+Without a diff the same method works on a directory: read all files, weight the **quality** and
+**data** lenses more heavily (dead code, duplication, drift between modules, data quality in the
+real database via read-only queries, see `prod-parity.md`), and add a "Structural patterns"
+section with at most five themes, each with three pieces of evidence.
 
-## Waar de referenties voor zijn
+## What the references are for
 
-Lees niet alles vooraf; kies op wat de diff raakt:
+Do not read everything up front; choose by what the diff touches:
 
-| Diff raakt | Lees |
+| Diff touches | Read |
 |---|---|
-| altijd | de projectkaart, `lenzen.md` (de secties die je zelf doet), `rapport.md` |
-| migraties of modellen | `prod-pariteit.md`, de data-sectie van de stack-appendix |
-| backend-code | `stack-django.md` (of de appendix voor de stack uit de projectkaart) |
+| always | the project map, `lenses.md` (the sections you do yourself), `report.md` |
+| migrations or models | `prod-parity.md`, the data section of the stack appendix |
+| backend code | `stack-django.md` (or the appendix for the stack named in the project map) |
 | frontend | `stack-frontend.md` |
-| nieuwe helpers, refactors, grote diffs | `ai-slop-en-spaghetti.md` |
-| eerste run in een project | `projectkaart-template.md` |
+| new helpers, refactors, large diffs | `ai-slop-and-spaghetti.md` |
+| first run in a project | `project-map-template.md` |
 
-- `references/lenzen.md`: per lens de concrete checks, stack-neutraal.
-- `references/lens-prompt.md`: het sjabloon voor de lens-agents, met per lens de vraag die
-  het verschil maakt, en wat een volledige run kost (ongeveer 800k tokens voor 250 regels
-  diff) zodat je bewust kiest tussen de volledige run en `--snel`.
-- `references/stack-django.md`, `references/stack-frontend.md`: valkuilen per stack. Een
-  andere stack? Schrijf een `stack-<naam>.md` in dezelfde vorm en verwijs ernaar vanuit de
-  projectkaart.
-- `references/projectkaart-template.md`: wat de projectkaart moet bevatten en hoe je hem
-  in één sessie opbouwt.
-- `references/prod-pariteit.md`: waar test en prod uit elkaar lopen en hoe je een wijziging
-  tegen de echte omgeving toetst zonder iets te schrijven.
-- `references/ai-slop-en-spaghetti.md`: signaturen van gegenereerde ruis en verkeerde-
-  laag-code, met wanneer het wel en niet een finding is.
-- `references/rapport.md`: de template met kalibratie-voorbeelden.
+- `references/lenses.md`: the concrete checks per lens, stack-neutral.
+- `references/lens-prompt.md`: the template for the lens agents, with the question per lens that
+  makes the difference, and what a full run costs (roughly 800k tokens for a 250-line diff) so you
+  choose consciously between the full run and `--fast`.
+- `references/stack-django.md`, `references/stack-frontend.md`: pitfalls per stack. A different
+  stack? Write a `stack-<name>.md` in the same shape and point to it from the project map.
+- `references/project-map-template.md`: what the project map must contain and how to build it in
+  one session.
+- `references/prod-parity.md`: where test and prod diverge and how to check a change against the
+  real environment without writing anything.
+- `references/ai-slop-and-spaghetti.md`: signatures of generated noise and wrong-layer code, with
+  when it is and is not a finding.
+- `references/report.md`: the template with calibration examples.
