@@ -2,7 +2,7 @@
 
 Plan een grote softwaretaak samen met de agent, laat hem daarna autonoom bouwen, en laat niks "klaar" zijn tot een onafhankelijke controleur het bewijst.
 
-Een skill voor Claude Code en Codex.
+Deze repo bevat twee skills voor Claude Code en Codex: **/supergoal** (plannen en autonoom bouwen met een onafhankelijke evaluator) en **/superaudit** (een productie-PR-review en bug-hunter met zeven parallelle lenzen, elk finding adversarieel geverifieerd). Zie [`superaudit/`](superaudit/) en de sectie [Ook in deze repo: /superaudit](#ook-in-deze-repo-superaudit).
 
 <p align="center">
   <img src="docs/architecture.png" alt="Supergoal architectuur" width="820">
