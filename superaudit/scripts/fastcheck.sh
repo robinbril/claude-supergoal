@@ -121,12 +121,14 @@ fi
 # ---------- frontend unit-tests ----------
 FT="$(cfg frontend_test)"
 step "frontend unit-tests"
-if [ -n "$VITEST" ]; then
-  if [ -n "$FT" ]; then bash -c "$(fill "$FT" "" "$VITEST" "")" || status=1
-  elif [ -d node_modules ]; then npx vitest run $VITEST 2>/dev/null || npx jest $VITEST || status=1
-  else skip "node_modules ontbreekt; $VITEST NIET gedraaid"; fi
-else
+if [ -z "$VITEST" ]; then
   echo "   geen frontend-tests bij de geraakte bestanden"
+elif [ "$(jq_py 'print("1" if d["preflight"]["node_modules"] else "0")')" = 0 ]; then
+  skip "node_modules ontbreekt; $VITEST NIET gedraaid"
+elif [ -n "$FT" ]; then
+  bash -c "$(fill "$FT" "" "$VITEST" "")" || status=1
+else
+  npx vitest run $VITEST 2>/dev/null || npx jest $VITEST || status=1
 fi
 
 echo
